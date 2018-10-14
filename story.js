@@ -32,6 +32,9 @@ class Story {
       case "dialog":
         this.messageBox.html(this.currentAction.message);
         this.iconBox.attr("src", "assets/" + this.currentAction.icon + ".png");
+        this.buttonsBox.html("<button class='nextButton'>Weiter</button>");
+        let myStory = this;
+        $(".nextButton").click(()=>myStory.nextAction());
         break;
       case "decision":
         this.buttonsBox.html("");

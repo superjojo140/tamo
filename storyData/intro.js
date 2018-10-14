@@ -54,11 +54,11 @@ const intro = {
       icon : "woman",
       options: [{
           message: "Gehe nach Uttelfeld",
-          nextEvent: 9
+          nextEvent: 10
       },
         {
           message: "Stärke dich zunächst",
-          nextEvent: 10
+          nextEvent: 9
         }
         ]
     },
