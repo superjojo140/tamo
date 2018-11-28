@@ -6,7 +6,7 @@ const ctx = canvas.getContext("2d");
 
 let playground = [[0, 1, 2], [0, 1, 2, 3], [0, 2, 3], [0, 1, 2, 3]];
 
-let tile1 = [[0, 2], [0, 1, 2], [0, 2]];
+let tile1 = [[0, 2], [0,1, 2,3], [0, 2]];
 let tile2 = [[0]];
 
 
