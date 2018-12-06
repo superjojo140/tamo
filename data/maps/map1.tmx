@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="8" height="8" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="1">
+ <tileset firstgid="1" source="Kenney RPG Tiles.tsx"/>
+ <layer id="2" name="Background" width="8" height="8">
+  <data encoding="csv">
+6,6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,6
+</data>
+ </layer>
+ <layer id="3" name="Objects" width="8" height="8">
+  <data encoding="csv">
+588,0,0,619,620,589,0,0,
+645,588,0,676,677,646,588,0,
+589,645,586,0,0,0,645,0,
+646,0,643,0,0,0,0,0,
+0,0,588,0,0,531,0,0,
+0,652,645,472,589,0,0,541,
+4,4,4,5,646,0,585,598,
+61,61,61,62,0,0,642,0
+</data>
+ </layer>
+</map>

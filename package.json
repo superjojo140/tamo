@@ -1,0 +1,27 @@
+{
+  "name": "tamo",
+  "version": "0.0.1",
+  "description": "Some RPG",
+  "main": "tamo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/superjojo140/tamo.git"
+  },
+  "keywords": [
+    "rpg"
+  ],
+  "author": "superjojo140",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/superjojo140/tamo/issues"
+  },
+  "homepage": "https://github.com/superjojo140/tamo#readme",
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "pixi-tiledmap": "^1.9.3",
+    "pixi.js": "^4.8.3"
+  }
+}
