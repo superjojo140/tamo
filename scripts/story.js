@@ -34,7 +34,7 @@ class Story {
 		switch (this.currentAction.type) {
 			case "dialog":
 				this.messageBox.html(this.currentAction.message);
-				this.iconBox.attr("src", "assets/" + this.currentAction.icon + ".png");
+				this.iconBox.attr("src", "data/assets/" + this.currentAction.icon + ".png");
 				this.buttonsBox.html("<button class='nextButton'>Weiter</button>");
 				let myStory = this;
 				$(".nextButton").click(() => myStory.nextAction());
@@ -42,7 +42,7 @@ class Story {
 			case "decision":
 				this.buttonsBox.html("");
 				this.messageBox.html(this.currentAction.message);
-				this.iconBox.attr("src", "assets/" + this.currentAction.icon + ".png");
+				this.iconBox.attr("src", "data/assets/" + this.currentAction.icon + ".png");
 				for (let i = 0; i < this.currentAction.options.length; i++) {
 					let currentButton = $(`<button class='decisionButton' data-decision-id='${i}'>${this.currentAction.options[i].message}</button>`);
 					this.buttonsBox.append(currentButton);
