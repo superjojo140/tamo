@@ -5,7 +5,7 @@ class TiledMapParser {
 		this.spritesheet = spritesheet;
 		this.map = map;
 
-		this.bigTexture = PIXI.Texture.fromImage(this.spritesheet.path);
+		this.bigTexture = PIXI.Texture.fromImage(this.spritesheet.path,true,PIXI.SCALE_MODES.NEAREST);
 		this.textures = [];
 	}
 
@@ -23,7 +23,7 @@ class TiledMapParser {
 			let x = column * tileWidth + column * this.spritesheet.border;			
 			let y = row * tileHeight + row * this.spritesheet.border;
 			
-			let t = new PIXI.Texture(this.bigTexture,x,y,tileWidth,tileHeight);
+			let t = new PIXI.Texture(this.bigTexture,new PIXI.Rectangle(x,y,tileWidth,tileHeight));
 			//Save Texture in cache array
 			this.textures[gid] = t;
 			return t;
