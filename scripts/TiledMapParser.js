@@ -40,32 +40,50 @@ class TiledMapParser {
       //Iterate thorugh Tile Layers
       for (let layerIndex in map.layers) {
         let tl = map.layers[layerIndex];
-        if (tl.type == "tilelayer") {
+        
+        if (tl.type == "objectgroup") {
           //Create new PIXI Container for this layer
           let container = new PIXI.Container();
-          container.width = tl.width * parser.spritesheet.tileWidth;
-          container.height = tl.height * parser.spritesheet.tileHeight;
-          container.x = tl.x;
-          container.y = tl.y;
           parser.pixiContainer.addChild(container);
 
           //Generate Sprites for each tile to the container
-          for (let row = 0; row < tl.height; row++) {
-            for (let column = 0; column < tl.width; column++) {
-              let index = row * tl.width + column;
-              if (tl.data[index] > 0) {
-                let texture = parser.getTexture(tl.data[index]);
-                let sprite = new PIXI.Sprite(texture);
-                sprite.x = column * parser.spritesheet.tileWidth * parser.SPRITE_SCALE.x;
-                sprite.y = row * parser.spritesheet.tileHeight * parser.SPRITE_SCALE.y;
-                sprite.scale = parser.SPRITE_SCALE;
-                container.addChild(sprite);
+          for (let i in tl.objects) {
+
+            var co = tl.objects[i];
+            let texture = parser.getTexture(co.gid);
+            let sprite = new PIXI.Sprite(texture);
+            sprite.x = Math.round(co.x * parser.SPRITE_SCALE.x);
+            sprite.y = Math.round(co.y * parser.SPRITE_SCALE.y);
+            sprite.scale = parser.SPRITE_SCALE;
+            container.addChild(sprite);
+          }
+
+        } else {
+          if (tl.type == "tilelayer") {
+            //Create new PIXI Container for this layer
+            let container = new PIXI.Container();
+            container.width = tl.width * parser.spritesheet.tileWidth;
+            container.height = tl.height * parser.spritesheet.tileHeight;
+            container.x = tl.x;
+            container.y = tl.y;
+            parser.pixiContainer.addChild(container);
+
+            //Generate Sprites for each tile to the container
+            for (let row = 0; row < tl.height; row++) {
+              for (let column = 0; column < tl.width; column++) {
+                let index = row * tl.width + column;
+                if (tl.data[index] > 0) {
+                  let texture = parser.getTexture(tl.data[index]);
+                  let sprite = new PIXI.Sprite(texture);
+                  sprite.x = column * parser.spritesheet.tileWidth * parser.SPRITE_SCALE.x;
+                  sprite.y = row * parser.spritesheet.tileHeight * parser.SPRITE_SCALE.y;
+                  sprite.scale = parser.SPRITE_SCALE;
+                  container.addChild(sprite);
+                }
               }
             }
-          }
-        }
-        else{ //Layer is not of type "tilelayer"
-          console.warn(`Ignoring Layer "${tl.name}". Layers of type "${tl.type}" are not supported yet.`);
+          } else //Layer is not of type "tilelayer"
+            console.warn(`Ignoring Layer "${tl.name}". Layers of type "${tl.type}" are not supported yet.`);
         }
       }
 
