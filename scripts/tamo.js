@@ -4,6 +4,9 @@ const SPRITESHEET = new TiledSpritesheet("data/assets/spritesheet.png", 1, 16, 1
 //TODO Parse this information automatixally from tsx file
 
 let mapParser;
+let player;
+
+const PLAYER_SPEED = 3;
 
 
 /*
@@ -28,11 +31,59 @@ document.body.appendChild(app.view);
 
 renderMap();
 
+
+$(document).keydown(function (event) {
+  if (player) {
+    switch (event.key) {
+      case "ArrowUp":
+        player.vy = -1 * PLAYER_SPEED;
+        break;
+      case "ArrowDown":
+        player.vy = 1 * PLAYER_SPEED;
+        break;
+      case "ArrowLeft":
+        player.vx = -1 * PLAYER_SPEED;
+        break;
+      case "ArrowRight":
+        player.vx = 1 * PLAYER_SPEED;
+        break;
+    }
+  }
+});
+
+$(document).keyup(function (event) {
+  if (player) {
+    switch (event.key) {
+      case "ArrowUp":
+        player.vy = 0;
+        break;
+      case "ArrowDown":
+        player.vy = 0;
+        break;
+      case "ArrowLeft":
+        player.vx = 0;
+        break;
+      case "ArrowRight":
+        player.vx = 0;
+        break;
+    }
+  }
+});
+
+function gameLoop(delta) {
+  if (player) {
+    player.x += player.vx;
+    player.y += player.vy;
+  }
+}
+
+
 function renderMap() {
   let mapContainer = new PIXI.Container();
-  mapParser = new TiledMapParser(mapContainer, SPRITESHEET, "data/maps/map1.json");
-  let s = new PIXI.Sprite(mapParser.getTexture(5));
-  s.scale = new PIXI.Point(10, 10);
+  mapParser = new TiledMapParser(mapContainer, SPRITESHEET, "data/maps/map1.json", function () {
+    player = mapParser.player;
+    app.ticker.add(delta => gameLoop(delta));
+    app.stage.addChild(mapContainer);
+  });
 
-  app.stage.addChild(mapContainer);
 }

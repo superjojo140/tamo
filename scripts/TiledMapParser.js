@@ -1,12 +1,13 @@
 class TiledMapParser {
 
 
-  constructor(container, spritesheet, mapPath) {
+  constructor(container, spritesheet, mapPath, callback) {
     this.SPRITE_SCALE = new PIXI.Point(3, 3);
     this.spritesheet = spritesheet;
     this.bigTexture = PIXI.Texture.fromImage(this.spritesheet.path, true, PIXI.SCALE_MODES.NEAREST);
     this.textures = [];
     this.pixiContainer = container;
+    this.onFinish = callback;
     this.loadMap(mapPath);
   }
 
@@ -46,16 +47,22 @@ class TiledMapParser {
           let container = new PIXI.Container();
           parser.pixiContainer.addChild(container);
 
-          //Generate Sprites for each tile to the container
+          //Generate Sprites for each object to the container
           for (let i in tl.objects) {
 
             var co = tl.objects[i];
             let texture = parser.getTexture(co.gid);
             let sprite = new PIXI.Sprite(texture);
             sprite.x = Math.round(co.x * parser.SPRITE_SCALE.x);
-            sprite.y = Math.round(co.y * parser.SPRITE_SCALE.y);
+            sprite.y = (Math.round(co.y) - co.height) * parser.SPRITE_SCALE.y; // -co.height because tiled uses the bottom-left corner for coordinates and PIXI uses the top-left corner
             sprite.scale = parser.SPRITE_SCALE;
             container.addChild(sprite);
+            
+            if(co.type == "character"){
+              parser.player = sprite;
+              parser.player.vx = 0;
+              parser.player.vy = 0;
+            }
           }
 
         } else {
@@ -86,7 +93,8 @@ class TiledMapParser {
             console.warn(`Ignoring Layer "${tl.name}". Layers of type "${tl.type}" are not supported yet.`);
         }
       }
-
+      //Call onFinish Callback
+      parser.onFinish();
     });
 
   }
