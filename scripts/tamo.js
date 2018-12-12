@@ -1,89 +1,73 @@
-const currentStory = new Story(intro, "messageContainer");
-
-const SPRITESHEET = new TiledSpritesheet("data/assets/spritesheet.png", 1, 16, 16, 31, 57) //Kenny Spritesheet see data/maps/Kenney RPG Tiles.tsx
+/// <reference path="./TiledSpritesheet.ts" />
+/// <reference path="./TiledMapParser.ts" />
+//const currentStory = new Story(intro, "messageContainer");
+var SPRITESHEET = new TiledSpritesheet("data/assets/spritesheet.png", 1, 16, 16, 31, 57); //Kenny Spritesheet see data/maps/Kenney RPG Tiles.tsx
 //TODO Parse this information automatixally from tsx file
-
-let mapParser;
-let player;
-
-const PLAYER_SPEED = 3;
-
-
+var mapParser;
+var player;
+var PLAYER_SPEED = 3;
 /*
 PIXI STUFF
 */
-
-
-let type = "WebGL"
+var type = "WebGL";
 if (!PIXI.utils.isWebGLSupported()) {
-  type = "canvas"
+    type = "canvas";
 }
-
 //Create a Pixi Application
-let app = new PIXI.Application({
-  width: 400,
-  height: 400
+var app = new PIXI.Application({
+    width: 400,
+    height: 400
 });
-
 //Add the canvas that Pixi automatically created for you to the HTML document
 document.body.appendChild(app.view);
-
-
 renderMap();
-
-
 $(document).keydown(function (event) {
-  if (player) {
-    switch (event.key) {
-      case "ArrowUp":
-        player.vy = -1 * PLAYER_SPEED;
-        break;
-      case "ArrowDown":
-        player.vy = 1 * PLAYER_SPEED;
-        break;
-      case "ArrowLeft":
-        player.vx = -1 * PLAYER_SPEED;
-        break;
-      case "ArrowRight":
-        player.vx = 1 * PLAYER_SPEED;
-        break;
+    if (player) {
+        switch (event.key) {
+            case "ArrowUp":
+                player.vy = -1 * PLAYER_SPEED;
+                break;
+            case "ArrowDown":
+                player.vy = 1 * PLAYER_SPEED;
+                break;
+            case "ArrowLeft":
+                player.vx = -1 * PLAYER_SPEED;
+                break;
+            case "ArrowRight":
+                player.vx = 1 * PLAYER_SPEED;
+                break;
+        }
     }
-  }
 });
-
 $(document).keyup(function (event) {
-  if (player) {
-    switch (event.key) {
-      case "ArrowUp":
-        player.vy = 0;
-        break;
-      case "ArrowDown":
-        player.vy = 0;
-        break;
-      case "ArrowLeft":
-        player.vx = 0;
-        break;
-      case "ArrowRight":
-        player.vx = 0;
-        break;
+    if (player) {
+        switch (event.key) {
+            case "ArrowUp":
+                player.vy = 0;
+                break;
+            case "ArrowDown":
+                player.vy = 0;
+                break;
+            case "ArrowLeft":
+                player.vx = 0;
+                break;
+            case "ArrowRight":
+                player.vx = 0;
+                break;
+        }
     }
-  }
 });
-
 function gameLoop(delta) {
-  if (player) {
-    player.x += player.vx;
-    player.y += player.vy;
-  }
+    if (player) {
+        player.x += player.vx;
+        player.y += player.vy;
+    }
 }
-
-
 function renderMap() {
-  let mapContainer = new PIXI.Container();
-  mapParser = new TiledMapParser(mapContainer, SPRITESHEET, "data/maps/map1.json", function () {
-    player = mapParser.player;
-    app.ticker.add(delta => gameLoop(delta));
-    app.stage.addChild(mapContainer);
-  });
-
+    var mapContainer = new PIXI.Container();
+    mapParser = new TiledMapParser(mapContainer, SPRITESHEET, "data/maps/map1.json", function () {
+        player = mapParser.player;
+        app.ticker.add(function (delta) { return gameLoop(delta); });
+        app.stage.addChild(mapContainer);
+    });
 }
