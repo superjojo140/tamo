@@ -3,7 +3,7 @@
 //const currentStory = new Story(intro, "messageContainer");
 var SPRITESHEET = new TiledSpritesheet("data/assets/spritesheet.png", 1, 16, 16, 31, 57); //Kenny Spritesheet see data/maps/Kenney RPG Tiles.tsx
 //TODO Parse this information automatixally from tsx file
-var mapParser;
+var myMap;
 var player;
 var PLAYER_SPEED = 3;
 /*
@@ -59,15 +59,15 @@ $(document).keyup(function (event) {
 });
 function gameLoop(delta) {
     if (player) {
-        player.x += player.vx;
-        player.y += player.vy;
+        player.sprite.x += player.vx;
+        player.sprite.y += player.vy;
     }
 }
 function renderMap() {
-    var mapContainer = new PIXI.Container();
-    mapParser = new TiledMapParser(mapContainer, SPRITESHEET, "data/maps/map1.json", function () {
-        player = mapParser.player;
+    TiledMapParser.loadMap("data/maps/map1.json", SPRITESHEET, "data/storyData/intro.json", {}, function (map) {
+        myMap = map;
+        player = map.player;
         app.ticker.add(function (delta) { return gameLoop(delta); });
-        app.stage.addChild(mapContainer);
+        app.stage.addChild(map.pixiContainer);
     });
 }
