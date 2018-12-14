@@ -1,8 +1,6 @@
 /// <reference path="./TiledSpritesheet.ts" />
 /// <reference path="./TiledMapParser.ts" />
 
-//const currentStory = new Story(intro, "messageContainer");
-
 const SPRITESHEET = new TiledSpritesheet("data/assets/spritesheet.png", 1, 16, 16, 31, 57) //Kenny Spritesheet see data/maps/Kenney RPG Tiles.tsx
 //TODO Parse this information automatixally from tsx file
 
@@ -30,9 +28,6 @@ let app = new PIXI.Application({
 
 //Add the canvas that Pixi automatically created for you to the HTML document
 document.body.appendChild(app.view);
-
-
-renderMap();
 
 
 $(document).keydown(function (event) {
@@ -81,7 +76,7 @@ function gameLoop(delta) {
 }
 
 
-function renderMap() {
+
 
   TiledMapParser.loadMap("data/maps/map1.json",SPRITESHEET,"data/storyData/intro.json",{}, function (map) {
     myMap = map;
@@ -90,4 +85,4 @@ function renderMap() {
     app.stage.addChild(map.pixiContainer);
   });
 
-}
+

@@ -9,11 +9,11 @@ class Story {
 	buttonsBox: JQuery<HTMLElement>;
 
 
-	constructor(story, htmlContainerId) {
-		this.actions = story.actions;
+	constructor(storyData, htmlContainerId) {
+		this.actions = storyData.actions;
 		this.currentEventId = 0;
 		this.currentAction = this.actions[this.currentEventId];
-		this.health = story.information.health;
+		this.health = storyData.information.health;
 
 
 		this.messageBox = $("<div id='messageBox'></div>");
