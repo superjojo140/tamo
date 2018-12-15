@@ -35,16 +35,20 @@ $(document).keydown(function (event) {
     switch (event.key) {
       case "ArrowUp":
         player.vy = -1 * PLAYER_SPEED;
+        player.changeDirection(Player.UP);
         break;
       case "ArrowDown":
         player.vy = 1 * PLAYER_SPEED;
+        player.changeDirection(Player.DOWN);
         break;
       case "ArrowLeft":
         player.vx = -1 * PLAYER_SPEED;
+        player.changeDirection(Player.LEFT);
         break;
       case "ArrowRight":
         player.vx = 1 * PLAYER_SPEED;
-        break;
+        player.changeDirection(Player.RIGHT);
+        break; 
     }
   }
 });
@@ -54,15 +58,19 @@ $(document).keyup(function (event) {
     switch (event.key) {
       case "ArrowUp":
         player.vy = 0;
+        player.changeDirection(Player.STOP);
         break;
       case "ArrowDown":
         player.vy = 0;
+        player.changeDirection(Player.STOP);
         break;
       case "ArrowLeft":
         player.vx = 0;
+        player.changeDirection(Player.STOP);
         break;
       case "ArrowRight":
         player.vx = 0;
+        player.changeDirection(Player.STOP);
         break;
     }
   }

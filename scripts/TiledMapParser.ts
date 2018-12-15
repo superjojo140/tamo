@@ -30,18 +30,23 @@ class TiledMapParser {
           for (let i in tl.objects) {
 
             let co = tl.objects[i];
-            let texture = spritesheet.getTexture(co.gid);
-            let sprite = new PIXI.Sprite(texture);
-            sprite.x = Math.round(co.x * SPRITE_SCALE.x);
-            sprite.y = (Math.round(co.y) - co.height) * SPRITE_SCALE.y; // -co.height because tiled uses the bottom-left corner for coordinates and PIXI uses the top-left corner
-            sprite.scale = SPRITE_SCALE;
-            container.addChild(sprite);
 
             if (co.type == "character") {
-              map.player = new Player(sprite);
-              map.player.vx = 0;
-              map.player.vy = 0;
+              let x = Math.round(co.x * SPRITE_SCALE.x);
+              let y = (Math.round(co.y) - co.height) * SPRITE_SCALE.y; // -co.height because tiled uses the bottom-left corner for coordinates and PIXI uses the top-left corner
+              map.player = new Player(x,y);
+              container.addChild(map.player.sprite);
             }
+            else {
+
+              let texture = spritesheet.getTexture(co.gid);
+              let sprite = new PIXI.Sprite(texture);
+              
+              sprite.scale = SPRITE_SCALE;
+              container.addChild(sprite);
+            }
+
+
           }
 
         } else {

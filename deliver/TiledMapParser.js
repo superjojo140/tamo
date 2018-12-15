@@ -25,16 +25,17 @@ var TiledMapParser = /** @class */ (function () {
                     //Generate Sprites for each object to the container
                     for (var i in tl.objects) {
                         var co = tl.objects[i];
-                        var texture = spritesheet.getTexture(co.gid);
-                        var sprite = new PIXI.Sprite(texture);
-                        sprite.x = Math.round(co.x * SPRITE_SCALE.x);
-                        sprite.y = (Math.round(co.y) - co.height) * SPRITE_SCALE.y; // -co.height because tiled uses the bottom-left corner for coordinates and PIXI uses the top-left corner
-                        sprite.scale = SPRITE_SCALE;
-                        container.addChild(sprite);
                         if (co.type == "character") {
-                            map.player = new Player(sprite);
-                            map.player.vx = 0;
-                            map.player.vy = 0;
+                            var x = Math.round(co.x * SPRITE_SCALE.x);
+                            var y = (Math.round(co.y) - co.height) * SPRITE_SCALE.y; // -co.height because tiled uses the bottom-left corner for coordinates and PIXI uses the top-left corner
+                            map.player = new Player(x, y);
+                            container.addChild(map.player.sprite);
+                        }
+                        else {
+                            var texture = spritesheet.getTexture(co.gid);
+                            var sprite = new PIXI.Sprite(texture);
+                            sprite.scale = SPRITE_SCALE;
+                            container.addChild(sprite);
                         }
                     }
                 }
@@ -62,7 +63,7 @@ var TiledMapParser = /** @class */ (function () {
                             }
                         }
                     }
-                    else //Layer is not of type "tilelayer"
+                    else
                         console.warn("Ignoring Layer \"" + tl.name + "\". Layers of type \"" + tl.type + "\" are not supported yet.");
                 }
             }
