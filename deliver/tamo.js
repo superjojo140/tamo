@@ -75,3 +75,5 @@ TiledMapParser.loadMap("data/maps/map1.json", SPRITESHEET, "data/storyData/intro
     app.ticker.add(function (delta) { return gameLoop(delta); });
     app.stage.addChild(map.pixiContainer);
 });
+//Load Story
+var myStory = new Story("data/storyData/intro.json", "messageContainer");

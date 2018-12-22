@@ -93,4 +93,7 @@ function gameLoop(delta) {
     app.stage.addChild(map.pixiContainer);
   });
 
+  //Load Story
+  let myStory = new Story("data/storyData/intro.json","messageContainer");
+
 

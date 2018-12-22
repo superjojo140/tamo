@@ -1,6 +1,7 @@
 
 #messageContainer {
   display: flex;
+  color: white;
 }
 
 #messageBox {

@@ -1,24 +1,54 @@
 var Story = /** @class */ (function () {
-    function Story(storyData, htmlContainerId) {
-        this.actions = storyData.actions;
-        this.currentEventId = 0;
-        this.currentAction = this.actions[this.currentEventId];
-        this.health = storyData.information.health;
-        this.messageBox = $("<div id='messageBox'></div>");
-        $("#" + htmlContainerId).html("");
-        $("#" + htmlContainerId).append(this.messageBox);
-        this.iconBox = $("<img id='iconBox' height='100%'>");
-        $("#" + htmlContainerId).prepend(this.iconBox);
-        this.buttonsBox = $("<div id='buttonsBox'></div>");
-        $("#" + htmlContainerId).append(this.buttonsBox);
-        this.showAction();
+    function Story(storyPath, htmlContainerId) {
+        var thisStory = this;
+        $.ajax({
+            url: storyPath,
+            async: false,
+            dataType: "json",
+            error: function (xhr, status, error) { thisStory.parsingError(status + error, -1); },
+            success: function (storyData) {
+                thisStory.actions = storyData.actions;
+                thisStory.health = storyData.information.health;
+                thisStory.parentContainer = $("#" + htmlContainerId);
+                thisStory.parentContainer.hide();
+                thisStory.messageBox = $("<div id='messageBox'></div>");
+                thisStory.parentContainer.html("");
+                thisStory.parentContainer.append(thisStory.messageBox);
+                thisStory.iconBox = $("<img id='iconBox' height='100%'>");
+                thisStory.parentContainer.prepend(thisStory.iconBox);
+                thisStory.buttonsBox = $("<div id='buttonsBox'></div>");
+                thisStory.parentContainer.append(thisStory.buttonsBox);
+                //If given, start with startEvent
+                if (storyData.information.startEvent) {
+                    thisStory.currentEventId = storyData.information.startEvent;
+                    thisStory.currentAction = thisStory.actions[thisStory.currentEventId];
+                    thisStory.showAction();
+                }
+            }
+        });
     }
     Story.prototype.nextAction = function () {
-        this.currentEventId = this.currentAction.nextEvent;
-        this.currentAction = this.actions[this.currentEventId];
-        this.showAction();
+        if (this.currentAction.nextEvent != Story.END && this.currentAction.nextEvent) {
+            this.currentEventId = this.currentAction.nextEvent;
+            this.currentAction = this.actions[this.currentEventId];
+            this.showAction();
+        }
+        else {
+            this.hideStoryElements();
+            //Call Callback function
+            if (this.callOnFinish) {
+                this.callOnFinish();
+            }
+        }
+    };
+    Story.prototype.hideStoryElements = function () {
+        this.parentContainer.fadeOut();
+    };
+    Story.prototype.showStoryElements = function () {
+        this.parentContainer.fadeIn();
     };
     Story.prototype.showAction = function () {
+        this.showStoryElements();
         this.buttonsBox.html("");
         this.messageBox.html("");
         switch (this.currentAction.type) {
@@ -72,11 +102,18 @@ var Story = /** @class */ (function () {
     Story.prototype.setHealthRelative = function (health) {
         return this.setHealth(this.health + health);
     };
+    Story.prototype.showEvent = function (eventId, callOnFinish) {
+        this.currentEventId = eventId;
+        this.currentAction = this.actions[this.currentEventId];
+        this.callOnFinish = callOnFinish;
+        this.showAction();
+    };
     Story.prototype.parsingError = function (message, eventId) {
         if (!eventId) {
             eventId = this.currentEventId;
         }
         console.log("%c[Story Parsing] " + message + "   %cEvent id: " + eventId, 'color: #bf1d00', "color: #0056ba");
     };
+    Story.END = "end";
     return Story;
 }());
