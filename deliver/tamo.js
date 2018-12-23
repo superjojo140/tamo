@@ -5,6 +5,7 @@ var SPRITESHEET = new TiledSpritesheet("data/assets/spritesheet.png", 1, 16, 16,
 var myMap;
 var player;
 var PLAYER_SPEED = 3;
+var myCanvas = $("#pixiCanvas")[0];
 /*
 PIXI STUFF
 */
@@ -14,8 +15,9 @@ if (!PIXI.utils.isWebGLSupported()) {
 }
 //Create a Pixi Application
 var app = new PIXI.Application({
-    width: 400,
-    height: 400
+    width: 1000,
+    height: 700,
+    view: myCanvas
 });
 //Add the canvas that Pixi automatically created for you to the HTML document
 document.body.appendChild(app.view);

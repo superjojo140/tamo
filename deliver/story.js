@@ -11,12 +11,12 @@ var Story = /** @class */ (function () {
                 thisStory.health = storyData.information.health;
                 thisStory.parentContainer = $("#" + htmlContainerId);
                 thisStory.parentContainer.hide();
-                thisStory.messageBox = $("<div id='messageBox'></div>");
                 thisStory.parentContainer.html("");
+                thisStory.parentContainer.append("<div class='col-md-2'> <img id='iconBox' height='100%'></div>");
+                thisStory.iconBox = $("#iconBox");
+                thisStory.messageBox = $("<div class='col-md-8' id='messageBox'></div>");
                 thisStory.parentContainer.append(thisStory.messageBox);
-                thisStory.iconBox = $("<img id='iconBox' height='100%'>");
-                thisStory.parentContainer.prepend(thisStory.iconBox);
-                thisStory.buttonsBox = $("<div id='buttonsBox'></div>");
+                thisStory.buttonsBox = $("<div class='col-md-2' id='buttonsBox'></div>");
                 thisStory.parentContainer.append(thisStory.buttonsBox);
                 //If given, start with startEvent
                 if (storyData.information.startEvent) {

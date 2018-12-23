@@ -9,6 +9,8 @@ let player:Player;
 
 const PLAYER_SPEED = 3;
 
+let myCanvas =  $("#pixiCanvas")[0];
+
 
 /*
 PIXI STUFF
@@ -22,8 +24,9 @@ if (!PIXI.utils.isWebGLSupported()) {
 
 //Create a Pixi Application
 let app = new PIXI.Application({
-  width: 400,
-  height: 400
+  width: 1000,
+  height: 700,
+  view : myCanvas
 });
 
 //Add the canvas that Pixi automatically created for you to the HTML document

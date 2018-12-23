@@ -2,6 +2,20 @@
 #messageContainer {
   display: flex;
   color: white;
+  position: absolute;
+  margin-left: 7%;
+  width: 1000px;
+  background-color: #4d1b1b;
+  padding: 10px;
+}
+
+#pixiCanvas{
+  margin-left: 7%;
+
+}
+
+body{
+  text-align: center;
 }
 
 #messageBox {
@@ -34,6 +48,10 @@ button:hover{
   stroke-width:10;
   stroke-dasharray: 100 100;
   transition: 1s;
+}
+
+.healthMonitor{
+  position: absolute;
 }
 
 .circleBackground {

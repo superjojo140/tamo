@@ -1,33 +1,35 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
+
+<head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	  <link rel="icon" type="image/png" href="data/assets/hero.png">
-	  
+	<link rel="icon" type="image/png" href="data/assets/hero.png">
+
 	<title>Tamo</title>
-	  
+
 	<link rel="stylesheet" href="deliver/tamo.css">
-	  
+	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>
+	<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="node_modules/pixi.js/dist/pixi.js"></script>
 
-	  
+
 </head>
 
 <body style="background-color: #3a3d44">
 
+		<canvas id="pixiCanvas"></canvas>
+		<svg class="healthMonitor">
+			<circle class="circleBackground"></circle>
+			<circle class="healthBar"></circle>
+		</svg>
+		<div id="messageContainer">
+		</div>
 
 
 
-	<h1> Tamo </h1>
-	<svg>
-		<circle class="circleBackground"></circle>
-		<circle class="healthBar"></circle>
-	</svg>
-	<div id="messageContainer">
-	</div>
-	<canvas id="battleCanvas"></canvas>
 
 	<script src="deliver/TiledMapParser.js"></script>
 	<script src="deliver/TiledSpritesheet.js"></script>
@@ -36,4 +38,5 @@
 	<script src="deliver/Story.js"></script>
 	<script src="deliver/tamo.js"></script>
 </body>
+
 </html>
