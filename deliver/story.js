@@ -5,14 +5,14 @@ var Story = /** @class */ (function () {
             url: storyPath,
             async: false,
             dataType: "json",
-            error: function (xhr, status, error) { thisStory.parsingError(status + error, -1); },
+            error: function (xhr, status, error) { thisStory.parsingError("Could not find story file", -1); },
             success: function (storyData) {
                 thisStory.actions = storyData.actions;
                 thisStory.health = storyData.information.health;
                 thisStory.parentContainer = $("#" + htmlContainerId);
                 thisStory.parentContainer.hide();
                 thisStory.parentContainer.html("");
-                thisStory.parentContainer.append("<div class='col-md-2'> <img id='iconBox' height='100%'></div>");
+                thisStory.parentContainer.append("<div class='col-md-2'> <img id='iconBox' width='100%'></div>");
                 thisStory.iconBox = $("#iconBox");
                 thisStory.messageBox = $("<div class='col-md-8' id='messageBox'></div>");
                 thisStory.parentContainer.append(thisStory.messageBox);
@@ -113,6 +113,10 @@ var Story = /** @class */ (function () {
             eventId = this.currentEventId;
         }
         console.log("%c[Story Parsing] " + message + "   %cEvent id: " + eventId, 'color: #bf1d00', "color: #0056ba");
+    };
+    Story.prototype.destroy = function () {
+        this.parentContainer.html("");
+        this.parentContainer.hide();
     };
     Story.END = "end";
     return Story;

@@ -4,12 +4,12 @@
 const SPRITESHEET = new TiledSpritesheet("data/assets/spritesheet.png", 1, 16, 16, 31, 57) //Kenny Spritesheet see data/maps/Kenney RPG Tiles.tsx
 //TODO Parse this information automatixally from tsx file
 
-let myMap:Map;
-let player:Player;
+let myMap: Map;
+let player: Player;
 
 const PLAYER_SPEED = 3;
 
-let myCanvas =  $("#pixiCanvas")[0];
+let myCanvas = $("#pixiCanvas")[0];
 
 
 /*
@@ -26,7 +26,7 @@ if (!PIXI.utils.isWebGLSupported()) {
 let app = new PIXI.Application({
   width: 1000,
   height: 700,
-  view : myCanvas
+  view: myCanvas
 });
 
 //Add the canvas that Pixi automatically created for you to the HTML document
@@ -51,7 +51,7 @@ $(document).keydown(function (event) {
       case "ArrowRight":
         player.vx = 1 * PLAYER_SPEED;
         player.changeDirection(Player.RIGHT);
-        break; 
+        break;
     }
   }
 });
@@ -81,22 +81,44 @@ $(document).keyup(function (event) {
 
 function gameLoop(delta) {
   if (player) {
-    player.sprite.x += player.vx;
-    player.sprite.y += player.vy;
+    player.sprite.x += player.vx*delta;
+    player.sprite.y += player.vy*delta;
   }
 }
 
 
 
 
-  TiledMapParser.loadMap("data/maps/map1.json",SPRITESHEET,"data/storyData/intro.json",{}, function (map) {
+
+
+//Load Story
+let myStory: Story;
+
+function loadStory() {
+  let storyPath = `data/storyData/${$("#storyNameInput").val()}.json`;
+  if (myStory) {
+    myStory.destroy();
+  }
+  myStory = new Story(storyPath, "messageContainer");
+}
+
+app.ticker.add(delta => gameLoop(delta));
+app.ticker.stop();
+
+function loadMapFromFile() {
+  if(myMap)myMap.destroy();
+  
+
+  let mapPath = `data/maps/${$("#mapNameInput").val()}.json`;
+  TiledMapParser.loadMap(mapPath, SPRITESHEET, "storyPathDummy", {}, function (map) {
     myMap = map;
     player = map.player;
-    app.ticker.add(delta => gameLoop(delta));
+    app.ticker.start();
     app.stage.addChild(map.pixiContainer);
   });
+}
 
-  //Load Story
-  let myStory = new Story("data/storyData/intro.json","messageContainer");
+
+
 
 

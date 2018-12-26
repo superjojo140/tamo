@@ -67,15 +67,29 @@ $(document).keyup(function (event) {
 });
 function gameLoop(delta) {
     if (player) {
-        player.sprite.x += player.vx;
-        player.sprite.y += player.vy;
+        player.sprite.x += player.vx * delta;
+        player.sprite.y += player.vy * delta;
     }
 }
-TiledMapParser.loadMap("data/maps/map1.json", SPRITESHEET, "data/storyData/intro.json", {}, function (map) {
-    myMap = map;
-    player = map.player;
-    app.ticker.add(function (delta) { return gameLoop(delta); });
-    app.stage.addChild(map.pixiContainer);
-});
 //Load Story
-var myStory = new Story("data/storyData/intro.json", "messageContainer");
+var myStory;
+function loadStory() {
+    var storyPath = "data/storyData/" + $("#storyNameInput").val() + ".json";
+    if (myStory) {
+        myStory.destroy();
+    }
+    myStory = new Story(storyPath, "messageContainer");
+}
+app.ticker.add(function (delta) { return gameLoop(delta); });
+app.ticker.stop();
+function loadMapFromFile() {
+    if (myMap)
+        myMap.destroy();
+    var mapPath = "data/maps/" + $("#mapNameInput").val() + ".json";
+    TiledMapParser.loadMap(mapPath, SPRITESHEET, "storyPathDummy", {}, function (map) {
+        myMap = map;
+        player = map.player;
+        app.ticker.start();
+        app.stage.addChild(map.pixiContainer);
+    });
+}

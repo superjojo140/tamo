@@ -8,6 +8,11 @@ class Map{
     pixiContainer : PIXI.Container;
     gameState : Object;
 
+    destroy(){
+        this.pixiContainer.destroy();
+        return this.gameState;
+    }
+
     
 
 
