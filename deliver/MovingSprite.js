@@ -17,6 +17,7 @@ var MovingSprite = /** @class */ (function (_super) {
         var _this = _super.call(this, texture) || this;
         _this.vx = 0;
         _this.vy = 0;
+        _this.speed = 0;
         return _this;
     }
     return MovingSprite;

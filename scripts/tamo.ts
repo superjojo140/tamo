@@ -81,11 +81,11 @@ $(document).keyup(function (event) {
 
 function gameLoop(delta) {
   if (player) {
-    player.sprite.x += player.vx*delta;
-    player.sprite.y += player.vy*delta;
+    player.sprite.x += player.vx * delta;
+    player.sprite.y += player.vy * delta;
   }
 
-  if(myBattle){
+  if (myBattle) {
     myBattle.doStep(delta);
   }
 }
@@ -109,8 +109,8 @@ function loadStory() {
 app.ticker.add(delta => gameLoop(delta));
 
 function loadMapFromFile() {
-  if(myMap)myMap.destroy();
-  
+  if (myMap) myMap.destroy();
+
 
   let mapPath = `data/maps/${$("#mapNameInput").val()}.json`;
   TiledMapParser.loadMap(mapPath, SPRITESHEET, "storyPathDummy", {}, function (map) {
@@ -121,9 +121,12 @@ function loadMapFromFile() {
   });
 }
 
-let myBattle = new Battle(400,400,function(pixiContainer){
+let myBattle = new Battle(400, 400, function (pixiContainer) {
   app.stage.addChild(pixiContainer);
+
 });
+$(document).keydown(function(event){myBattle.keydown(event);});
+$(document).keyup(function(event){myBattle.keyup(event)});
 
 
 

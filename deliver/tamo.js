@@ -98,3 +98,5 @@ function loadMapFromFile() {
 var myBattle = new Battle(400, 400, function (pixiContainer) {
     app.stage.addChild(pixiContainer);
 });
+$(document).keydown(function (event) { myBattle.keydown(event); });
+$(document).keyup(function (event) { myBattle.keyup(event); });
