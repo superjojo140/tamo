@@ -84,6 +84,10 @@ function gameLoop(delta) {
     player.sprite.x += player.vx*delta;
     player.sprite.y += player.vy*delta;
   }
+
+  if(myBattle){
+    myBattle.doStep(delta);
+  }
 }
 
 
@@ -103,7 +107,6 @@ function loadStory() {
 }
 
 app.ticker.add(delta => gameLoop(delta));
-app.ticker.stop();
 
 function loadMapFromFile() {
   if(myMap)myMap.destroy();
@@ -117,6 +120,10 @@ function loadMapFromFile() {
     app.stage.addChild(map.pixiContainer);
   });
 }
+
+let myBattle = new Battle(400,400,function(pixiContainer){
+  app.stage.addChild(pixiContainer);
+});
 
 
 

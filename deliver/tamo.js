@@ -70,6 +70,9 @@ function gameLoop(delta) {
         player.sprite.x += player.vx * delta;
         player.sprite.y += player.vy * delta;
     }
+    if (myBattle) {
+        myBattle.doStep(delta);
+    }
 }
 //Load Story
 var myStory;
@@ -81,7 +84,6 @@ function loadStory() {
     myStory = new Story(storyPath, "messageContainer");
 }
 app.ticker.add(function (delta) { return gameLoop(delta); });
-app.ticker.stop();
 function loadMapFromFile() {
     if (myMap)
         myMap.destroy();
@@ -93,3 +95,6 @@ function loadMapFromFile() {
         app.stage.addChild(map.pixiContainer);
     });
 }
+var myBattle = new Battle(400, 400, function (pixiContainer) {
+    app.stage.addChild(pixiContainer);
+});
