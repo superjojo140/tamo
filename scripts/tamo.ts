@@ -127,6 +127,10 @@ let myBattle = new Battle(400, 400, function (pixiContainer) {
 });
 $(document).keydown(function(event){myBattle.keydown(event);});
 $(document).keyup(function(event){myBattle.keyup(event)});
+myBattle.isPaused=true;
+
+let tt = new TetrisTile([[1,0],[1,1]],0xaabbcc,0);
+app.stage.addChild(tt);
 
 
 

@@ -8,7 +8,7 @@ class Story {
 	iconBox: JQuery<HTMLElement>;
 	buttonsBox: JQuery<HTMLElement>;
 	parentContainer: JQuery<HTMLElement>;
-	callOnFinish: Function;
+	callOnFinish: Function; 
 	static END: any = "end";
 
 

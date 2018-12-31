@@ -1,5 +1,6 @@
 var Battle = /** @class */ (function () {
     function Battle(width, height, callback) {
+        this.isPaused = false;
         this.pixiContainer = new PIXI.Container();
         var bs = new PIXI.Graphics;
         bs.beginFill(0x293138);
@@ -29,50 +30,52 @@ var Battle = /** @class */ (function () {
         callback(this.pixiContainer);
     }
     Battle.prototype.doStep = function (delta) {
-        this.calculatePanelMovement(delta);
-        //Collision with Horizontal wall
-        var newX = this.ball.x + this.ball.vx * delta;
-        if (newX < 0 || newX + this.ball.width > this.width) {
-            this.ball.vx *= -1;
+        if (!this.isPaused) {
+            this.calculatePanelMovement(delta);
+            //Collision with Horizontal wall
+            var newX = this.ball.x + this.ball.vx * delta;
+            if (newX < 0 || newX + this.ball.width > this.width) {
+                this.ball.vx *= -1;
+            }
+            //Collision with Vertical wall
+            var newY = this.ball.y + this.ball.vy * delta;
+            if (newY < 0 || newY + this.ball.height > this.height) {
+                this.ball.vy *= -1;
+            }
+            //Collision with Own Paddle
+            if ((newY + this.ball.height > this.ownPaddle.y) && (newY < this.ownPaddle.y + this.ownPaddle.height) && (newX < this.ownPaddle.x + this.ownPaddle.width) && (newX + this.ball.width > this.ownPaddle.x)) {
+                this.ball.vy *= -1;
+                //Calculate balls new vx
+                var xDiff = Math.max(this.ball.x - this.ownPaddle.x, 0.1);
+                xDiff /= this.ownPaddle.width;
+                xDiff -= 0.5;
+                this.ball.vx += xDiff * Battle.PADDLE_ANGLE_FACTOR;
+            }
+            //Collision with Other Paddle
+            if ((newY + this.ball.height > this.otherPaddle.y) && (newY < this.otherPaddle.y + this.otherPaddle.height) && (newX < this.otherPaddle.x + this.otherPaddle.width) && (newX + this.ball.width > this.otherPaddle.x)) {
+                this.ball.vy *= -1;
+                //Calculate balls new vx
+                var xDiff = Math.max(this.ball.x - this.otherPaddle.x, 0.1);
+                xDiff /= this.otherPaddle.width;
+                xDiff -= 0.5;
+                this.ball.vx += xDiff * Battle.PADDLE_ANGLE_FACTOR;
+            }
+            //Move ball
+            this.ball.x += this.ball.vx * delta;
+            ;
+            this.ball.y += this.ball.vy * delta;
+            //Move own paddle
+            var newOwnPaddleX = this.ownPaddle.x + this.ownPaddle.vx * delta;
+            if (newOwnPaddleX > 0 && newOwnPaddleX + this.ownPaddle.width < this.width) {
+                this.ownPaddle.x += this.ownPaddle.vx * delta;
+            }
+            //Move other paddle
+            var newotherPaddleX = this.otherPaddle.x + this.otherPaddle.vx * delta;
+            if (newotherPaddleX > 0 && newotherPaddleX + this.otherPaddle.width < this.width) {
+                this.otherPaddle.x += this.otherPaddle.vx * delta;
+            }
+            //Let ball loose vx over time
         }
-        //Collision with Vertical wall
-        var newY = this.ball.y + this.ball.vy * delta;
-        if (newY < 0 || newY + this.ball.height > this.height) {
-            this.ball.vy *= -1;
-        }
-        //Collision with Own Paddle
-        if ((newY + this.ball.height > this.ownPaddle.y) && (newY < this.ownPaddle.y + this.ownPaddle.height) && (newX < this.ownPaddle.x + this.ownPaddle.width) && (newX + this.ball.width > this.ownPaddle.x)) {
-            this.ball.vy *= -1;
-            //Calculate balls new vx
-            var xDiff = Math.max(this.ball.x - this.ownPaddle.x, 0.1);
-            xDiff /= this.ownPaddle.width;
-            xDiff -= 0.5;
-            this.ball.vx += xDiff * Battle.PADDLE_ANGLE_FACTOR;
-        }
-        //Collision with Other Paddle
-        if ((newY + this.ball.height > this.otherPaddle.y) && (newY < this.otherPaddle.y + this.otherPaddle.height) && (newX < this.otherPaddle.x + this.otherPaddle.width) && (newX + this.ball.width > this.otherPaddle.x)) {
-            this.ball.vy *= -1;
-            //Calculate balls new vx
-            var xDiff = Math.max(this.ball.x - this.otherPaddle.x, 0.1);
-            xDiff /= this.otherPaddle.width;
-            xDiff -= 0.5;
-            this.ball.vx += xDiff * Battle.PADDLE_ANGLE_FACTOR;
-        }
-        //Move ball
-        this.ball.x += this.ball.vx * delta;
-        ;
-        this.ball.y += this.ball.vy * delta;
-        //Move own paddle
-        var newOwnPaddleX = this.ownPaddle.x + this.ownPaddle.vx * delta;
-        if (newOwnPaddleX > 0 && newOwnPaddleX + this.ownPaddle.width < this.width) {
-            this.ownPaddle.x += this.ownPaddle.vx * delta;
-        }
-        //Move other paddle
-        var newotherPaddleX = this.otherPaddle.x + this.otherPaddle.vx * delta;
-        if (newotherPaddleX > 0 && newotherPaddleX + this.otherPaddle.width < this.width) {
-            this.otherPaddle.x += this.otherPaddle.vx * delta;
-        }
-        //Let ball loose vx over time
     };
     Battle.prototype.calculatePanelMovement = function (delta) {
         if (this.otherPaddle.x > this.ball.x + this.ball.width) {

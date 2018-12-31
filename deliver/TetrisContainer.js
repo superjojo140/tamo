@@ -8,14 +8,12 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var MovingSprite = /** @class */ (function (_super) {
-    __extends(MovingSprite, _super);
-    function MovingSprite(texture) {
-        var _this = _super.call(this, texture) || this;
-        _this.vx = 0;
-        _this.vy = 0;
-        _this.speed = 0;
-        return _this;
+var TetrisContainer = /** @class */ (function (_super) {
+    __extends(TetrisContainer, _super);
+    function TetrisContainer() {
+        return _super.call(this) || this;
     }
-    return MovingSprite;
-}(PIXI.Sprite));
+    TetrisContainer.TILE_WIDTH = 32;
+    TetrisContainer.TILE_HEIGHT = 32;
+    return TetrisContainer;
+}(PIXI.Container));
