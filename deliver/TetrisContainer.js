@@ -37,13 +37,36 @@ var TetrisContainer = /** @class */ (function (_super) {
         for (var rows = 0; rows < tile.dimensions.length; rows++) {
             for (var columns = 0; columns < tile.dimensions[0].length; columns++) {
                 if (tile.dimensions[rows][columns] == 1) {
-                    this.tilesArray[rows + y][columns + x];
+                    this.tilesArray[rows + y][columns + x] = tile;
                 }
             }
         }
         tile.x = x * TetrisContainer.TILE_WIDTH;
         tile.y = y * TetrisContainer.TILE_HEIGHT;
         this.addChild(tile);
+    };
+    TetrisContainer.prototype.removeTetrisTile = function (tile) {
+        for (var rows = 0; rows < this.tiles_v; rows++) {
+            for (var columns = 0; columns < this.tiles_h; columns++) {
+                if (this.tilesArray[rows][columns] == tile) {
+                    this.tilesArray[rows][columns] = undefined;
+                }
+            }
+        }
+        this.removeChild(tile);
+    };
+    TetrisContainer.prototype.onBounce = function (ball) {
+        //calcuate bounced TetrisTile
+        var deltaY = ball.y - this.y;
+        deltaY /= TetrisContainer.TILE_HEIGHT;
+        deltaY = Math.min(this.tiles_v - 1, Math.max(0, Math.floor(deltaY)));
+        var deltaX = ball.x - this.x;
+        deltaX /= TetrisContainer.TILE_WIDTH;
+        deltaX = Math.min(this.tiles_h - 1, Math.max(0, Math.floor(deltaX)));
+        var bouncedTile = this.tilesArray[deltaY][deltaX];
+        if (bouncedTile) {
+            bouncedTile.onBounce(this, ball);
+        }
     };
     TetrisContainer.TILE_WIDTH = 32;
     TetrisContainer.TILE_HEIGHT = 32;

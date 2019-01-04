@@ -2,6 +2,7 @@ class Battle {
 
     static PADDLE_ANGLE_FACTOR: number = 2;
     static TETRIS_CONTAINER_MARGIN: number = 32;
+    static PADDLE_MARGIN:  number = 15;
 
 
     width: number;
@@ -16,6 +17,7 @@ class Battle {
     state: Object;
     isPaused: boolean = false;
     pixiContainer: PIXI.Container;
+
 
 
 
@@ -58,14 +60,15 @@ class Battle {
         let pt = PIXI.Texture.fromImage("data/assets/battle/paddle.png");
         this.ownPaddle = new MovingSprite(pt);
         this.otherPaddle = new MovingSprite(pt);
+        let paddleMargin = Battle.TETRIS_CONTAINER_MARGIN + this.ownTetrisContainer.height + Battle.PADDLE_MARGIN;
 
         this.ownPaddle.x = this.width / 2 - (this.ownPaddle.width / 2);
-        this.ownPaddle.y = this.height - 50;
+        this.ownPaddle.y = this.height - paddleMargin;
         this.ownPaddle.vx = 0;
         this.ownPaddle.speed = 4;
 
         this.otherPaddle.x = this.width / 2 - (this.otherPaddle.width / 2);
-        this.otherPaddle.y = 50;
+        this.otherPaddle.y = paddleMargin;
         this.otherPaddle.vx = 0;
         this.otherPaddle.speed = 4;
 
@@ -77,14 +80,15 @@ class Battle {
 
             this.calculatePanelMovement(delta);
 
-            //Collision with Horizontal wall
             let newX = this.ball.x + this.ball.vx * delta;
+            let newY = this.ball.y + this.ball.vy * delta;
+
+            //Collision with Horizontal wall      
             if (newX < 0 || newX + this.ball.width > this.width) {
                 this.ball.vx *= -1;
             }
 
-            //Collision with Vertical wall
-            let newY = this.ball.y + this.ball.vy * delta;
+            //Collision with Vertical wall            
             if (newY < 0 || newY + this.ball.height > this.height) {
                 this.ball.vy *= -1;
             }
@@ -107,6 +111,15 @@ class Battle {
                 xDiff /= this.otherPaddle.width;
                 xDiff -= 0.5;
                 this.ball.vx += xDiff * Battle.PADDLE_ANGLE_FACTOR;
+            }
+
+            //Collision with TetrisContainer
+            if ((newY + this.ball.height > this.ownTetrisContainer.y) && (newY < this.ownTetrisContainer.y + this.ownTetrisContainer.height) && (newX < this.ownTetrisContainer.x + this.ownTetrisContainer.width) && (newX + this.ball.width > this.ownTetrisContainer.x)) {
+                this.ownTetrisContainer.onBounce(this.ball);
+            }
+
+            if ((newY + this.ball.height > this.otherTetrisContainer.y) && (newY < this.otherTetrisContainer.y + this.otherTetrisContainer.height) && (newX < this.otherTetrisContainer.x + this.otherTetrisContainer.width) && (newX + this.ball.width > this.otherTetrisContainer.x)) {
+                this.otherTetrisContainer.onBounce(this.ball);
             }
 
             //Move ball

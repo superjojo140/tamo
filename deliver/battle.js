@@ -32,12 +32,13 @@ var Battle = /** @class */ (function () {
         var pt = PIXI.Texture.fromImage("data/assets/battle/paddle.png");
         this.ownPaddle = new MovingSprite(pt);
         this.otherPaddle = new MovingSprite(pt);
+        var paddleMargin = Battle.TETRIS_CONTAINER_MARGIN + this.ownTetrisContainer.height + Battle.PADDLE_MARGIN;
         this.ownPaddle.x = this.width / 2 - (this.ownPaddle.width / 2);
-        this.ownPaddle.y = this.height - 50;
+        this.ownPaddle.y = this.height - paddleMargin;
         this.ownPaddle.vx = 0;
         this.ownPaddle.speed = 4;
         this.otherPaddle.x = this.width / 2 - (this.otherPaddle.width / 2);
-        this.otherPaddle.y = 50;
+        this.otherPaddle.y = paddleMargin;
         this.otherPaddle.vx = 0;
         this.otherPaddle.speed = 4;
         this.pixiContainer.addChild(this.ownPaddle, this.otherPaddle);
@@ -45,13 +46,13 @@ var Battle = /** @class */ (function () {
     Battle.prototype.doStep = function (delta) {
         if (!this.isPaused) {
             this.calculatePanelMovement(delta);
-            //Collision with Horizontal wall
             var newX = this.ball.x + this.ball.vx * delta;
+            var newY = this.ball.y + this.ball.vy * delta;
+            //Collision with Horizontal wall      
             if (newX < 0 || newX + this.ball.width > this.width) {
                 this.ball.vx *= -1;
             }
-            //Collision with Vertical wall
-            var newY = this.ball.y + this.ball.vy * delta;
+            //Collision with Vertical wall            
             if (newY < 0 || newY + this.ball.height > this.height) {
                 this.ball.vy *= -1;
             }
@@ -72,6 +73,13 @@ var Battle = /** @class */ (function () {
                 xDiff /= this.otherPaddle.width;
                 xDiff -= 0.5;
                 this.ball.vx += xDiff * Battle.PADDLE_ANGLE_FACTOR;
+            }
+            //Collision with TetrisContainer
+            if ((newY + this.ball.height > this.ownTetrisContainer.y) && (newY < this.ownTetrisContainer.y + this.ownTetrisContainer.height) && (newX < this.ownTetrisContainer.x + this.ownTetrisContainer.width) && (newX + this.ball.width > this.ownTetrisContainer.x)) {
+                this.ownTetrisContainer.onBounce(this.ball);
+            }
+            if ((newY + this.ball.height > this.otherTetrisContainer.y) && (newY < this.otherTetrisContainer.y + this.otherTetrisContainer.height) && (newX < this.otherTetrisContainer.x + this.otherTetrisContainer.width) && (newX + this.ball.width > this.otherTetrisContainer.x)) {
+                this.otherTetrisContainer.onBounce(this.ball);
             }
             //Move ball
             this.ball.x += this.ball.vx * delta;
@@ -121,5 +129,6 @@ var Battle = /** @class */ (function () {
     };
     Battle.PADDLE_ANGLE_FACTOR = 2;
     Battle.TETRIS_CONTAINER_MARGIN = 32;
+    Battle.PADDLE_MARGIN = 15;
     return Battle;
 }());

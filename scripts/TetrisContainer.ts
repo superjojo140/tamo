@@ -1,5 +1,6 @@
 class TetrisContainer extends PIXI.Container {
 
+
     static TILE_WIDTH: any = 32;
     static TILE_HEIGHT: any = 32;
     tiles_v: number;
@@ -38,7 +39,7 @@ class TetrisContainer extends PIXI.Container {
         for (let rows = 0; rows < tile.dimensions.length; rows++) {
             for (let columns = 0; columns < tile.dimensions[0].length; columns++) {
                 if (tile.dimensions[rows][columns] == 1) {
-                    this.tilesArray[rows + y][columns + x];
+                    this.tilesArray[rows + y][columns + x] = tile;
                 }
             }
         }
@@ -47,6 +48,33 @@ class TetrisContainer extends PIXI.Container {
         tile.x = x * TetrisContainer.TILE_WIDTH;
         tile.y = y * TetrisContainer.TILE_HEIGHT;
         this.addChild(tile);
+    }
+
+    removeTetrisTile(tile: TetrisTile) {
+        for (let rows = 0; rows < this.tiles_v; rows++) {
+            for (let columns = 0; columns < this.tiles_h; columns++) {
+                if (this.tilesArray[rows][columns] == tile) {
+                    this.tilesArray[rows][columns] = undefined;
+                }
+            }
+        }
+        this.removeChild(tile);
+    }
+
+    onBounce(ball: MovingSprite) {
+        //calcuate bounced TetrisTile
+        let deltaY = ball.y - this.y;
+        deltaY /= TetrisContainer.TILE_HEIGHT;
+        deltaY = Math.min(this.tiles_v - 1, Math.max(0, Math.floor(deltaY)));
+
+        let deltaX = ball.x - this.x;
+        deltaX /= TetrisContainer.TILE_WIDTH;
+        deltaX = Math.min(this.tiles_h - 1, Math.max(0, Math.floor(deltaX)));
+
+        let bouncedTile = this.tilesArray[deltaY][deltaX];
+        if (bouncedTile) {
+            bouncedTile.onBounce(this,ball);
+        }
     }
 
 }

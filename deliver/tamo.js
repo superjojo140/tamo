@@ -96,12 +96,12 @@ function loadMapFromFile() {
     });
 }
 var tt = new TetrisTile([[1, 0], [1, 1]], 0xaabbcc, 0);
-var tc = new TetrisContainer(8, 3);
+var tc = new TetrisContainer(10, 3);
 tc.addTetrisTileAt(tt, 0, 0);
 var tt2 = new TetrisTile([[1, 0], [1, 1]], 0xaabbcc, 0);
-var tc2 = new TetrisContainer(8, 3);
+var tc2 = new TetrisContainer(10, 3);
 tc2.addTetrisTileAt(tt2, 0, 0);
-var myBattle = new Battle(400, 400, tc, tc2);
+var myBattle = new Battle(600, 600, tc, tc2);
 app.stage.addChild(myBattle.pixiContainer);
 $(document).keydown(function (event) { myBattle.keydown(event); });
 $(document).keyup(function (event) { myBattle.keyup(event); });

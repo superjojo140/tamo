@@ -1,5 +1,6 @@
 class TetrisTile extends PIXI.Graphics {
 
+
     tileColor: number;
     borderColor: number;
     dimensions: number[][];
@@ -29,4 +30,11 @@ class TetrisTile extends PIXI.Graphics {
             }
         }
     }
+
+    onBounce(container:TetrisContainer,ball:MovingSprite) {
+        ball.vy *= -1;
+        container.removeTetrisTile(this);
+    }
+
+
 }

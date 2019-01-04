@@ -35,5 +35,9 @@ var TetrisTile = /** @class */ (function (_super) {
         }
         return _this;
     }
+    TetrisTile.prototype.onBounce = function (container, ball) {
+        ball.vy *= -1;
+        container.removeTetrisTile(this);
+    };
     return TetrisTile;
 }(PIXI.Graphics));
