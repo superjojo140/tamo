@@ -1,20 +1,37 @@
 var Battle = /** @class */ (function () {
-    function Battle(width, height, callback) {
+    function Battle(width, height, ownTetrisContainer, otherTetrisContainer) {
         this.isPaused = false;
-        this.pixiContainer = new PIXI.Container();
-        var bs = new PIXI.Graphics;
-        bs.beginFill(0x293138);
-        bs.drawRect(0, 0, width, height);
-        bs.endFill();
-        this.pixiContainer.addChild(bs);
         this.width = width;
         this.height = height;
+        this.ownTetrisContainer = ownTetrisContainer;
+        this.otherTetrisContainer = otherTetrisContainer;
+        //Create Pixi Container for displaying the Battle and its components
+        this.pixiContainer = new PIXI.Container();
+        //Generate Backgroundshape
+        var bg = new PIXI.Graphics;
+        bg.beginFill(0x293138);
+        bg.drawRect(0, 0, width, height);
+        bg.endFill();
+        this.pixiContainer.addChild(bg);
+        //Display TetrisContainers     
+        this.ownTetrisContainer.x = (this.width - this.ownTetrisContainer.width) / 2;
+        this.ownTetrisContainer.y = this.pixiContainer.height - this.ownTetrisContainer.height - Battle.TETRIS_CONTAINER_MARGIN;
+        this.pixiContainer.addChild(this.ownTetrisContainer);
+        this.otherTetrisContainer.x = (this.width - this.otherTetrisContainer.width) / 2;
+        this.otherTetrisContainer.y = Battle.TETRIS_CONTAINER_MARGIN;
+        this.pixiContainer.addChild(this.otherTetrisContainer);
+        //Create Ball
         var bt = PIXI.Texture.fromImage("data/assets/battle/ball.png");
-        var pt = PIXI.Texture.fromImage("data/assets/battle/paddle.png");
         this.ball = new MovingSprite(bt);
+        this.ball.x = this.width / 2;
+        this.ball.y = this.height / 2;
+        this.ball.vx = 0;
+        this.ball.vy = 4;
+        this.pixiContainer.addChild(this.ball);
+        //Create Paddles
+        var pt = PIXI.Texture.fromImage("data/assets/battle/paddle.png");
         this.ownPaddle = new MovingSprite(pt);
         this.otherPaddle = new MovingSprite(pt);
-        this.pixiContainer.addChild(this.ball, this.ownPaddle, this.otherPaddle);
         this.ownPaddle.x = this.width / 2 - (this.ownPaddle.width / 2);
         this.ownPaddle.y = this.height - 50;
         this.ownPaddle.vx = 0;
@@ -23,11 +40,7 @@ var Battle = /** @class */ (function () {
         this.otherPaddle.y = 50;
         this.otherPaddle.vx = 0;
         this.otherPaddle.speed = 4;
-        this.ball.x = this.width / 2;
-        this.ball.y = this.height / 2;
-        this.ball.vx = 0;
-        this.ball.vy = 4;
-        callback(this.pixiContainer);
+        this.pixiContainer.addChild(this.ownPaddle, this.otherPaddle);
     }
     Battle.prototype.doStep = function (delta) {
         if (!this.isPaused) {
@@ -107,5 +120,6 @@ var Battle = /** @class */ (function () {
         }
     };
     Battle.PADDLE_ANGLE_FACTOR = 2;
+    Battle.TETRIS_CONTAINER_MARGIN = 32;
     return Battle;
 }());

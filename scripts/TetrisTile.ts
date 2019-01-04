@@ -1,11 +1,11 @@
 class TetrisTile extends PIXI.Graphics {
 
     tileColor: number;
-    borderColor:number;
+    borderColor: number;
     dimensions: number[][];
 
 
-    constructor(dimensions: number[][], tileColor: number, borderColor:number) {
+    constructor(dimensions: number[][], tileColor: number, borderColor: number) {
         super();
         this.dimensions = dimensions;
         this.tileColor = tileColor;
@@ -20,12 +20,13 @@ class TetrisTile extends PIXI.Graphics {
                 if (this.dimensions[row][column] == 1) {
 
                     this.beginFill(this.tileColor);
-                    this.lineStyle(2,this.borderColor);
+                    this.lineStyle(2, this.borderColor);
                     let tw = TetrisContainer.TILE_WIDTH;
                     let th = TetrisContainer.TILE_HEIGHT;
                     this.drawRect(column * tw, row * th, tw, th);
-                    
+
                 }
             }
         }
     }
+}

@@ -95,11 +95,14 @@ function loadMapFromFile() {
         app.stage.addChild(map.pixiContainer);
     });
 }
-var myBattle = new Battle(400, 400, function (pixiContainer) {
-    app.stage.addChild(pixiContainer);
-});
+var tt = new TetrisTile([[1, 0], [1, 1]], 0xaabbcc, 0);
+var tc = new TetrisContainer(8, 3);
+tc.addTetrisTileAt(tt, 0, 0);
+var tt2 = new TetrisTile([[1, 0], [1, 1]], 0xaabbcc, 0);
+var tc2 = new TetrisContainer(8, 3);
+tc2.addTetrisTileAt(tt2, 0, 0);
+var myBattle = new Battle(400, 400, tc, tc2);
+app.stage.addChild(myBattle.pixiContainer);
 $(document).keydown(function (event) { myBattle.keydown(event); });
 $(document).keyup(function (event) { myBattle.keyup(event); });
 myBattle.isPaused = true;
-var tt = new TetrisTile([[1, 0], [1, 1]], 0xaabbcc, 0);
-app.stage.addChild(tt);

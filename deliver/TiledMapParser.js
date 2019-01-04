@@ -63,7 +63,7 @@ var TiledMapParser = /** @class */ (function () {
                             }
                         }
                     }
-                    else
+                    else //Layer is not of type "tilelayer"
                         console.warn("Ignoring Layer \"" + tl.name + "\". Layers of type \"" + tl.type + "\" are not supported yet.");
                 }
             }

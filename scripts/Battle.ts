@@ -1,34 +1,63 @@
 class Battle {
 
+    static PADDLE_ANGLE_FACTOR: number = 2;
+    static TETRIS_CONTAINER_MARGIN: number = 32;
+
+
     width: number;
     height: number;
 
     ball: MovingSprite;
     ownPaddle: MovingSprite;
     otherPaddle: MovingSprite;
+    ownTetrisContainer: TetrisContainer;
+    otherTetrisContainer: TetrisContainer;
+
     state: Object;
     isPaused: boolean = false;
-
-
     pixiContainer: PIXI.Container;
-    static PADDLE_ANGLE_FACTOR: number = 2;
 
-    constructor(width, height, callback) {
-        this.pixiContainer = new PIXI.Container();
-        let bs = new PIXI.Graphics;
-        bs.beginFill(0x293138);
-        bs.drawRect(0, 0, width, height);
-        bs.endFill();
-        this.pixiContainer.addChild(bs);
+
+
+    constructor(width, height, ownTetrisContainer, otherTetrisContainer) {
+
         this.width = width;
         this.height = height;
+        this.ownTetrisContainer = ownTetrisContainer;
+        this.otherTetrisContainer = otherTetrisContainer;
+
+        //Create Pixi Container for displaying the Battle and its components
+        this.pixiContainer = new PIXI.Container();
+
+        //Generate Backgroundshape
+        let bg = new PIXI.Graphics;
+        bg.beginFill(0x293138);
+        bg.drawRect(0, 0, width, height);
+        bg.endFill();
+        this.pixiContainer.addChild(bg);
+
+        //Display TetrisContainers     
+        this.ownTetrisContainer.x = (this.width - this.ownTetrisContainer.width) / 2;
+        this.ownTetrisContainer.y = this.pixiContainer.height - this.ownTetrisContainer.height - Battle.TETRIS_CONTAINER_MARGIN;
+        this.pixiContainer.addChild(this.ownTetrisContainer);
+
+        this.otherTetrisContainer.x = (this.width - this.otherTetrisContainer.width) / 2;
+        this.otherTetrisContainer.y = Battle.TETRIS_CONTAINER_MARGIN;
+        this.pixiContainer.addChild(this.otherTetrisContainer);
+
+        //Create Ball
         let bt = PIXI.Texture.fromImage("data/assets/battle/ball.png");
-        let pt = PIXI.Texture.fromImage("data/assets/battle/paddle.png");
         this.ball = new MovingSprite(bt);
+        this.ball.x = this.width / 2;
+        this.ball.y = this.height / 2;
+        this.ball.vx = 0;
+        this.ball.vy = 4;
+        this.pixiContainer.addChild(this.ball);
+
+        //Create Paddles
+        let pt = PIXI.Texture.fromImage("data/assets/battle/paddle.png");
         this.ownPaddle = new MovingSprite(pt);
         this.otherPaddle = new MovingSprite(pt);
-
-        this.pixiContainer.addChild(this.ball, this.ownPaddle, this.otherPaddle);
 
         this.ownPaddle.x = this.width / 2 - (this.ownPaddle.width / 2);
         this.ownPaddle.y = this.height - 50;
@@ -40,12 +69,7 @@ class Battle {
         this.otherPaddle.vx = 0;
         this.otherPaddle.speed = 4;
 
-        this.ball.x = this.width / 2;
-        this.ball.y = this.height / 2;
-        this.ball.vx = 0;
-        this.ball.vy = 4;
-
-        callback(this.pixiContainer);
+        this.pixiContainer.addChild(this.ownPaddle, this.otherPaddle);
     }
 
     doStep(delta: number) {

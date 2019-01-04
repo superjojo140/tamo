@@ -121,16 +121,21 @@ function loadMapFromFile() {
   });
 }
 
-let myBattle = new Battle(400, 400, function (pixiContainer) {
-  app.stage.addChild(pixiContainer);
+let tt = new TetrisTile([[1,0],[1,1]],0xaabbcc,0);
+let tc = new TetrisContainer(8,3);
+tc.addTetrisTileAt(tt,0,0);
 
-});
+let tt2 = new TetrisTile([[1,0],[1,1]],0xaabbcc,0);
+let tc2 = new TetrisContainer(8,3);
+tc2.addTetrisTileAt(tt2,0,0);
+
+let myBattle = new Battle(400, 400, tc ,tc2);
+app.stage.addChild(myBattle.pixiContainer);
 $(document).keydown(function(event){myBattle.keydown(event);});
 $(document).keyup(function(event){myBattle.keyup(event)});
 myBattle.isPaused=true;
 
-let tt = new TetrisTile([[1,0],[1,1]],0xaabbcc,0);
-app.stage.addChild(tt);
+
 
 
 
