@@ -2,7 +2,7 @@ class Battle {
 
     static PADDLE_ANGLE_FACTOR: number = 2;
     static TETRIS_CONTAINER_MARGIN: number = 32;
-    static PADDLE_MARGIN:  number = 15;
+    static PADDLE_MARGIN: number = 15;
 
 
     width: number;
@@ -17,6 +17,9 @@ class Battle {
     state: Object;
     isPaused: boolean = false;
     pixiContainer: PIXI.Container;
+    sounds: PIXI.sound.Sound[];
+    soundOn: boolean;
+    musicOn: boolean;
 
 
 
@@ -27,9 +30,19 @@ class Battle {
         this.height = height;
         this.ownTetrisContainer = ownTetrisContainer;
         this.otherTetrisContainer = otherTetrisContainer;
+        this.soundOn = false;
+        this.musicOn = true;
 
         //Create Pixi Container for displaying the Battle and its components
         this.pixiContainer = new PIXI.Container();
+
+        //Load Sounds
+        this.sounds = [];
+        this.sounds["blob1"] = PIXI.sound.Sound.from("data/assets/sound/blob1.mp3");
+        this.sounds["blob2"] = PIXI.sound.Sound.from("data/assets/sound/blob2.mp3");
+        this.sounds["blob3"] = PIXI.sound.Sound.from("data/assets/sound/blob3.mp3");
+        this.sounds["blob4"] = PIXI.sound.Sound.from("data/assets/sound/blob4.mp3");
+        this.sounds["mu1"] = PIXI.sound.Sound.from("data/assets/music/mu2.mp3");
 
         //Generate Backgroundshape
         let bg = new PIXI.Graphics;
@@ -96,6 +109,7 @@ class Battle {
             //Collision with Own Paddle
             if ((newY + this.ball.height > this.ownPaddle.y) && (newY < this.ownPaddle.y + this.ownPaddle.height) && (newX < this.ownPaddle.x + this.ownPaddle.width) && (newX + this.ball.width > this.ownPaddle.x)) {
                 this.ball.vy *= -1;
+                this.playSound("blob3");
                 //Calculate balls new vx
                 let xDiff = Math.max(this.ball.x - this.ownPaddle.x, 0.1);
                 xDiff /= this.ownPaddle.width;
@@ -106,6 +120,7 @@ class Battle {
             //Collision with Other Paddle
             if ((newY + this.ball.height > this.otherPaddle.y) && (newY < this.otherPaddle.y + this.otherPaddle.height) && (newX < this.otherPaddle.x + this.otherPaddle.width) && (newX + this.ball.width > this.otherPaddle.x)) {
                 this.ball.vy *= -1;
+                this.playSound("blob2");
                 //Calculate balls new vx
                 let xDiff = Math.max(this.ball.x - this.otherPaddle.x, 0.1);
                 xDiff /= this.otherPaddle.width;
@@ -139,6 +154,19 @@ class Battle {
             }
 
             //Let ball loose vx over time
+        }
+    }
+
+    playSound(soundName: string) {
+        if (this.soundOn == true) {
+            this.sounds[soundName].play();
+        }
+    }
+
+    playMusic(soundName: string) {
+        if (this.musicOn == true) {
+            this.sounds[soundName].play();
+            this.sounds[soundName].volume=0.05;
         }
     }
 
