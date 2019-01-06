@@ -1,6 +1,6 @@
 class Battle {
 
-    static PADDLE_ANGLE_FACTOR: number = 2;
+    static PADDLE_ANGLE_FACTOR: number = 4;
     static TETRIS_CONTAINER_MARGIN: number = 32;
     static PADDLE_MARGIN: number = 15;
 
@@ -66,7 +66,7 @@ class Battle {
         this.ball.x = this.width / 2;
         this.ball.y = this.height / 2;
         this.ball.vx = 0;
-        this.ball.vy = 4;
+        this.ball.vy = 6;
         this.pixiContainer.addChild(this.ball);
 
         //Create Paddles
@@ -83,7 +83,7 @@ class Battle {
         this.otherPaddle.x = this.width / 2 - (this.otherPaddle.width / 2);
         this.otherPaddle.y = paddleMargin;
         this.otherPaddle.vx = 0;
-        this.otherPaddle.speed = 4;
+        this.otherPaddle.speed = 3;
 
         this.pixiContainer.addChild(this.ownPaddle, this.otherPaddle);
     }
@@ -156,6 +156,11 @@ class Battle {
                 this.otherPaddle.x += this.otherPaddle.vx * delta;
             }
 
+            //Let ball loose vx
+            if(this.ball.vx > 2){
+                this.ball.vx -= 0.01 * delta;
+            }
+
         }
     }
 
@@ -173,10 +178,10 @@ class Battle {
     }
 
     calculatePanelMovement(delta: number) {
-        if (this.otherPaddle.x > this.ball.x + this.ball.width) {
+        if (this.otherPaddle.x + this.otherPaddle.width / 2  > this.ball.x + this.ball.width) {
             this.otherPaddle.vx = -this.otherPaddle.speed;
         }
-        else if (this.otherPaddle.x + this.otherPaddle.width < this.ball.x) {
+        else if (this.otherPaddle.x + this.otherPaddle.width / 2 < this.ball.x) {
             this.otherPaddle.vx = this.otherPaddle.speed;
         }
         else {

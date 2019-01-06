@@ -35,7 +35,7 @@ var Battle = /** @class */ (function () {
         this.ball.x = this.width / 2;
         this.ball.y = this.height / 2;
         this.ball.vx = 0;
-        this.ball.vy = 4;
+        this.ball.vy = 6;
         this.pixiContainer.addChild(this.ball);
         //Create Paddles
         var pt = PIXI.Texture.fromImage("data/assets/battle/paddle.png");
@@ -49,7 +49,7 @@ var Battle = /** @class */ (function () {
         this.otherPaddle.x = this.width / 2 - (this.otherPaddle.width / 2);
         this.otherPaddle.y = paddleMargin;
         this.otherPaddle.vx = 0;
-        this.otherPaddle.speed = 4;
+        this.otherPaddle.speed = 3;
         this.pixiContainer.addChild(this.ownPaddle, this.otherPaddle);
     }
     Battle.prototype.doStep = function (delta) {
@@ -111,6 +111,10 @@ var Battle = /** @class */ (function () {
             if (newotherPaddleX > 0 && newotherPaddleX + this.otherPaddle.width < this.width) {
                 this.otherPaddle.x += this.otherPaddle.vx * delta;
             }
+            //Let ball loose vx
+            if (this.ball.vx > 2) {
+                this.ball.vx -= 0.01 * delta;
+            }
         }
     };
     Battle.prototype.playSound = function (soundName) {
@@ -125,10 +129,10 @@ var Battle = /** @class */ (function () {
         }
     };
     Battle.prototype.calculatePanelMovement = function (delta) {
-        if (this.otherPaddle.x > this.ball.x + this.ball.width) {
+        if (this.otherPaddle.x + this.otherPaddle.width / 2 > this.ball.x + this.ball.width) {
             this.otherPaddle.vx = -this.otherPaddle.speed;
         }
-        else if (this.otherPaddle.x + this.otherPaddle.width < this.ball.x) {
+        else if (this.otherPaddle.x + this.otherPaddle.width / 2 < this.ball.x) {
             this.otherPaddle.vx = this.otherPaddle.speed;
         }
         else {
@@ -153,7 +157,7 @@ var Battle = /** @class */ (function () {
                 break;
         }
     };
-    Battle.PADDLE_ANGLE_FACTOR = 2;
+    Battle.PADDLE_ANGLE_FACTOR = 4;
     Battle.TETRIS_CONTAINER_MARGIN = 32;
     Battle.PADDLE_MARGIN = 15;
     return Battle;
