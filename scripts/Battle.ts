@@ -115,26 +115,29 @@ class Battle {
                 xDiff /= this.ownPaddle.width;
                 xDiff -= 0.5;
                 this.ball.vx += xDiff * Battle.PADDLE_ANGLE_FACTOR;
+            } else {
+
+                //Collision with Other Paddle
+                if ((newY < this.otherPaddle.y + this.otherPaddle.height) && (newY + this.ball.height > this.otherPaddle.y) && (newX < this.otherPaddle.x + this.otherPaddle.width) && (newX + this.ball.width > this.otherPaddle.x)) {
+                    this.ball.vy *= -1;
+                    this.playSound("blob2");
+                    //Calculate balls new vx
+                    let xDiff = Math.max(this.ball.x - this.otherPaddle.x, 0.1);
+                    xDiff /= this.otherPaddle.width;
+                    xDiff -= 0.5;
+                    this.ball.vx += xDiff * Battle.PADDLE_ANGLE_FACTOR;
+                }
             }
 
-            //Collision with Other Paddle
-            if ((newY + this.ball.height > this.otherPaddle.y) && (newY < this.otherPaddle.y + this.otherPaddle.height) && (newX < this.otherPaddle.x + this.otherPaddle.width) && (newX + this.ball.width > this.otherPaddle.x)) {
-                this.ball.vy *= -1;
-                this.playSound("blob2");
-                //Calculate balls new vx
-                let xDiff = Math.max(this.ball.x - this.otherPaddle.x, 0.1);
-                xDiff /= this.otherPaddle.width;
-                xDiff -= 0.5;
-                this.ball.vx += xDiff * Battle.PADDLE_ANGLE_FACTOR;
-            }
-
-            //Collision with TetrisContainer
+            //Collision with own TetrisContainer
             if ((newY + this.ball.height > this.ownTetrisContainer.y) && (newY < this.ownTetrisContainer.y + this.ownTetrisContainer.height) && (newX < this.ownTetrisContainer.x + this.ownTetrisContainer.width) && (newX + this.ball.width > this.ownTetrisContainer.x)) {
                 this.ownTetrisContainer.onBounce(this.ball);
-            }
+            } else {
 
-            if ((newY + this.ball.height > this.otherTetrisContainer.y) && (newY < this.otherTetrisContainer.y + this.otherTetrisContainer.height) && (newX < this.otherTetrisContainer.x + this.otherTetrisContainer.width) && (newX + this.ball.width > this.otherTetrisContainer.x)) {
-                this.otherTetrisContainer.onBounce(this.ball);
+                //Collision with other TetrisContainer
+                if ((newY + this.ball.height > this.otherTetrisContainer.y) && (newY < this.otherTetrisContainer.y + this.otherTetrisContainer.height) && (newX < this.otherTetrisContainer.x + this.otherTetrisContainer.width) && (newX + this.ball.width > this.otherTetrisContainer.x)) {
+                    this.otherTetrisContainer.onBounce(this.ball);
+                }
             }
 
             //Move ball
@@ -153,7 +156,6 @@ class Battle {
                 this.otherPaddle.x += this.otherPaddle.vx * delta;
             }
 
-            //Let ball loose vx over time
         }
     }
 
@@ -166,7 +168,7 @@ class Battle {
     playMusic(soundName: string) {
         if (this.musicOn == true) {
             this.sounds[soundName].play();
-            this.sounds[soundName].volume=0.05;
+            this.sounds[soundName].volume = 0.05;
         }
     }
 
