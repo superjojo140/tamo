@@ -45,8 +45,8 @@
                  "type":"Trigger",
                  "visible":true,
                  "width":16,
-                 "x":64.1363636363636,
-                 "y":48.0909090909091
+                 "x":64.1364,
+                 "y":48.0909
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -68,8 +68,8 @@
                  "type":"character",
                  "visible":true,
                  "width":16,
-                 "x":16.5454545454545,
-                 "y":80.5454545454545
+                 "x":16.5455,
+                 "y":80.5455
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -88,8 +88,20 @@
          "width":8,
          "x":0,
          "y":0
+        }, 
+        {
+         "data":[0, 0, 0, 1258, 1258, 0, 0, 0, 0, 0, 0, 1258, 1258, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1258, 1258, 1258, 1258, 0, 0, 0, 0, 1258, 1258, 1258, 1258, 0, 0, 0, 0],
+         "height":8,
+         "id":7,
+         "name":"Collision",
+         "opacity":0.66,
+         "type":"tilelayer",
+         "visible":true,
+         "width":8,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":7,
+ "nextlayerid":8,
  "nextobjectid":10,
  "orientation":"orthogonal",
  "renderorder":"right-down",

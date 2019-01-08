@@ -189,7 +189,7 @@ class Battle {
         }
     }
 
-    keydown(event) {
+    keyDown(event) {
 
         switch (event.key) {
             case "ArrowLeft":
@@ -201,7 +201,7 @@ class Battle {
         }
     }
 
-    keyup(event) {
+    keyUp(event) {
         switch (event.key) {
             case "ArrowLeft":
             case "ArrowRight":

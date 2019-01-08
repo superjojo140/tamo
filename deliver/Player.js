@@ -1,5 +1,6 @@
 var Player = /** @class */ (function () {
-    function Player(x, y) {
+    function Player(x, y, map) {
+        this.map = map;
         this.animations = [];
         var baseTexture = PIXI.Texture.fromImage("data/assets/ranger_2.png").baseTexture;
         for (var row = 0; row < 4; row++) {
@@ -26,6 +27,70 @@ var Player = /** @class */ (function () {
         }
         else if (direction == Player.STOP) {
             this.sprite.stop();
+        }
+    };
+    Player.prototype.keyDown = function (event) {
+        switch (event.key) {
+            case "ArrowUp":
+                this.vy = -1 * PLAYER_SPEED;
+                this.changeDirection(Player.UP);
+                break;
+            case "ArrowDown":
+                this.vy = 1 * PLAYER_SPEED;
+                this.changeDirection(Player.DOWN);
+                break;
+            case "ArrowLeft":
+                this.vx = -1 * PLAYER_SPEED;
+                this.changeDirection(Player.LEFT);
+                break;
+            case "ArrowRight":
+                this.vx = 1 * PLAYER_SPEED;
+                this.changeDirection(Player.RIGHT);
+                break;
+        }
+    };
+    Player.prototype.keyUp = function (event) {
+        switch (event.key) {
+            case "ArrowUp":
+                this.vy = 0;
+                this.changeDirection(Player.STOP);
+                break;
+            case "ArrowDown":
+                this.vy = 0;
+                this.changeDirection(Player.STOP);
+                break;
+            case "ArrowLeft":
+                this.vx = 0;
+                this.changeDirection(Player.STOP);
+                break;
+            case "ArrowRight":
+                this.vx = 0;
+                this.changeDirection(Player.STOP);
+                break;
+        }
+    };
+    Player.prototype.doStep = function (delta) {
+        var newX = this.sprite.x + this.vx * delta;
+        var newY = this.sprite.y + this.vy * delta;
+        var xRange = {
+            from: Math.floor(newX / this.map.finalTileWidth),
+            to: Math.floor((newX + this.sprite.width) / this.map.finalTileWidth)
+        };
+        var yRange = {
+            from: Math.floor(newY / this.map.finalTileHeight),
+            to: Math.floor((newY + this.sprite.height) / this.map.finalTileHeight)
+        };
+        var blocked = false;
+        for (var x = xRange.from; x <= xRange.to; x++) {
+            for (var y = yRange.from; y <= yRange.to; y++) {
+                if (this.map.collisionBitMap[y][x] == true) {
+                    blocked = true;
+                }
+            }
+        }
+        if (blocked == false) {
+            this.sprite.x = newX;
+            this.sprite.y = newY;
         }
     };
     Player.UP = 0;

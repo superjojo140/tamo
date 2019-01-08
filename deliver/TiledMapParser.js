@@ -9,6 +9,8 @@ var TiledMapParser = /** @class */ (function () {
         map.pixiContainer = new PIXI.Container();
         //Load Spritesheet
         var SPRITE_SCALE = new PIXI.Point(3, 3);
+        map.finalTileWidth = spritesheet.tileWidth * SPRITE_SCALE.x;
+        map.finalTileHeight = spritesheet.tileHeight * SPRITE_SCALE.y;
         map.spritesheet = spritesheet;
         //Load Story and handle it
         //Load gameState
@@ -28,7 +30,7 @@ var TiledMapParser = /** @class */ (function () {
                         if (co.type == "character") {
                             var x = Math.round(co.x * SPRITE_SCALE.x);
                             var y = (Math.round(co.y) - co.height) * SPRITE_SCALE.y; // -co.height because tiled uses the bottom-left corner for coordinates and PIXI uses the top-left corner
-                            map.player = new Player(x, y);
+                            map.player = new Player(x, y, map);
                             container.addChild(map.player.sprite);
                         }
                         else {
@@ -41,24 +43,45 @@ var TiledMapParser = /** @class */ (function () {
                 }
                 else {
                     if (tl.type == "tilelayer") {
-                        //Create new PIXI Container for this layer
-                        var container = new PIXI.Container();
-                        container.width = tl.width * spritesheet.tileWidth;
-                        container.height = tl.height * spritesheet.tileHeight;
-                        container.x = tl.x;
-                        container.y = tl.y;
-                        map.pixiContainer.addChild(container);
-                        //Generate Sprites for each tile to the container
-                        for (var row = 0; row < tl.height; row++) {
-                            for (var column = 0; column < tl.width; column++) {
-                                var index = row * tl.width + column;
-                                if (tl.data[index] > 0) {
-                                    var texture = spritesheet.getTexture(tl.data[index]);
-                                    var sprite = new PIXI.Sprite(texture);
-                                    sprite.x = column * spritesheet.tileWidth * SPRITE_SCALE.x;
-                                    sprite.y = row * spritesheet.tileHeight * SPRITE_SCALE.y;
-                                    sprite.scale = SPRITE_SCALE;
-                                    container.addChild(sprite);
+                        //Check wether this is the collisionLayer
+                        if (tl.name == "Collision" || tl.name == "collision") {
+                            map.collisionBitMap = [];
+                            //Generate Bitmap for Collisions. Any GID != 0 is interpreted as solid
+                            for (var row = 0; row < tl.height; row++) {
+                                map.collisionBitMap[row] = [];
+                                for (var column = 0; column < tl.width; column++) {
+                                    var index = row * tl.width + column;
+                                    // gid != 0 means solid
+                                    if (tl.data[index] != 0) {
+                                        map.collisionBitMap[row][column] = true;
+                                    }
+                                    else {
+                                        map.collisionBitMap[row][column] = false;
+                                    }
+                                }
+                            }
+                        }
+                        else { //Not the collision layer
+                            //}if(true){  //Draw the CollisionLayer
+                            //Create new PIXI Container for this layer
+                            var container = new PIXI.Container();
+                            container.width = tl.width * spritesheet.tileWidth;
+                            container.height = tl.height * spritesheet.tileHeight;
+                            container.x = tl.x;
+                            container.y = tl.y;
+                            map.pixiContainer.addChild(container);
+                            //Generate Sprites for each tile to the container
+                            for (var row = 0; row < tl.height; row++) {
+                                for (var column = 0; column < tl.width; column++) {
+                                    var index = row * tl.width + column;
+                                    if (tl.data[index] > 0) {
+                                        var texture = spritesheet.getTexture(tl.data[index]);
+                                        var sprite = new PIXI.Sprite(texture);
+                                        sprite.x = column * spritesheet.tileWidth * SPRITE_SCALE.x;
+                                        sprite.y = row * spritesheet.tileHeight * SPRITE_SCALE.y;
+                                        sprite.scale = SPRITE_SCALE;
+                                        container.addChild(sprite);
+                                    }
                                 }
                             }
                         }

@@ -23,52 +23,23 @@ var app = new PIXI.Application({
 document.body.appendChild(app.view);
 $(document).keydown(function (event) {
     if (player) {
-        switch (event.key) {
-            case "ArrowUp":
-                player.vy = -1 * PLAYER_SPEED;
-                player.changeDirection(Player.UP);
-                break;
-            case "ArrowDown":
-                player.vy = 1 * PLAYER_SPEED;
-                player.changeDirection(Player.DOWN);
-                break;
-            case "ArrowLeft":
-                player.vx = -1 * PLAYER_SPEED;
-                player.changeDirection(Player.LEFT);
-                break;
-            case "ArrowRight":
-                player.vx = 1 * PLAYER_SPEED;
-                player.changeDirection(Player.RIGHT);
-                break;
-        }
+        player.keyDown(event);
+    }
+    if (myBattle) {
+        myBattle.keyDown(event);
     }
 });
 $(document).keyup(function (event) {
     if (player) {
-        switch (event.key) {
-            case "ArrowUp":
-                player.vy = 0;
-                player.changeDirection(Player.STOP);
-                break;
-            case "ArrowDown":
-                player.vy = 0;
-                player.changeDirection(Player.STOP);
-                break;
-            case "ArrowLeft":
-                player.vx = 0;
-                player.changeDirection(Player.STOP);
-                break;
-            case "ArrowRight":
-                player.vx = 0;
-                player.changeDirection(Player.STOP);
-                break;
-        }
+        player.keyUp(event);
+    }
+    if (myBattle) {
+        myBattle.keyUp(event);
     }
 });
 function gameLoop(delta) {
     if (player) {
-        player.sprite.x += player.vx * delta;
-        player.sprite.y += player.vy * delta;
+        player.doStep(delta);
     }
     if (myBattle) {
         myBattle.doStep(delta);
@@ -103,6 +74,4 @@ var tc2 = new TetrisContainer(10, 3);
 tc2.addTetrisTileAt(tt2, 0, 0);
 var myBattle = new Battle(600, 600, tc, tc2);
 app.stage.addChild(myBattle.pixiContainer);
-$(document).keydown(function (event) { myBattle.keydown(event); });
-$(document).keyup(function (event) { myBattle.keyup(event); });
 myBattle.isPaused = true;

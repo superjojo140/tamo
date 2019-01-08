@@ -139,7 +139,7 @@ var Battle = /** @class */ (function () {
             this.otherPaddle.vx = 0;
         }
     };
-    Battle.prototype.keydown = function (event) {
+    Battle.prototype.keyDown = function (event) {
         switch (event.key) {
             case "ArrowLeft":
                 this.ownPaddle.vx = -1 * this.ownPaddle.speed;
@@ -149,7 +149,7 @@ var Battle = /** @class */ (function () {
                 break;
         }
     };
-    Battle.prototype.keyup = function (event) {
+    Battle.prototype.keyUp = function (event) {
         switch (event.key) {
             case "ArrowLeft":
             case "ArrowRight":
