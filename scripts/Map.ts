@@ -10,6 +10,7 @@ class Map {
     collisionBitMap: boolean[][];
     finalTileWidth: number;
     finalTileHeight: number;
+    eventTriggerMap: number[][];
 
     destroy() {
         this.pixiContainer.destroy();

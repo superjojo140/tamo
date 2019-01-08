@@ -17,6 +17,11 @@ var TiledMapParser = /** @class */ (function () {
         map.gameState = gameState;
         //Load Map and Parse it
         $.getJSON(mapPath, {}, function (mapData) {
+            //Create eventTriggerMap
+            map.eventTriggerMap = [];
+            for (var i = 0; i < mapData.width; i++) {
+                map.eventTriggerMap[i] = [];
+            }
             //Iterate thorugh Tile Layers
             for (var layerIndex in mapData.layers) {
                 var tl = mapData.layers[layerIndex];
@@ -38,26 +43,23 @@ var TiledMapParser = /** @class */ (function () {
                             var sprite = new PIXI.Sprite(texture);
                             sprite.scale = SPRITE_SCALE;
                             //an Object can be placed "between" tiles in tiled map editor. But evnts can be triggered only from whole tiles. So the obejccts position is mapped to the nearest Tile
-                            var x = void 0;
                             var originalX = co.x * SPRITE_SCALE.x;
-                            var diffToLeft = originalX % map.finalTileWidth;
-                            if (diffToLeft < map.finalTileWidth / 2) {
-                                x = originalX - diffToLeft; //Map to left Tile
-                            }
-                            else {
-                                x = originalX - diffToLeft + map.finalTileWidth; //Map to right Tile
-                            }
-                            var y = void 0;
+                            var xTiles = originalX / map.finalTileWidth;
+                            xTiles = Math.round(xTiles);
                             var originalY = (co.y - co.height) * SPRITE_SCALE.y; // -co.height because tiled uses the bottom-left corner for coordinates and PIXI uses the top-left corner              
-                            var diffToTop = originalY % map.finalTileHeight;
-                            if (diffToTop < map.finalTileHeight / 2) {
-                                y = originalY - diffToTop; //Map to upper tile
+                            var yTiles = originalY / map.finalTileHeight;
+                            yTiles = Math.round(yTiles);
+                            //Set sprites coordinates
+                            sprite.x = xTiles * map.finalTileWidth;
+                            sprite.y = yTiles * map.finalTileHeight;
+                            //set event id in maps eventMap
+                            if (co.properties) {
+                                for (var i_1 in co.properties) {
+                                    if (co.properties[i_1].name == "event") {
+                                        map.eventTriggerMap[yTiles][xTiles] = co.properties[i_1].value;
+                                    }
+                                }
                             }
-                            else {
-                                y = originalY - diffToTop + map.finalTileHeight; //Map to lower tile
-                            }
-                            sprite.x = x;
-                            sprite.y = y;
                             container.addChild(sprite);
                         }
                     }
