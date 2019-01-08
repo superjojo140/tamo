@@ -43,8 +43,33 @@ class TiledMapParser {
 
               let texture = spritesheet.getTexture(co.gid);
               let sprite = new PIXI.Sprite(texture);
-
               sprite.scale = SPRITE_SCALE;
+
+              //an Object can be placed "between" tiles in tiled map editor. But evnts can be triggered only from whole tiles. So the obejccts position is mapped to the nearest Tile
+              let x;
+              let originalX = co.x * SPRITE_SCALE.x;
+              let diffToLeft = originalX % map.finalTileWidth;
+              if (diffToLeft < map.finalTileWidth / 2) {
+                 x = originalX - diffToLeft; //Map to left Tile
+              }
+              else {
+                 x = originalX - diffToLeft + map.finalTileWidth; //Map to right Tile
+              }
+
+              let y;
+              let originalY = (co.y - co.height) * SPRITE_SCALE.y;  // -co.height because tiled uses the bottom-left corner for coordinates and PIXI uses the top-left corner              
+              let diffToTop = originalY % map.finalTileHeight;
+              if (diffToTop < map.finalTileHeight / 2) {
+                y = originalY - diffToTop; //Map to upper tile
+              }
+              else {
+                y = originalY - diffToTop + map.finalTileHeight; //Map to lower tile
+              }
+
+
+              sprite.x = x;
+              sprite.y = y;
+
               container.addChild(sprite);
             }
 
@@ -73,7 +98,9 @@ class TiledMapParser {
               }
             }
             else { //Not the collision layer
-            //}if(true){  //Draw the CollisionLayer
+
+
+              //}if(true){  //Draw the CollisionLayer - only for Debug
 
 
 
