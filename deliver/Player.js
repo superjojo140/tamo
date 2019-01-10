@@ -32,20 +32,23 @@ var Player = /** @class */ (function () {
     Player.prototype.keyDown = function (event) {
         switch (event.key) {
             case "ArrowUp":
-                this.vy = -1 * PLAYER_SPEED;
+                this.vy = -1 * Player.PLAYER_SPEED;
                 this.changeDirection(Player.UP);
                 break;
             case "ArrowDown":
-                this.vy = 1 * PLAYER_SPEED;
+                this.vy = 1 * Player.PLAYER_SPEED;
                 this.changeDirection(Player.DOWN);
                 break;
             case "ArrowLeft":
-                this.vx = -1 * PLAYER_SPEED;
+                this.vx = -1 * Player.PLAYER_SPEED;
                 this.changeDirection(Player.LEFT);
                 break;
             case "ArrowRight":
-                this.vx = 1 * PLAYER_SPEED;
+                this.vx = 1 * Player.PLAYER_SPEED;
                 this.changeDirection(Player.RIGHT);
+                break;
+            case "x":
+                this.checkTrigger();
                 break;
         }
     };
@@ -93,6 +96,20 @@ var Player = /** @class */ (function () {
             this.sprite.y = newY;
         }
     };
+    Player.prototype.checkTrigger = function () {
+        //Get the nearest tile
+        var originalX = this.sprite.x;
+        var xTiles = originalX / this.map.finalTileWidth;
+        xTiles = Math.round(xTiles);
+        var originalY = this.sprite.y;
+        var yTiles = originalY / this.map.finalTileHeight;
+        yTiles = Math.round(yTiles);
+        var eventId = this.map.eventTriggerMap[yTiles][xTiles];
+        if (eventId) {
+            this.map.pause();
+            this.map.story.showEvent(eventId, this.map.play);
+        }
+    };
     Player.UP = 0;
     Player.RIGHT = 1;
     Player.DOWN = 2;
@@ -101,5 +118,6 @@ var Player = /** @class */ (function () {
     Player.SPRITE_WIDTH = 96 / 3;
     Player.SPRITE_HEIGHT = 144 / 4;
     Player.SPRITE_SCALE = new PIXI.Point(1.2, 1.2);
+    Player.PLAYER_SPEED = 3;
     return Player;
 }());

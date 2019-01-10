@@ -10,6 +10,7 @@ class Player {
     static SPRITE_WIDTH: number = 96 / 3;
     static SPRITE_HEIGHT: number = 144 / 4;
     static SPRITE_SCALE: PIXI.Point = new PIXI.Point(1.2, 1.2);
+    static PLAYER_SPEED = 3;
 
 
     sprite: PIXI.extras.AnimatedSprite;
@@ -54,20 +55,22 @@ class Player {
     keyDown(event) {
         switch (event.key) {
             case "ArrowUp":
-                this.vy = -1 * PLAYER_SPEED;
+                this.vy = -1 * Player.PLAYER_SPEED;
                 this.changeDirection(Player.UP);
                 break;
             case "ArrowDown":
-                this.vy = 1 * PLAYER_SPEED;
+                this.vy = 1 * Player.PLAYER_SPEED;
                 this.changeDirection(Player.DOWN);
                 break;
             case "ArrowLeft":
-                this.vx = -1 * PLAYER_SPEED;
+                this.vx = -1 * Player.PLAYER_SPEED;
                 this.changeDirection(Player.LEFT);
                 break;
             case "ArrowRight":
-                this.vx = 1 * PLAYER_SPEED;
+                this.vx = 1 * Player.PLAYER_SPEED;
                 this.changeDirection(Player.RIGHT);
+                break;
+            case "x": this.checkTrigger();
                 break;
         }
     }
@@ -123,6 +126,23 @@ class Player {
         if (blocked == false) {
             this.sprite.x = newX;
             this.sprite.y = newY;
+        }
+    }
+
+    checkTrigger() {
+        //Get the nearest tile
+        let originalX = this.sprite.x;
+        let xTiles = originalX / this.map.finalTileWidth;
+        xTiles = Math.round(xTiles);
+
+        let originalY = this.sprite.y;  
+        let yTiles = originalY / this.map.finalTileHeight;
+        yTiles = Math.round(yTiles);
+
+        let eventId = this.map.eventTriggerMap[yTiles][xTiles];
+        if(eventId){
+            this.map.pause();
+            this.map.story.showEvent(eventId,this.map.play);
         }
     }
 

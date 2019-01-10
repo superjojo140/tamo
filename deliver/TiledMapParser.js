@@ -13,6 +13,7 @@ var TiledMapParser = /** @class */ (function () {
         map.finalTileHeight = spritesheet.tileHeight * SPRITE_SCALE.y;
         map.spritesheet = spritesheet;
         //Load Story and handle it
+        map.story = new Story(storyPath, "messageContainer");
         //Load gameState
         map.gameState = gameState;
         //Load Map and Parse it
@@ -113,6 +114,8 @@ var TiledMapParser = /** @class */ (function () {
                         console.warn("Ignoring Layer \"" + tl.name + "\". Layers of type \"" + tl.type + "\" are not supported yet.");
                 }
             }
+            //play Map
+            map.play();
             //Call onFinish Callback
             callback(map);
         });
