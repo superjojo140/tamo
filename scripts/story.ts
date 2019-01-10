@@ -9,7 +9,7 @@ class Story {
 	buttonsBox: JQuery<HTMLElement>;
 	parentContainer: JQuery<HTMLElement>;
 	callOnFinish: Function; 
-	static END: any = "end";
+	static END: string = "end";
 
 
 	constructor(storyPath: string, htmlContainerId: string) {

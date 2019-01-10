@@ -39,7 +39,7 @@
                         {
                          "name":"event",
                          "type":"int",
-                         "value":3
+                         "value":12
                         }],
                  "rotation":0,
                  "type":"Trigger",

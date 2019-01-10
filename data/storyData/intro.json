@@ -1,7 +1,7 @@
 {
 	"information": {
 		"health": 50,
-		"startEvent":"0"
+		"startEvent": "0"
 	},
 	"variables": {},
 	"actions": {
@@ -60,21 +60,21 @@
 			"options": [{
 					"message": "Gehe nach Uttelfeld",
 					"nextEvent": 100
-      },
+				},
 				{
 					"message": "Stärke dich zunächst",
 					"nextEvent": 101
-        }
-        ]
+				}
+			]
 		},
 		"100": {
-			"type" : "health",
+			"type": "health",
 			"change": "relative",
 			"value": -10,
 			"nextEvent": 10
 		},
 		"101": {
-			"type" : "health",
+			"type": "health",
 			"change": "relative",
 			"value": 10,
 			"nextEvent": 9
@@ -96,6 +96,12 @@
 			"type": "dialog",
 			"nextEvent": 1,
 			"message": "Di bist fertig ;-)",
+			"icon": "hero"
+		},
+		"12": {
+			"type": "dialog",
+			"nextEvent": "end",
+			"message": "Du wärmst dich am knsiternden Feuer!",
 			"icon": "hero"
 		}
 	}

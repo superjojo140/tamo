@@ -19,7 +19,9 @@ class Map {
     }
 
     keyDown(event) {
-        this.player.keyDown(event);
+        if (!this.isPaused) {
+            this.player.keyDown(event);
+        }
     }
 
     keyUp(event) {
@@ -32,11 +34,11 @@ class Map {
         }
     }
 
-    pause(){
+    pause() {
         this.isPaused = true;
     }
 
-    play(){
+    play() {
         this.isPaused = false;
     }
 

@@ -6,7 +6,9 @@ var Map = /** @class */ (function () {
         return this.gameState;
     };
     Map.prototype.keyDown = function (event) {
-        this.player.keyDown(event);
+        if (!this.isPaused) {
+            this.player.keyDown(event);
+        }
     };
     Map.prototype.keyUp = function (event) {
         this.player.keyUp(event);

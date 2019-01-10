@@ -107,7 +107,8 @@ var Player = /** @class */ (function () {
         var eventId = this.map.eventTriggerMap[yTiles][xTiles];
         if (eventId) {
             this.map.pause();
-            this.map.story.showEvent(eventId, this.map.play);
+            var map_1 = this.map;
+            this.map.story.showEvent(eventId, function () { return map_1.isPaused = false; });
         }
     };
     Player.UP = 0;

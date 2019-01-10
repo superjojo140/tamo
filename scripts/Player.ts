@@ -142,7 +142,8 @@ class Player {
         let eventId = this.map.eventTriggerMap[yTiles][xTiles];
         if(eventId){
             this.map.pause();
-            this.map.story.showEvent(eventId,this.map.play);
+            let map = this.map;
+            this.map.story.showEvent(eventId,()=>map.isPaused = false);
         }
     }
 
