@@ -5,10 +5,6 @@ const SPRITESHEET = new TiledSpritesheet("data/assets/spritesheet.png", 1, 16, 1
 //TODO Parse this information automatixally from tsx file
 
 let myMap: Map;
-let player: Player;
-
-const PLAYER_SPEED = 3;
-
 let myCanvas = $("#pixiCanvas")[0];
 
 
@@ -34,8 +30,8 @@ document.body.appendChild(app.view);
 
 
 $(document).keydown(function (event) {
-  if (player) {
-    player.keyDown(event);
+  if (myMap) {
+    myMap.keyDown(event);
   }
   if (myBattle) {
     myBattle.keyDown(event);
@@ -43,8 +39,8 @@ $(document).keydown(function (event) {
 });
 
 $(document).keyup(function (event) {
-  if (player) {
-    player.keyUp(event);
+  if (myMap) {
+    myMap.keyUp(event);
   }
   if (myBattle) {
     myBattle.keyUp(event);
@@ -52,8 +48,8 @@ $(document).keyup(function (event) {
 });
 
 function gameLoop(delta) {
-  if (player) {
-    player.doStep(delta);
+  if (myMap) {
+    myMap.doStep(delta);
   }
 
   if (myBattle) {
@@ -81,28 +77,35 @@ app.ticker.add(delta => gameLoop(delta));
 
 function loadMapFromFile() {
   if (myMap) myMap.destroy();
-
+  if (myStory) {
+    myStory.destroy();
+  }
 
   let mapPath = `data/maps/${$("#mapNameInput").val()}.json`;
-  TiledMapParser.loadMap(mapPath, SPRITESHEET, "storyPathDummy", {}, function (map) {
+  let storyPath = `data/storyData/${$("#storyNameInput").val()}.json`;
+  TiledMapParser.loadMap(mapPath, SPRITESHEET, storyPath, {}, function (map) {
     myMap = map;
-    player = map.player;
     app.ticker.start();
     app.stage.addChild(map.pixiContainer);
   });
 }
 
-let tt = new TetrisTile([[1,0],[1,1]],0xaabbcc,0);
-let tc = new TetrisContainer(10,3);
-tc.addTetrisTileAt(tt,0,0);
+let tt = new TetrisTile([[1, 0], [1, 1]], 0xaabbcc, 0);
+let tc = new TetrisContainer(10, 3);
+tc.addTetrisTileAt(tt, 0, 0);
 
-let tt2 = new TetrisTile([[1,0],[1,1]],0xaabbcc,0);
-let tc2 = new TetrisContainer(10,3);
-tc2.addTetrisTileAt(tt2,0,0);
+let tt2 = new TetrisTile([[1, 0, 1], [1, 1, 1],[1, 0 ,1]], 0xaabbcc, 1);
+let tc2 = new TetrisContainer(10, 3);
+tc2.addTetrisTileAt(tt2, 0, 0);
 
-let myBattle = new Battle(600, 600, tc ,tc2);
+let tt3 = new TetrisTile([[1, 1], [1, 1]], 0xaabbcc, 0);
+tc2.addTetrisTileAt(tt3, 5, 0);
+let tt4 = new TetrisTile([[1, 0], [1, 1]], 0xaabbcc, 0);
+tc2.addTetrisTileAt(tt4, 8, 0);
+
+let myBattle = new Battle(600, 600, tc, tc2);
 app.stage.addChild(myBattle.pixiContainer);
-myBattle.isPaused=true;
+myBattle.isPaused = true;
 
 
 

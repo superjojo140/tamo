@@ -1,3 +1,6 @@
+var BALL_SPEED = 6;
+var OWN_PADDLE_SPEED = 6;
+var OTHER_PADDLE_SPEED = 4;
 var Battle = /** @class */ (function () {
     function Battle(width, height, ownTetrisContainer, otherTetrisContainer) {
         this.isPaused = false;
@@ -35,7 +38,7 @@ var Battle = /** @class */ (function () {
         this.ball.x = this.width / 2;
         this.ball.y = this.height / 2;
         this.ball.vx = 0;
-        this.ball.vy = 6;
+        this.ball.vy = BALL_SPEED;
         this.pixiContainer.addChild(this.ball);
         //Create Paddles
         var pt = PIXI.Texture.fromImage("data/assets/battle/paddle.png");
@@ -45,11 +48,11 @@ var Battle = /** @class */ (function () {
         this.ownPaddle.x = this.width / 2 - (this.ownPaddle.width / 2);
         this.ownPaddle.y = this.height - paddleMargin;
         this.ownPaddle.vx = 0;
-        this.ownPaddle.speed = 4;
+        this.ownPaddle.speed = OWN_PADDLE_SPEED;
         this.otherPaddle.x = this.width / 2 - (this.otherPaddle.width / 2);
         this.otherPaddle.y = paddleMargin;
         this.otherPaddle.vx = 0;
-        this.otherPaddle.speed = 3;
+        this.otherPaddle.speed = OTHER_PADDLE_SPEED;
         this.pixiContainer.addChild(this.ownPaddle, this.otherPaddle);
     }
     Battle.prototype.doStep = function (delta) {
@@ -129,14 +132,29 @@ var Battle = /** @class */ (function () {
         }
     };
     Battle.prototype.calculatePanelMovement = function (delta) {
-        if (this.otherPaddle.x + this.otherPaddle.width / 2 > this.ball.x + this.ball.width) {
-            this.otherPaddle.vx = -this.otherPaddle.speed;
-        }
-        else if (this.otherPaddle.x + this.otherPaddle.width / 2 < this.ball.x) {
-            this.otherPaddle.vx = this.otherPaddle.speed;
+        if (this.ball.y + this.ball.height > this.otherPaddle.y + this.otherPaddle.height) {
+            //If the ball is "under" the paddel, try to catch it
+            if (this.otherPaddle.x + this.otherPaddle.width / 2 > this.ball.x + this.ball.width) {
+                this.otherPaddle.vx = -this.otherPaddle.speed;
+            }
+            else if (this.otherPaddle.x + this.otherPaddle.width / 2 < this.ball.x) {
+                this.otherPaddle.vx = this.otherPaddle.speed;
+            }
+            else {
+                this.otherPaddle.vx = 0;
+            }
         }
         else {
-            this.otherPaddle.vx = 0;
+            //If the ball is over the paddle, try to dodge the ball
+            if (this.otherPaddle.x + this.otherPaddle.width / 2 > this.ball.x + this.ball.width) {
+                this.otherPaddle.vx = this.otherPaddle.speed;
+            }
+            else if (this.otherPaddle.x + this.otherPaddle.width / 2 < this.ball.x) {
+                this.otherPaddle.vx = -this.otherPaddle.speed;
+            }
+            else {
+                this.otherPaddle.vx = 0;
+            }
         }
     };
     Battle.prototype.keyDown = function (event) {
@@ -157,7 +175,7 @@ var Battle = /** @class */ (function () {
                 break;
         }
     };
-    Battle.PADDLE_ANGLE_FACTOR = 4;
+    Battle.PADDLE_ANGLE_FACTOR = 10;
     Battle.TETRIS_CONTAINER_MARGIN = 32;
     Battle.PADDLE_MARGIN = 15;
     return Battle;

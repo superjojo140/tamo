@@ -1,6 +1,11 @@
+const BALL_SPEED = 6;
+const OWN_PADDLE_SPEED = 6;
+const OTHER_PADDLE_SPEED = 4;
+
+
 class Battle {
 
-    static PADDLE_ANGLE_FACTOR: number = 4;
+    static PADDLE_ANGLE_FACTOR: number = 10;
     static TETRIS_CONTAINER_MARGIN: number = 32;
     static PADDLE_MARGIN: number = 15;
 
@@ -66,7 +71,7 @@ class Battle {
         this.ball.x = this.width / 2;
         this.ball.y = this.height / 2;
         this.ball.vx = 0;
-        this.ball.vy = 6;
+        this.ball.vy = BALL_SPEED;
         this.pixiContainer.addChild(this.ball);
 
         //Create Paddles
@@ -78,12 +83,12 @@ class Battle {
         this.ownPaddle.x = this.width / 2 - (this.ownPaddle.width / 2);
         this.ownPaddle.y = this.height - paddleMargin;
         this.ownPaddle.vx = 0;
-        this.ownPaddle.speed = 4;
+        this.ownPaddle.speed = OWN_PADDLE_SPEED;
 
         this.otherPaddle.x = this.width / 2 - (this.otherPaddle.width / 2);
         this.otherPaddle.y = paddleMargin;
         this.otherPaddle.vx = 0;
-        this.otherPaddle.speed = 3;
+        this.otherPaddle.speed = OTHER_PADDLE_SPEED;
 
         this.pixiContainer.addChild(this.ownPaddle, this.otherPaddle);
     }
@@ -157,7 +162,7 @@ class Battle {
             }
 
             //Let ball loose vx
-            if(this.ball.vx > 2){
+            if (this.ball.vx > 2) {
                 this.ball.vx -= 0.01 * delta;
             }
 
@@ -178,14 +183,29 @@ class Battle {
     }
 
     calculatePanelMovement(delta: number) {
-        if (this.otherPaddle.x + this.otherPaddle.width / 2  > this.ball.x + this.ball.width) {
-            this.otherPaddle.vx = -this.otherPaddle.speed;
-        }
-        else if (this.otherPaddle.x + this.otherPaddle.width / 2 < this.ball.x) {
-            this.otherPaddle.vx = this.otherPaddle.speed;
+        if (this.ball.y + this.ball.height > this.otherPaddle.y + this.otherPaddle.height) {
+            //If the ball is "under" the paddel, try to catch it
+            if (this.otherPaddle.x + this.otherPaddle.width / 2 > this.ball.x + this.ball.width) {
+                this.otherPaddle.vx = -this.otherPaddle.speed;
+            }
+            else if (this.otherPaddle.x + this.otherPaddle.width / 2 < this.ball.x) {
+                this.otherPaddle.vx = this.otherPaddle.speed;
+            }
+            else {
+                this.otherPaddle.vx = 0;
+            }
         }
         else {
-            this.otherPaddle.vx = 0;
+            //If the ball is over the paddle, try to dodge the ball
+            if (this.otherPaddle.x + this.otherPaddle.width / 2 > this.ball.x + this.ball.width) {
+                this.otherPaddle.vx = this.otherPaddle.speed;
+            }
+            else if (this.otherPaddle.x + this.otherPaddle.width / 2 < this.ball.x) {
+                this.otherPaddle.vx = - this.otherPaddle.speed;
+            }
+            else {
+                this.otherPaddle.vx = 0;
+            }
         }
     }
 

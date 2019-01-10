@@ -3,8 +3,6 @@
 var SPRITESHEET = new TiledSpritesheet("data/assets/spritesheet.png", 1, 16, 16, 31, 57); //Kenny Spritesheet see data/maps/Kenney RPG Tiles.tsx
 //TODO Parse this information automatixally from tsx file
 var myMap;
-var player;
-var PLAYER_SPEED = 3;
 var myCanvas = $("#pixiCanvas")[0];
 /*
 PIXI STUFF
@@ -22,24 +20,24 @@ var app = new PIXI.Application({
 //Add the canvas that Pixi automatically created for you to the HTML document
 document.body.appendChild(app.view);
 $(document).keydown(function (event) {
-    if (player) {
-        player.keyDown(event);
+    if (myMap) {
+        myMap.keyDown(event);
     }
     if (myBattle) {
         myBattle.keyDown(event);
     }
 });
 $(document).keyup(function (event) {
-    if (player) {
-        player.keyUp(event);
+    if (myMap) {
+        myMap.keyUp(event);
     }
     if (myBattle) {
         myBattle.keyUp(event);
     }
 });
 function gameLoop(delta) {
-    if (player) {
-        player.doStep(delta);
+    if (myMap) {
+        myMap.doStep(delta);
     }
     if (myBattle) {
         myBattle.doStep(delta);
@@ -58,10 +56,13 @@ app.ticker.add(function (delta) { return gameLoop(delta); });
 function loadMapFromFile() {
     if (myMap)
         myMap.destroy();
+    if (myStory) {
+        myStory.destroy();
+    }
     var mapPath = "data/maps/" + $("#mapNameInput").val() + ".json";
-    TiledMapParser.loadMap(mapPath, SPRITESHEET, "storyPathDummy", {}, function (map) {
+    var storyPath = "data/storyData/" + $("#storyNameInput").val() + ".json";
+    TiledMapParser.loadMap(mapPath, SPRITESHEET, storyPath, {}, function (map) {
         myMap = map;
-        player = map.player;
         app.ticker.start();
         app.stage.addChild(map.pixiContainer);
     });
@@ -69,9 +70,13 @@ function loadMapFromFile() {
 var tt = new TetrisTile([[1, 0], [1, 1]], 0xaabbcc, 0);
 var tc = new TetrisContainer(10, 3);
 tc.addTetrisTileAt(tt, 0, 0);
-var tt2 = new TetrisTile([[1, 0], [1, 1]], 0xaabbcc, 0);
+var tt2 = new TetrisTile([[1, 0, 1], [1, 1, 1], [1, 0, 1]], 0xaabbcc, 1);
 var tc2 = new TetrisContainer(10, 3);
 tc2.addTetrisTileAt(tt2, 0, 0);
+var tt3 = new TetrisTile([[1, 1], [1, 1]], 0xaabbcc, 0);
+tc2.addTetrisTileAt(tt3, 5, 0);
+var tt4 = new TetrisTile([[1, 0], [1, 1]], 0xaabbcc, 0);
+tc2.addTetrisTileAt(tt4, 8, 0);
 var myBattle = new Battle(600, 600, tc, tc2);
 app.stage.addChild(myBattle.pixiContainer);
 myBattle.isPaused = true;
