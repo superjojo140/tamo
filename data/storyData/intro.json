@@ -1,7 +1,7 @@
 {
 	"information": {
 		"health": 50,
-		"startEvent": "0"
+		"startEvent": ""
 	},
 	"variables": {},
 	"actions": {

@@ -1,5 +1,6 @@
 var Player = /** @class */ (function () {
     function Player(x, y, map) {
+        this.triggerInfoActive = false;
         this.map = map;
         this.animations = [];
         var baseTexture = PIXI.Texture.fromImage("data/assets/ranger_2.png").baseTexture;
@@ -19,6 +20,8 @@ var Player = /** @class */ (function () {
         this.sprite.scale = Player.SPRITE_SCALE;
         this.sprite.animationSpeed = 0.13;
         this.sprite.loop = true;
+        //Load attention sign
+        this.triggerInfoSprite = PIXI.Sprite.fromImage("data/assets/attention.png");
     }
     Player.prototype.changeDirection = function (direction) {
         if (0 <= direction && direction <= 3) {
@@ -86,7 +89,7 @@ var Player = /** @class */ (function () {
         var blocked = false;
         for (var x = xRange.from; x <= xRange.to; x++) {
             for (var y = yRange.from; y <= yRange.to; y++) {
-                if (this.map.collisionBitMap[y][x] == true) {
+                if (this.map.collisionBitMap[y] == undefined || this.map.collisionBitMap[y][x] == undefined || this.map.collisionBitMap[y][x] == true) {
                     blocked = true;
                 }
             }
@@ -94,6 +97,25 @@ var Player = /** @class */ (function () {
         if (blocked == false) {
             this.sprite.x = newX;
             this.sprite.y = newY;
+        }
+        //Check for event
+        var originalX = this.sprite.x;
+        var xTiles = originalX / this.map.finalTileWidth;
+        xTiles = Math.round(xTiles);
+        var originalY = this.sprite.y;
+        var yTiles = originalY / this.map.finalTileHeight;
+        yTiles = Math.round(yTiles);
+        if (!this.triggerInfoActive && this.map.eventTriggerMap[yTiles][xTiles]) {
+            console.log("Heres a trigger");
+            this.triggerInfoSprite.x = xTiles * this.map.finalTileWidth + 10;
+            this.triggerInfoSprite.y = yTiles * this.map.finalTileHeight + 10 - this.triggerInfoSprite.height;
+            this.map.pixiContainer.addChild(this.triggerInfoSprite);
+            this.triggerInfoActive = true;
+        }
+        else if (this.triggerInfoActive && !this.map.eventTriggerMap[yTiles][xTiles]) {
+            console.log("You leaved the trigger");
+            this.map.pixiContainer.removeChild(this.triggerInfoSprite);
+            this.triggerInfoActive = false;
         }
     };
     Player.prototype.checkTrigger = function () {

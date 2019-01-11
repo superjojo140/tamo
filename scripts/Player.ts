@@ -18,8 +18,11 @@ class Player {
     vy: number;
     animations: PIXI.Texture[][];
     map: Map;
+    triggerInfoActive: boolean;
+    triggerInfoSprite: PIXI.Sprite;
 
     constructor(x: number, y: number, map: Map) {
+        this.triggerInfoActive = false;
         this.map = map;
         this.animations = [];
         let baseTexture: PIXI.BaseTexture = PIXI.Texture.fromImage("data/assets/ranger_2.png").baseTexture;
@@ -40,6 +43,9 @@ class Player {
         this.sprite.scale = Player.SPRITE_SCALE;
         this.sprite.animationSpeed = 0.13;
         this.sprite.loop = true;
+
+        //Load attention sign
+        this.triggerInfoSprite = PIXI.Sprite.fromImage("data/assets/attention.png");
     }
 
     changeDirection(direction: number) {
@@ -116,7 +122,7 @@ class Player {
 
         for (let x = xRange.from; x <= xRange.to; x++) {
             for (let y = yRange.from; y <= yRange.to; y++) {
-                if (this.map.collisionBitMap[y][x] == true) {
+                if (this.map.collisionBitMap[y] == undefined || this.map.collisionBitMap[y][x] == undefined || this.map.collisionBitMap[y][x] == true) {
                     blocked = true;
                 }
             }
@@ -127,6 +133,30 @@ class Player {
             this.sprite.x = newX;
             this.sprite.y = newY;
         }
+
+
+        //Check for event
+        let originalX = this.sprite.x;
+        let xTiles = originalX / this.map.finalTileWidth;
+        xTiles = Math.round(xTiles);
+
+        let originalY = this.sprite.y;
+        let yTiles = originalY / this.map.finalTileHeight;
+        yTiles = Math.round(yTiles);
+
+
+        if (!this.triggerInfoActive && this.map.eventTriggerMap[yTiles][xTiles]) {
+            console.log("Heres a trigger");
+            this.triggerInfoSprite.x = xTiles * this.map.finalTileWidth + 10;
+            this.triggerInfoSprite.y = yTiles * this.map.finalTileHeight + 10 - this.triggerInfoSprite.height;
+            this.map.pixiContainer.addChild(this.triggerInfoSprite);
+            this.triggerInfoActive = true;
+        }
+        else if (this.triggerInfoActive && !this.map.eventTriggerMap[yTiles][xTiles]) {
+            console.log("You leaved the trigger");
+            this.map.pixiContainer.removeChild(this.triggerInfoSprite);
+            this.triggerInfoActive = false;
+        }
     }
 
     checkTrigger() {
@@ -135,15 +165,15 @@ class Player {
         let xTiles = originalX / this.map.finalTileWidth;
         xTiles = Math.round(xTiles);
 
-        let originalY = this.sprite.y;  
+        let originalY = this.sprite.y;
         let yTiles = originalY / this.map.finalTileHeight;
         yTiles = Math.round(yTiles);
 
         let eventId = this.map.eventTriggerMap[yTiles][xTiles];
-        if(eventId){
+        if (eventId) {
             this.map.pause();
             let map = this.map;
-            this.map.story.showEvent(eventId,()=>map.isPaused = false);
+            this.map.story.showEvent(eventId, () => map.isPaused = false);
         }
     }
 

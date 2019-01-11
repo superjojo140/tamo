@@ -83,6 +83,7 @@ function loadMapFromFile() {
 
   let mapPath = `data/maps/${$("#mapNameInput").val()}.json`;
   let storyPath = `data/storyData/${$("#storyNameInput").val()}.json`;
+
   TiledMapParser.loadMap(mapPath, SPRITESHEET, storyPath, {}, function (map) {
     myMap = map;
     app.ticker.start();
