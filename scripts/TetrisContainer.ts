@@ -3,6 +3,8 @@ class TetrisContainer extends PIXI.Container {
 
     static TILE_WIDTH: any = 32;
     static TILE_HEIGHT: any = 32;
+    static TILES_V = 3;
+    static TILES_H = 8;
     tiles_v: number;
     tiles_h: any;
     tilesArray: TetrisTile[][];
@@ -17,7 +19,7 @@ class TetrisContainer extends PIXI.Container {
 
         //Generate Backgroundshape
         let bg = new PIXI.Graphics;
-        bg.beginFill(0x8c3424);
+        bg.beginFill(0xFFFFFF,0.3);
         bg.drawRect(0, 0, this.tiles_h * TetrisContainer.TILE_WIDTH, this.tiles_v * TetrisContainer.TILE_HEIGHT);
         bg.endFill();
         this.addChild(bg);
@@ -75,6 +77,19 @@ class TetrisContainer extends PIXI.Container {
         if (bouncedTile) {
             bouncedTile.onBounce(this,ball);
         }
+    }
+
+    showGrid(){
+        //Generate a container filling TetrisTile with transparent tiles and black borders
+        let fullArray = []
+        for (let rows = 0; rows < this.tiles_v; rows++) {
+            fullArray[rows] = [];
+            for (let columns = 0; columns < this.tiles_h; columns++) {
+                fullArray[rows][columns] = 1;
+            }
+        }
+        let tt = new TetrisTile(fullArray,0xFFFFFF,0x000000,0);
+        this.addChild(tt);
     }
 
 }

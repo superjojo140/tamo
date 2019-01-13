@@ -1,10 +1,7 @@
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -19,7 +16,7 @@ var TetrisContainer = /** @class */ (function (_super) {
         _this.tiles_h = tiles_h;
         //Generate Backgroundshape
         var bg = new PIXI.Graphics;
-        bg.beginFill(0x8c3424);
+        bg.beginFill(0xFFFFFF, 0.3);
         bg.drawRect(0, 0, _this.tiles_h * TetrisContainer.TILE_WIDTH, _this.tiles_v * TetrisContainer.TILE_HEIGHT);
         bg.endFill();
         _this.addChild(bg);
@@ -68,7 +65,21 @@ var TetrisContainer = /** @class */ (function (_super) {
             bouncedTile.onBounce(this, ball);
         }
     };
+    TetrisContainer.prototype.showGrid = function () {
+        //Generate a container filling TetrisTile with transparent tiles and black borders
+        var fullArray = [];
+        for (var rows = 0; rows < this.tiles_v; rows++) {
+            fullArray[rows] = [];
+            for (var columns = 0; columns < this.tiles_h; columns++) {
+                fullArray[rows][columns] = 1;
+            }
+        }
+        var tt = new TetrisTile(fullArray, 0xFFFFFF, 0x000000, 0);
+        this.addChild(tt);
+    };
     TetrisContainer.TILE_WIDTH = 32;
     TetrisContainer.TILE_HEIGHT = 32;
+    TetrisContainer.TILES_V = 3;
+    TetrisContainer.TILES_H = 8;
     return TetrisContainer;
 }(PIXI.Container));

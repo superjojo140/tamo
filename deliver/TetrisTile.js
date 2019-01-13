@@ -1,10 +1,7 @@
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -13,8 +10,12 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var TetrisTile = /** @class */ (function (_super) {
     __extends(TetrisTile, _super);
-    function TetrisTile(dimensions, tileColor, borderColor) {
+    function TetrisTile(dimensions, tileColor, borderColor, tilecolorAlpha) {
         var _this = _super.call(this) || this;
+        if (tilecolorAlpha === undefined) {
+            tilecolorAlpha = 1;
+        }
+        ;
         _this.dimensions = dimensions;
         _this.tileColor = tileColor;
         _this.borderColor = borderColor;
@@ -25,7 +26,7 @@ var TetrisTile = /** @class */ (function (_super) {
         for (var row = 0; row < dimensions.length; row++) {
             for (var column = 0; column < dimensions[0].length; column++) {
                 if (_this.dimensions[row][column] == 1) {
-                    _this.beginFill(_this.tileColor);
+                    _this.beginFill(_this.tileColor, tilecolorAlpha);
                     _this.lineStyle(2, _this.borderColor);
                     var tw = TetrisContainer.TILE_WIDTH;
                     var th = TetrisContainer.TILE_HEIGHT;

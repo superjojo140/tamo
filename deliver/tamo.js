@@ -2,6 +2,8 @@
 /// <reference path="./TiledMapParser.ts" />
 var SPRITESHEET = new TiledSpritesheet("data/assets/spritesheet.png", 1, 16, 16, 31, 57); //Kenny Spritesheet see data/maps/Kenney RPG Tiles.tsx
 //TODO Parse this information automatixally from tsx file
+var APP_WIDTH = 1000;
+var APP_HEIGHT = 700;
 var myMap;
 var myCanvas = $("#pixiCanvas")[0];
 /*
@@ -13,8 +15,8 @@ if (!PIXI.utils.isWebGLSupported()) {
 }
 //Create a Pixi Application
 var app = new PIXI.Application({
-    width: 1000,
-    height: 700,
+    width: APP_WIDTH,
+    height: APP_HEIGHT,
     view: myCanvas
 });
 //Add the canvas that Pixi automatically created for you to the HTML document
@@ -80,3 +82,5 @@ tc2.addTetrisTileAt(tt4, 8, 0);
 var myBattle = new Battle(600, 600, tc, tc2);
 app.stage.addChild(myBattle.pixiContainer);
 myBattle.isPaused = true;
+var myContainerBuilder = new ContainerBuilder([tt, tt2, tt3, tt4]);
+app.stage.addChild(myContainerBuilder);

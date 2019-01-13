@@ -4,6 +4,9 @@
 const SPRITESHEET = new TiledSpritesheet("data/assets/spritesheet.png", 1, 16, 16, 31, 57) //Kenny Spritesheet see data/maps/Kenney RPG Tiles.tsx
 //TODO Parse this information automatixally from tsx file
 
+const APP_WIDTH = 1000;
+const APP_HEIGHT = 700;
+
 let myMap: Map;
 let myCanvas = $("#pixiCanvas")[0];
 
@@ -18,10 +21,11 @@ if (!PIXI.utils.isWebGLSupported()) {
   type = "canvas"
 }
 
+
 //Create a Pixi Application
 let app = new PIXI.Application({
-  width: 1000,
-  height: 700,
+  width: APP_WIDTH,
+  height: APP_HEIGHT,
   view: myCanvas
 });
 
@@ -107,6 +111,10 @@ tc2.addTetrisTileAt(tt4, 8, 0);
 let myBattle = new Battle(600, 600, tc, tc2);
 app.stage.addChild(myBattle.pixiContainer);
 myBattle.isPaused = true;
+
+
+let myContainerBuilder = new ContainerBuilder([tt,tt2,tt3,tt4]);
+app.stage.addChild(myContainerBuilder);
 
 
 
