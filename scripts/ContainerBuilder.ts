@@ -3,6 +3,7 @@ class ContainerBuilder extends PIXI.Container {
     tetrisTiles: TetrisTile[];
     tetrisContainer: TetrisContainer;
     shelf: PIXI.Container;
+    scaleFactor: PIXI.Point;
     static SHELF_WIDTH: number = 800;
     static SHELF_HEIGHT: number = 200;
     static SHELF_MARGIN: number = 10;
@@ -19,11 +20,11 @@ class ContainerBuilder extends PIXI.Container {
 
         this.tetrisTiles = tetrisTiles;
 
-        let scaleFactor = new PIXI.Point(2, 2);
+        this.scaleFactor = new PIXI.Point(2, 2);
 
         //prepare Tetris Container
         this.tetrisContainer = new TetrisContainer(TetrisContainer.TILES_H, TetrisContainer.TILES_V);
-        this.tetrisContainer.scale = scaleFactor;
+        this.tetrisContainer.scale = this.scaleFactor;
         this.tetrisContainer.x = (APP_WIDTH - this.tetrisContainer.width) / 2;
         this.tetrisContainer.y = APP_HEIGHT - this.tetrisContainer.height - 100;
         this.tetrisContainer.showGrid();
@@ -35,21 +36,24 @@ class ContainerBuilder extends PIXI.Container {
         this.shelf.y = 50;
         bg = new PIXI.Graphics;
         bg.beginFill(0xb3b3ff);
-        bg.drawRect(0,0, ContainerBuilder.SHELF_WIDTH, ContainerBuilder.SHELF_HEIGHT);
+        bg.drawRect(0, 0, ContainerBuilder.SHELF_WIDTH / this.scaleFactor.x, ContainerBuilder.SHELF_HEIGHT / this.scaleFactor.y);
         bg.endFill();
         this.shelf.addChild(bg);
+        this.shelf.scale = this.scaleFactor;
         this.addChild(this.shelf);
 
-let xSpace = ContainerBuilder.SHELF_MARGIN;
+        let xSpace = ContainerBuilder.SHELF_MARGIN;
 
         for (let i in this.tetrisTiles) {
             let element = this.tetrisTiles[i];
-            element.scale = scaleFactor;
+            element.isShelfTile(this);
             element.x = xSpace;
             xSpace += element.width + ContainerBuilder.SHELF_MARGIN;
             this.shelf.addChild(element);
         }
 
     }
+
+
 
 }

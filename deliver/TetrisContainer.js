@@ -1,7 +1,10 @@
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -30,6 +33,9 @@ var TetrisContainer = /** @class */ (function (_super) {
     TetrisContainer.prototype.addTetrisTileAt = function (tile, x, y) {
         if (tile.dimensions[0] == undefined) {
             throw "Cant add emtpy TetrisTile";
+        }
+        if (!this.isFitting(tile, x, y)) {
+            throw "TetrisTile does not fit to Container";
         }
         for (var rows = 0; rows < tile.dimensions.length; rows++) {
             for (var columns = 0; columns < tile.dimensions[0].length; columns++) {
@@ -76,6 +82,19 @@ var TetrisContainer = /** @class */ (function (_super) {
         }
         var tt = new TetrisTile(fullArray, 0xFFFFFF, 0x000000, 0);
         this.addChild(tt);
+    };
+    //Check wether tile is fitting into the container at position x,y relative to container's top-left corner
+    TetrisContainer.prototype.isFitting = function (tile, x, y) {
+        for (var row = 0; row < tile.dimensions.length; row++) {
+            for (var column = 0; column < tile.dimensions[row].length; column++) {
+                if (this.tilesArray[row + y] == undefined || this.tilesArray[row + y][column + x] != undefined) {
+                    //Does not fit at this tile
+                    return false;
+                }
+            }
+        }
+        //If it was never returned false, return true
+        return true;
     };
     TetrisContainer.TILE_WIDTH = 32;
     TetrisContainer.TILE_HEIGHT = 32;

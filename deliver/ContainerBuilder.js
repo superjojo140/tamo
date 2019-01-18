@@ -1,7 +1,10 @@
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -19,10 +22,10 @@ var ContainerBuilder = /** @class */ (function (_super) {
         bg.endFill();
         _this.addChild(bg);
         _this.tetrisTiles = tetrisTiles;
-        var scaleFactor = new PIXI.Point(2, 2);
+        _this.scaleFactor = new PIXI.Point(2, 2);
         //prepare Tetris Container
         _this.tetrisContainer = new TetrisContainer(TetrisContainer.TILES_H, TetrisContainer.TILES_V);
-        _this.tetrisContainer.scale = scaleFactor;
+        _this.tetrisContainer.scale = _this.scaleFactor;
         _this.tetrisContainer.x = (APP_WIDTH - _this.tetrisContainer.width) / 2;
         _this.tetrisContainer.y = APP_HEIGHT - _this.tetrisContainer.height - 100;
         _this.tetrisContainer.showGrid();
@@ -33,14 +36,15 @@ var ContainerBuilder = /** @class */ (function (_super) {
         _this.shelf.y = 50;
         bg = new PIXI.Graphics;
         bg.beginFill(0xb3b3ff);
-        bg.drawRect(0, 0, ContainerBuilder.SHELF_WIDTH, ContainerBuilder.SHELF_HEIGHT);
+        bg.drawRect(0, 0, ContainerBuilder.SHELF_WIDTH / _this.scaleFactor.x, ContainerBuilder.SHELF_HEIGHT / _this.scaleFactor.y);
         bg.endFill();
         _this.shelf.addChild(bg);
+        _this.shelf.scale = _this.scaleFactor;
         _this.addChild(_this.shelf);
         var xSpace = ContainerBuilder.SHELF_MARGIN;
         for (var i in _this.tetrisTiles) {
             var element = _this.tetrisTiles[i];
-            element.scale = scaleFactor;
+            element.isShelfTile(_this);
             element.x = xSpace;
             xSpace += element.width + ContainerBuilder.SHELF_MARGIN;
             _this.shelf.addChild(element);

@@ -19,7 +19,7 @@ class TetrisContainer extends PIXI.Container {
 
         //Generate Backgroundshape
         let bg = new PIXI.Graphics;
-        bg.beginFill(0xFFFFFF,0.3);
+        bg.beginFill(0xFFFFFF, 0.3);
         bg.drawRect(0, 0, this.tiles_h * TetrisContainer.TILE_WIDTH, this.tiles_v * TetrisContainer.TILE_HEIGHT);
         bg.endFill();
         this.addChild(bg);
@@ -36,6 +36,10 @@ class TetrisContainer extends PIXI.Container {
 
         if (tile.dimensions[0] == undefined) {
             throw "Cant add emtpy TetrisTile";
+        }
+
+        if (!this.isFitting(tile, x, y)) {
+            throw "TetrisTile does not fit to Container";
         }
 
         for (let rows = 0; rows < tile.dimensions.length; rows++) {
@@ -75,11 +79,11 @@ class TetrisContainer extends PIXI.Container {
 
         let bouncedTile = this.tilesArray[deltaY][deltaX];
         if (bouncedTile) {
-            bouncedTile.onBounce(this,ball);
+            bouncedTile.onBounce(this, ball);
         }
     }
 
-    showGrid(){
+    showGrid() {
         //Generate a container filling TetrisTile with transparent tiles and black borders
         let fullArray = []
         for (let rows = 0; rows < this.tiles_v; rows++) {
@@ -88,8 +92,22 @@ class TetrisContainer extends PIXI.Container {
                 fullArray[rows][columns] = 1;
             }
         }
-        let tt = new TetrisTile(fullArray,0xFFFFFF,0x000000,0);
+        let tt = new TetrisTile(fullArray, 0xFFFFFF, 0x000000, 0);
         this.addChild(tt);
+    }
+
+    //Check wether tile is fitting into the container at position x,y relative to container's top-left corner
+    isFitting(tile: TetrisTile, x: number, y: number) {
+        for (let row = 0; row < tile.dimensions.length; row++) {
+            for (let column = 0; column < tile.dimensions[row].length; column++) {
+                if (this.tilesArray[row + y] == undefined || this.tilesArray[row + y][column + x] != undefined) {
+                    //Does not fit at this tile
+                    return false;
+                }
+            }
+        }
+        //If it was never returned false, return true
+        return true;
     }
 
 }
