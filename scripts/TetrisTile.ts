@@ -9,6 +9,7 @@ class TetrisTile extends PIXI.Graphics {
     dragging: boolean;
     dragEventData;
     containerBuilder: ContainerBuilder;
+    fitsAt: { x: number; y: number; };
 
 
     constructor(dimensions: number[][], tileColor: number, borderColor: number, tilecolorAlpha?: number) {
@@ -84,6 +85,11 @@ class TetrisTile extends PIXI.Graphics {
         this.dragging = false;
         // set the interaction data to null
         this.dragEventData = null;
+        if (this.fitsAt) {
+            this.containerBuilder.tetrisContainer.addTetrisTileAt(this.getCopy(), this.fitsAt.x, this.fitsAt.y);
+        }
+        this.containerBuilder.removeChild(this);
+        this.destroy();
     }
 
     onDragMove() {
@@ -96,23 +102,31 @@ class TetrisTile extends PIXI.Graphics {
             let c = this.containerBuilder.tetrisContainer;
             if (newPosition.y < c.y + c.height && newPosition.y > c.y && newPosition.x < c.x + c.width && newPosition.x > c.x) {
                 //Map to tiles
-                let xTile = Math.round((newPosition.x - c.x) / (TetrisContainer.TILE_WIDTH * c.scale.x));
-                let yTile = Math.round((newPosition.y - c.y) / (TetrisContainer.TILE_HEIGHT * c.scale.y));
+                let xTile = Math.floor((newPosition.x - c.x) / (TetrisContainer.TILE_WIDTH * c.scale.x));
+                let yTile = Math.floor((newPosition.y - c.y) / (TetrisContainer.TILE_HEIGHT * c.scale.y));
 
 
                 if (c.isFitting(this, xTile, yTile)) {
-                    this.tint = 0x00FF00; //Green
+                    this.tint = 0x00FF00; //Green 
+                    this.fitsAt = { x: xTile, y: yTile };
                 }
                 else {
                     this.tint = 0xFF0000; //Red
+                    this.fitsAt = undefined;
                 }
+
+                //Snap to tile
+                this.x = xTile * TetrisContainer.TILE_WIDTH * c.scale.x + c.x;
+                this.y = yTile * TetrisContainer.TILE_HEIGHT * c.scale.y + c.y;
+
             }
+            else {
 
-
-
-
-            this.x = newPosition.x;
-            this.y = newPosition.y;
+                //Move free by cursor
+                this.x = newPosition.x;
+                this.y = newPosition.y;
+                this.fitsAt = undefined;
+            }
         }
     }
 

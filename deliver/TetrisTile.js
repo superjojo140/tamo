@@ -75,6 +75,11 @@ var TetrisTile = /** @class */ (function (_super) {
         this.dragging = false;
         // set the interaction data to null
         this.dragEventData = null;
+        if (this.fitsAt) {
+            this.containerBuilder.tetrisContainer.addTetrisTileAt(this.getCopy(), this.fitsAt.x, this.fitsAt.y);
+        }
+        this.containerBuilder.removeChild(this);
+        this.destroy();
     };
     TetrisTile.prototype.onDragMove = function () {
         if (this.dragging) {
@@ -83,17 +88,26 @@ var TetrisTile = /** @class */ (function (_super) {
             var c = this.containerBuilder.tetrisContainer;
             if (newPosition.y < c.y + c.height && newPosition.y > c.y && newPosition.x < c.x + c.width && newPosition.x > c.x) {
                 //Map to tiles
-                var xTile = Math.round((newPosition.x - c.x) / (TetrisContainer.TILE_WIDTH * c.scale.x));
-                var yTile = Math.round((newPosition.y - c.y) / (TetrisContainer.TILE_HEIGHT * c.scale.y));
+                var xTile = Math.floor((newPosition.x - c.x) / (TetrisContainer.TILE_WIDTH * c.scale.x));
+                var yTile = Math.floor((newPosition.y - c.y) / (TetrisContainer.TILE_HEIGHT * c.scale.y));
                 if (c.isFitting(this, xTile, yTile)) {
-                    this.tint = 0x00FF00; //Green
+                    this.tint = 0x00FF00; //Green 
+                    this.fitsAt = { x: xTile, y: yTile };
                 }
                 else {
                     this.tint = 0xFF0000; //Red
+                    this.fitsAt = undefined;
                 }
+                //Snap to tile
+                this.x = xTile * TetrisContainer.TILE_WIDTH * c.scale.x + c.x;
+                this.y = yTile * TetrisContainer.TILE_HEIGHT * c.scale.y + c.y;
             }
-            this.x = newPosition.x;
-            this.y = newPosition.y;
+            else {
+                //Move free by cursor
+                this.x = newPosition.x;
+                this.y = newPosition.y;
+                this.fitsAt = undefined;
+            }
         }
     };
     TetrisTile.prototype.isShelfTile = function (cb) {
