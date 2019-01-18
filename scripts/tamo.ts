@@ -108,9 +108,10 @@ tc2.addTetrisTileAt(tt3, 5, 0);
 let tt4 = new TetrisTile([[1, 0], [1, 1]], 0xaabbcc, 0);
 tc2.addTetrisTileAt(tt4, 8, 0);
 
-let myBattle = new Battle(600, 600, tc, tc2);
+let myBattle;
+/*let myBattle = new Battle(600, 600, tc, tc2);
 app.stage.addChild(myBattle.pixiContainer);
-myBattle.isPaused = true;
+myBattle.isPaused = true;*/
 
 
 let myContainerBuilder = new ContainerBuilder([tt,tt2,tt3,tt4]);

@@ -49,8 +49,25 @@ var ContainerBuilder = /** @class */ (function (_super) {
             xSpace += element.width + ContainerBuilder.SHELF_MARGIN;
             _this.shelf.addChild(element);
         }
+        var startButton = PIXI.Sprite.fromImage("data/assets/startButton.png");
+        startButton.interactive = true;
+        startButton.buttonMode = true;
+        startButton.on('pointerdown', _this.startBattle);
+        startButton.x = 700;
+        startButton.y = 630;
+        startButton.scale.x = 0.7;
+        startButton.scale.y = 0.7;
+        _this.addChild(startButton);
         return _this;
     }
+    ContainerBuilder.prototype.startBattle = function () {
+        var tcn = myContainerBuilder.tetrisContainer;
+        tcn.scale = new PIXI.Point(1, 1);
+        myContainerBuilder.removeChild(tcn);
+        myBattle = new Battle(600, 600, tcn, tc);
+        app.stage.addChild(myBattle.pixiContainer);
+        app.stage.removeChild(myContainerBuilder);
+    };
     ContainerBuilder.SHELF_WIDTH = 800;
     ContainerBuilder.SHELF_HEIGHT = 200;
     ContainerBuilder.SHELF_MARGIN = 10;

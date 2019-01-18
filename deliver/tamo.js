@@ -79,8 +79,9 @@ var tt3 = new TetrisTile([[1, 1], [1, 1]], 0xaabbcc, 0);
 tc2.addTetrisTileAt(tt3, 5, 0);
 var tt4 = new TetrisTile([[1, 0], [1, 1]], 0xaabbcc, 0);
 tc2.addTetrisTileAt(tt4, 8, 0);
-var myBattle = new Battle(600, 600, tc, tc2);
+var myBattle;
+/*let myBattle = new Battle(600, 600, tc, tc2);
 app.stage.addChild(myBattle.pixiContainer);
-myBattle.isPaused = true;
+myBattle.isPaused = true;*/
 var myContainerBuilder = new ContainerBuilder([tt, tt2, tt3, tt4]);
 app.stage.addChild(myContainerBuilder);
