@@ -1,0 +1,108 @@
+{
+	"information": {
+		"health": 50,
+		"startEvent": "0"
+	},
+	"variables": {},
+	"actions": {
+		"0": {
+			"type": "dialog",
+			"nextEvent": "1",
+			"message": "Hallo mein Freund. Herzlich willkommen in RPG-City.",
+			"icon": "old_man"
+		},
+		"1": {
+			"type": "dialog",
+			"nextEvent": 2,
+			"message": "Hier kommen all die Computerspiele her, die du früher gespielt hast.",
+			"icon": "old_man"
+		},
+		"2": {
+			"type": "dialog",
+			"nextEvent": 3,
+			"message": "Sieh dich ruhig ein bisschen um. Du kannst dich mit den Pfeiltasten bewegen.",
+			"icon": "old_man"
+		},
+		"3": {
+			"type": "dialog",
+			"nextEvent": "end",
+			"message": "Wenn es etwas zu entdecken gibt erscheint eine Sprechblase mit einem <b>Ausrufezeichen</b>. Drücke <kbd>x</kbd> um mit dem Objekt zu interagieren.",
+			"icon": "old_man"
+		},
+		"4": {
+			"type": "dialog",
+			"nextEvent": "end",
+			"message": "Ein knisterndes Lagerfeuer. Hier muss vor kurzem noch jemand gewesen sein...",
+			"icon": "hero"
+		},
+		"5": {
+			"type": "dialog",
+			"nextEvent": 6,
+			"message": "Die Tamos sind kleine Wesen. Es gibt sie in allen nur vorstellbaren Formen und Farben. Wir lebten jahrhundertelang in Frieden mit Ihnen. Doch seit einiger Zeit hört man immer öfter von wilden Horden von Tamos, die unsere Dörfer überfallen und alles klauen, was ihnen in die Hände fällt.",
+			"icon": "woman"
+		},
+		"6": {
+			"type": "dialog",
+			"nextEvent": 7,
+			"message": "Wo soll ich mit meiner Suche nach dem Geheimnis beginnen?",
+			"icon": "hero"
+		},
+		"7": {
+			"type": "dialog",
+			"nextEvent": 8,
+			"message": "Geh nach Uttelfeld. In diesem kleinen Dorf lebt der alte Krador. Er ist einer der ältesten Forscher unseres Landes. Er kann dir noch einiges mehr über die Tamos berichten",
+			"icon": "woman"
+		},
+		"8": {
+			"type": "decision",
+			"message": "Was möchtest du tun?",
+			"icon": "woman",
+			"options": [{
+					"message": "Gehe nach Uttelfeld",
+					"nextEvent": 100
+				},
+				{
+					"message": "Stärke dich zunächst",
+					"nextEvent": 101
+				}
+			]
+		},
+		"100": {
+			"type": "health",
+			"change": "relative",
+			"value": -10,
+			"nextEvent": 10
+		},
+		"101": {
+			"type": "health",
+			"change": "relative",
+			"value": 10,
+			"nextEvent": 9
+		},
+		"9": {
+			"type": "dialog",
+			"nextEvent": 0,
+			"message": "Du stärkst dich im Gasthaus",
+			"icon": "hero"
+
+		},
+		"10": {
+			"type": "dialog",
+			"nextEvent": 0,
+			"message": "Du gehst direkt nach Uttelfeld, dies schwächt dich",
+			"icon": "hero"
+		},
+		"11": {
+			"type": "dialog",
+			"nextEvent": 1,
+			"message": "Di bist fertig ;-)",
+			"icon": "hero"
+		},
+		"12": {
+			"type": "dialog",
+			"nextEvent": "end",
+			"message": "Du wärmst dich am knsiternden Feuer!",
+			"icon": "hero"
+		}
+	}
+}

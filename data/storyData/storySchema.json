@@ -1,0 +1,148 @@
+{
+    "title": "RPG Story",
+    "type": "object",
+    "required": [
+        "info",
+        "variables",
+        "actions"
+    ],
+    "properties": {
+        "info": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of the story"
+                }
+            }
+        },
+        "variables": {
+            "type": "object"
+        },
+        "actions": {
+            "type": "array",
+            "format": "tabs",
+            "title": "Events",
+
+            "uniqueItems": true,
+            "items": {
+                "type": "object",
+                "headerTemplate": "{{i}} - {{self.type}}",
+                "oneOf": [{
+                        "title": "dialog",
+                        "description": "A simple text to be displayed",
+                        "type": "object",
+                        "properties": {
+                            "eventId": {
+                                "type": "number",
+                                "description": "Id of the event"
+                            },
+                            "type": {
+                                "type": "string",
+                                "enum": ["dialog"],
+                                "default" : "dialog"
+                            },
+                            "message": {
+                                "type": "string",
+                                "description": "Text to say in this dialog"
+                            },
+                            "icon": {
+                                "type": "string",
+                                "enum": [
+                                    "hero",
+                                    "woman",
+                                    "npc"
+                                ],
+                                "default": "hero",
+                                "description": "Icon to display"
+                            },
+                            "nextEvent": {
+                                "type": "number",
+                                "description": "The event which is triggered after the currnt event has finished"
+                            }
+                        },
+                        "additionalProperties": false
+
+                    },
+                    {
+                        "title": "decission",
+                        "description": "A decission combined with text",
+                        "type": "object",
+                        "properties": {
+
+                            "type": {
+                                "type": "string",
+                                "enum": ["decission"],
+                                "default" : "decission"
+                            },
+                            "message": {
+                                "type": "string",
+                                "description": "Text to say in this dialog"
+                            },
+                            "icon": {
+                                "type": "string",
+                                "enum": [
+                                    "hero",
+                                    "woman",
+                                    "npc"
+                                ],
+                                "default": "hero",
+                                "description": "Icon to display"
+                            },
+                            "options": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "nextEvent": {
+                                            "type": "number",
+                                            "description": "Id of the event which is trigered if the user choses this option"
+                                        },
+
+                                        "message": {
+                                            "type": "string",
+                                            "description": "Caption of the button"
+                                        }
+                                    }
+                                }
+                            }
+
+                        },
+                        "additionalProperties": false
+
+                    },
+                    {
+                        "title": "health",
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "enum": ["health"],
+                                "default" : "health"
+                            },
+                            "change": {
+                                "type": "string",
+                                "enum": ["relative", "absolute"]
+                            },
+                            "value": {
+                                "type": "number",
+                                "minimum": -100,
+                                "maximum": 100
+                            },
+                            "nextEvent": {
+                                "type": "number",
+                                "description": "Id of the event which is trigered if the user choses this option"
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                ]
+            }
+        }
+
+
+    }
+}

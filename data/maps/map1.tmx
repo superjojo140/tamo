@@ -28,7 +28,7 @@
  <objectgroup id="4" name="Trigger">
   <object id="6" type="Trigger" gid="472" x="64.1364" y="48.0909" width="16" height="16">
    <properties>
-    <property name="event" type="int" value="12"/>
+    <property name="event" type="int" value="4"/>
    </properties>
   </object>
   <object id="11" gid="403" x="28" y="68" width="16" height="16"/>
