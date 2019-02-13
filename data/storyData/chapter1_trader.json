@@ -1,0 +1,170 @@
+{
+	"information": {
+		"health": 50,
+		"startEvent": "0"
+	},
+	"variables": {},
+	"actions": {
+		"0": {
+			"type": "dialog",
+			"nextEvent": "1",
+			"message": "...",
+			"icon": "the_trader"
+		},
+		"1": {
+			"type": "dialog",
+			"nextEvent": "2",
+			"message": "... ...",
+			"icon": "hero"
+		},
+		"2": {
+			"type": "dialog",
+			"nextEvent": "3",
+			"message": " * awkward silence *",
+			"icon": "the_trader"
+		},
+		"3": {
+			"type": "dialog",
+			"nextEvent": "4",
+			"message": "Hello! You must be the trader then.",
+			"icon": "hero"
+		},
+		"4": {
+			"type": "dialog",
+			"nextEvent": "5",
+			"message": "Yes",
+			"icon": "the_trader"
+		},
+		"5": {
+			"type": "dialog",
+			"nextEvent": "6",
+			"message": "You have found a nice place to rest here",
+			"icon": "hero"
+		},
+		"6": {
+			"type": "dialog",
+			"nextEvent": "8",
+			"message": "Yes",
+			"icon": "the_trader"
+		},
+        "8": {
+			"type": "decision",
+			"message": "...",
+			"icon": "hero",
+			"options": [{
+					"message": "You are not the talkative type, are you?",
+					"nextEvent": "9"
+				},
+				{
+					"message": "Those communication skills won't make you world's retail trader number One",
+					"nextEvent": "9"
+				}
+			]
+		},
+		"9": {
+			"type": "dialog",
+			"nextEvent": "10",
+			"message": "Yes",
+			"icon": "the_trader"
+		},
+        "10": {
+			"type": "decision",
+			"message": "Time is money. And talking needs time, which is expensive. And I need the money.",
+			"icon": "the_trader",
+			"options": [{
+					"message": "That makes sense.",
+					"nextEvent": "11"
+				},
+				{
+					"message": "How do I get to the next town?",
+					"nextEvent": "21"
+				}
+			]
+		},
+		"11": {
+			"type": "dialog",
+			"nextEvent": "12",
+			"message": "Yes, totally",
+			"icon": "the_trader"
+		},
+		"12": {
+			"type": "dialog",
+			"nextEvent": "13",
+			"message": "I guess you can help me out with some questions",
+			"icon": "hero"
+		},
+		"21": {
+			"type": "dialog",
+			"nextEvent": "22",
+			"message": "Just follow the way",
+			"icon": "the_trader"
+		},
+        "22": {
+			"type": "decision",
+			"message": "...",
+			"icon": "the_trader",
+			"options": [{
+					"message": "The right way?",
+					"nextEvent": "30"
+				},
+				{
+					"message": "The left way?",
+					"nextEvent": "40"
+				}
+			]
+		},
+		"30": {
+			"type": "dialog",
+			"nextEvent": "13",
+			"message": "Yes",
+			"icon": "the_trader"
+        },
+		"30": {
+			"type": "dialog",
+			"nextEvent": "22",
+			"message": "No",
+			"icon": "the_trader"
+        },
+        "13": {
+			"type": "decision",
+			"message": "So...",
+			"icon": "hero",
+			"options": [{
+					"message": "Where do I get better equipment?",
+					"nextEvent": "50"
+				},
+{
+					"message": "Are there any news?",
+					"nextEvent": "60"
+				},
+				{
+					"message": "Have a good day.",
+					"nextEvent": "70"
+				}
+			]
+		},
+        
+		"50": {
+			"type": "dialog",
+			"nextEvent": "13",
+			"message": "In the town",
+			"icon": "the_trader"
+        },
+		"60": {
+			"type": "dialog",
+			"nextEvent": "13",
+			"message": "No",
+			"icon": "the_trader"
+        },
+		"70": {
+			"type": "dialog",
+			"nextEvent": "end",
+			"message": "O.K.",
+			"icon": "the_trader"
+        }
+
+}
+}
+
+
+        

@@ -1,0 +1,46 @@
+{
+	"information": {
+		"health": 50,
+		"startEvent": "0"
+	},
+	"variables": {},
+	"actions": {
+		"0": {
+			"type": "dialog",
+			"nextEvent": "1",
+			"message": "..Okay and this time you try to act very authentic. When I think about your last performance every Reality-TV actor would have been a better choice",
+			"icon": "the_manager"
+		},
+		"1": {
+			"type": "dialog",
+			"nextEvent": "2",
+			"message": "Yes, because you did not raise my salary! If you want high quality performance I want my high quality money. Uff..do I really have to do this again and again?",
+			"icon": "hero"
+		},
+		"2": {
+			"type": "dialog",
+			"nextEvent": "3",
+			"message": "Watch out! The player is starting the game, ... so try to be better this time",
+			"icon": "the_manager"
+		},
+		"3": {
+			"type": "dialog",
+			"nextEvent": "4",
+			"message": "...",
+			"icon": "hero"
+		},
+		"4": {
+			"type": "dialog",
+			"nextEvent": "5",
+			"message": "Ouch! .. my head... what has happened? Where am I?",
+			"icon": "hero"
+		},
+		"5": {
+			"type": "dialog",
+			"nextEvent": "end",
+			"message": "It seems I can not remember anything. Maybe I should walk around and see if I can find some helpful tools",
+			"icon": "hero"
+		}
+	}
+}
+
