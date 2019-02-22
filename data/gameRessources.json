@@ -1,0 +1,14 @@
+{
+    "maps":{
+        "map1" : "/data/maps/map1.json",
+        "castle" : "/data/maps/castle.json"
+    },
+    "stories":{
+        "intro" : "/data/storyData/intro.json",
+        "testStory" : "/data/storyData/testStory.json"
+    },
+    "startState":{
+        "currentMap": "intro",
+        "accessableTiles" : []
+    }
+}
