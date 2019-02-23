@@ -12,10 +12,6 @@ var TiledMapParser = /** @class */ (function () {
         map.finalTileWidth = spritesheet.tileWidth * SPRITE_SCALE.x;
         map.finalTileHeight = spritesheet.tileHeight * SPRITE_SCALE.y;
         map.spritesheet = spritesheet;
-        //Load Story and handle it
-        map.story = new Story(storyPath, "messageContainer");
-        //Load gameState
-        map.gameState = gameState;
         //Load Map and Parse it
         $.getJSON(mapPath, {}, function (mapData) {
             //Create eventTriggerMap
@@ -85,7 +81,7 @@ var TiledMapParser = /** @class */ (function () {
                                 }
                             }
                         }
-                        else { //Not the collision layer
+                        else {
                             //}if(true){  //Draw the CollisionLayer - only for Debug
                             //Create new PIXI Container for this layer
                             var container = new PIXI.Container();
@@ -110,7 +106,7 @@ var TiledMapParser = /** @class */ (function () {
                             }
                         }
                     }
-                    else //Layer is not of type "tilelayer"
+                    else
                         console.warn("Ignoring Layer \"" + tl.name + "\". Layers of type \"" + tl.type + "\" are not supported yet.");
                 }
             }

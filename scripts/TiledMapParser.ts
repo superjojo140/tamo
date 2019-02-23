@@ -13,10 +13,6 @@ class TiledMapParser {
     map.finalTileWidth = spritesheet.tileWidth * SPRITE_SCALE.x;
     map.finalTileHeight = spritesheet.tileHeight * SPRITE_SCALE.y;
     map.spritesheet = spritesheet;
-    //Load Story and handle it
-    map.story = new Story(storyPath, "messageContainer");
-    //Load gameState
-    map.gameState = gameState;
     //Load Map and Parse it
     $.getJSON(mapPath, {}, function (mapData) {
 

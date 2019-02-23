@@ -3,7 +3,6 @@ var Map = /** @class */ (function () {
     }
     Map.prototype.destroy = function () {
         this.pixiContainer.destroy();
-        return this.gameState;
     };
     Map.prototype.keyDown = function (event) {
         if (!this.isPaused) {

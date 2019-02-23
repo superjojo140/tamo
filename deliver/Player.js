@@ -130,7 +130,7 @@ var Player = /** @class */ (function () {
         if (eventId) {
             this.map.pause();
             var map_1 = this.map;
-            this.map.story.showEvent(eventId, function () { return map_1.isPaused = false; });
+            GameManager.story.showEvent(eventId, function () { return map_1.isPaused = false; });
         }
     };
     Player.UP = 0;

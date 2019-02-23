@@ -173,7 +173,7 @@ class Player {
         if (eventId) {
             this.map.pause();
             let map = this.map;
-            this.map.story.showEvent(eventId, () => map.isPaused = false);
+            GameManager.story.showEvent(eventId, () => map.isPaused = false);
         }
     }
 

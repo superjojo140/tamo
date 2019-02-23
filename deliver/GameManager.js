@@ -1,27 +1,11 @@
-const SPRITESHEET = new TiledSpritesheet("data/assets/spritesheet.png", 1, 16, 16, 31, 57) //Kenny Spritesheet see data/maps/Kenney RPG Tiles.tsx
+var SPRITESHEET = new TiledSpritesheet("data/assets/spritesheet.png", 1, 16, 16, 31, 57); //Kenny Spritesheet see data/maps/Kenney RPG Tiles.tsx
 //TODO Parse this information automatixally from tsx file
-
-const APP_WIDTH = 1000;
-const APP_HEIGHT = 700;
-
-class GameManager {
-
-
-    static map: Map;
-    static story: Story;
-    static containerBuilder: ContainerBuilder;
-    static battle: Battle;
-
-    static ressources: any;
-    static gameState: GameState;
-
-
-
-    static myCanvas = $("#pixiCanvas")[0];
-    static pixiApp;
-
-
-    static startGame() {
+var APP_WIDTH = 1000;
+var APP_HEIGHT = 700;
+var GameManager = /** @class */ (function () {
+    function GameManager() {
+    }
+    GameManager.startGame = function () {
         //Create Pixi stuff
         //Create a Pixi Application
         GameManager.pixiApp = new PIXI.Application({
@@ -29,11 +13,8 @@ class GameManager {
             height: APP_HEIGHT,
             view: GameManager.myCanvas
         });
-
         //Add the canvas that Pixi automatically created for you to the HTML document
         document.body.appendChild(GameManager.pixiApp.view);
-
-
         /* $(document).keydown(function (event) {
              if (myMap) {
                  myMap.keyDown(event);
@@ -80,63 +61,43 @@ class GameManager {
          tc2.addTetrisTileAt(tt4, 8, 0);
      
          */
-
-
-
         //Load ressources
         $.ajax({
             url: "/data/gameRessources.json",
             async: false,
             dataType: "json",
-            error: function (xhr, status, error) { throw "Can't find /data/gameRessources.json " + error },
+            error: function (xhr, status, error) { throw "Can't find /data/gameRessources.json " + error; },
             success: function (ressources) {
                 GameManager.ressources = ressources;
             }
         });
-
         //TODO Show Menu
-    }
-
-
-
-
-    static loadGame(gameState?: GameState) {
-
+    };
+    GameManager.loadGame = function (gameState) {
         if (!gameState) {
             gameState = GameManager.ressources.gameState;
         }
-
         //Load Story
-        let storyPath = `data/storyData/${gameState.currentStory}.json`;
+        var storyPath = "data/storyData/" + gameState.currentStory + ".json";
         if (GameManager.story) {
             GameManager.story.destroy();
         }
         GameManager.story = new Story(storyPath, "messageContainer");
-
         //Laod Map
         if (GameManager.map) {
             GameManager.map.destroy();
         }
-        let mapPath = `data/maps/${gameState.currentMap}.json`;
-
-        TiledMapParser.loadMap(mapPath, SPRITESHEET, storyPath, {}, function (map) { //TODO Remove story and GameState from Map
+        var mapPath = "data/maps/" + gameState.currentMap + ".json";
+        TiledMapParser.loadMap(mapPath, SPRITESHEET, storyPath, {}, function (map) {
             //TODO Add Ticker and keyListener
-
             GameManager.map = map;
             GameManager.pixiApp.ticker.start();
             GameManager.pixiApp.stage.addChild(map.pixiContainer);
         });
-
-
-    }
-
-
-
-
-    static getGameState(path: string): GameState {
+    };
+    GameManager.getGameState = function (path) {
         //Check if a saved gameState can be found
-        let returnGameState;
-
+        var returnGameState;
         $.ajax({
             url: path,
             async: false,
@@ -150,12 +111,10 @@ class GameManager {
                 returnGameState = savedGameState;
             }
         });
-
         return returnGameState;
-    }
-
-    static loadGameWithCustomOptions(map: string, story: string, gameStatePath?: string) {
-        let gameState: GameState;
+    };
+    GameManager.loadGameWithCustomOptions = function (map, story, gameStatePath) {
+        var gameState;
         if (!gameStatePath) {
             gameState = GameManager.ressources.gameState;
         }
@@ -165,9 +124,8 @@ class GameManager {
         gameState.currentMap = map;
         gameState.currentStory = story;
         GameManager.loadGame(gameState);
-    }
-
-    static startBattle() {
+    };
+    GameManager.startBattle = function () {
         /*
         let tcn = myContainerBuilder.tetrisContainer;
         tcn.scale = new PIXI.Point(1,1);
@@ -176,13 +134,7 @@ class GameManager {
         app.stage.addChild(myBattle.pixiContainer);
         app.stage.removeChild(myContainerBuilder);
         */
-      
-    }
-}
-
-
-interface GameState {
-    currentMap: string;
-    currentStory: string;
-    accessableTiles: string[];
-}
+    };
+    GameManager.myCanvas = $("#pixiCanvas")[0];
+    return GameManager;
+}());

@@ -57,7 +57,7 @@ class ContainerBuilder extends PIXI.Container {
         let startButton = PIXI.Sprite.fromImage("data/assets/startButton.png");
         startButton.interactive = true;
         startButton.buttonMode = true;
-        startButton.on('pointerdown', this.startBattle);
+        startButton.on('pointerdown', GameManager.startBattle);
         startButton.x = 700;
         startButton.y = 630;
         startButton.scale.x = 0.7;
@@ -67,15 +67,7 @@ class ContainerBuilder extends PIXI.Container {
 
     }
 
-    startBattle() {
-        let tcn = myContainerBuilder.tetrisContainer;
-        tcn.scale = new PIXI.Point(1,1);
-        myContainerBuilder.removeChild(tcn);
-        myBattle = new Battle(600,600,tcn,tc);
-        app.stage.addChild(myBattle.pixiContainer);
-        app.stage.removeChild(myContainerBuilder);
-      
-    }
+
 
 
 

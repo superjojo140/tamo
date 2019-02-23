@@ -4,9 +4,7 @@ class Map {
 
     player: Player;
     spritesheet: TiledSpritesheet;
-    story: Story;
     pixiContainer: PIXI.Container;
-    gameState: Object;
     collisionBitMap: boolean[][];
     finalTileWidth: number;
     finalTileHeight: number;
@@ -15,7 +13,6 @@ class Map {
 
     destroy() {
         this.pixiContainer.destroy();
-        return this.gameState;
     }
 
     keyDown(event) {
