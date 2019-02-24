@@ -11,6 +11,7 @@ class GameManager {
     static story: Story;
     static containerBuilder: ContainerBuilder;
     static battle: Battle;
+    static menu: PIXI.Container;
 
     static ressources: any;
     static gameState: GameState;
@@ -48,7 +49,7 @@ class GameManager {
 
         //add map.doStep to ticker
         GameManager.pixiApp.ticker.add(GameManager.triggerMapStep);
-       
+
         //Load ressources
         $.ajax({
             url: "data/gameRessources.json",
@@ -61,6 +62,58 @@ class GameManager {
         });
 
         //TODO Show Menu
+        GameManager.menu = new PIXI.Container();
+        let menu = GameManager.menu;
+
+        //Generate Backgroundshape
+        let bg = new PIXI.Graphics;
+        bg.beginFill(0x123456, 1);
+        bg.drawRect(0, 0, APP_WIDTH, APP_HEIGHT);
+        bg.endFill();
+        menu.addChild(bg);
+
+        //Generate Buttons
+        let newGameButton = PIXI.Sprite.fromImage("data/assets/ui/button_new-game.png");
+        newGameButton.x = 200;
+        newGameButton.y = 150;
+        newGameButton.interactive = true;
+        newGameButton.buttonMode = true;
+        newGameButton.on('pointerdown', () => { GameManager.loadGame(); });
+        menu.addChild(newGameButton);
+
+        let resumeGameButton = PIXI.Sprite.fromImage("data/assets/ui/button_resume-game.png");
+        resumeGameButton.x = 200;
+        resumeGameButton.y = 270;
+        resumeGameButton.interactive = true;
+        resumeGameButton.buttonMode = true;
+        resumeGameButton.on('pointerdown', () => { GameManager.loadGame(GameManager.getGameState("data/saveGame.json")); });
+        menu.addChild(resumeGameButton);
+
+        let customGameButton = PIXI.Sprite.fromImage("data/assets/ui/button_custom-game.png");
+        customGameButton.x = 200;
+        customGameButton.y = 400;
+        customGameButton.interactive = true;
+        customGameButton.buttonMode = true;
+        customGameButton.on('pointerdown', () => { GameManager.showCustomGameWindow() });
+        menu.addChild(customGameButton);
+
+        let storyBuilderButton = PIXI.Sprite.fromImage("data/assets/ui/button_story-builder.png");
+        storyBuilderButton.x = 510;
+        storyBuilderButton.y = 400;
+        storyBuilderButton.interactive = true;
+        storyBuilderButton.buttonMode = true;
+        storyBuilderButton.on('pointerdown', () => { window.location.href = "story_editor/" });
+        menu.addChild(storyBuilderButton);
+
+
+
+        GameManager.pixiApp.stage.addChild(menu);
+
+    }
+
+
+    static showCustomGameWindow(): any {
+        throw new Error("Method not implemented.");
     }
 
     static triggerMapStep(delta) {
@@ -116,6 +169,7 @@ class GameManager {
             GameManager.map = map;
             GameManager.pixiApp.ticker.start();
             GameManager.pixiApp.stage.addChild(map.pixiContainer);
+            GameManager.pixiApp.stage.removeChild(GameManager.menu);
         });
 
 
@@ -169,9 +223,9 @@ class GameManager {
         
         */
 
-         //Register keyEvents for map
-         $(document).on("keydown.battle",GameManager.battleKeyDown);
-         $(document).on("keyup.battle",GameManager.battleKeyUp);
+        //Register keyEvents for map
+        $(document).on("keydown.battle", GameManager.battleKeyDown);
+        $(document).on("keyup.battle", GameManager.battleKeyUp);
         GameManager.pixiApp.ticker.add(GameManager.triggerBattleStep);
 
     }

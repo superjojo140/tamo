@@ -39,6 +39,47 @@ var GameManager = /** @class */ (function () {
             }
         });
         //TODO Show Menu
+        GameManager.menu = new PIXI.Container();
+        var menu = GameManager.menu;
+        //Generate Backgroundshape
+        var bg = new PIXI.Graphics;
+        bg.beginFill(0x123456, 1);
+        bg.drawRect(0, 0, APP_WIDTH, APP_HEIGHT);
+        bg.endFill();
+        menu.addChild(bg);
+        //Generate Buttons
+        var newGameButton = PIXI.Sprite.fromImage("data/assets/ui/button_new-game.png");
+        newGameButton.x = 200;
+        newGameButton.y = 150;
+        newGameButton.interactive = true;
+        newGameButton.buttonMode = true;
+        newGameButton.on('pointerdown', function () { GameManager.loadGame(); });
+        menu.addChild(newGameButton);
+        var resumeGameButton = PIXI.Sprite.fromImage("data/assets/ui/button_resume-game.png");
+        resumeGameButton.x = 200;
+        resumeGameButton.y = 270;
+        resumeGameButton.interactive = true;
+        resumeGameButton.buttonMode = true;
+        resumeGameButton.on('pointerdown', function () { GameManager.loadGame(GameManager.getGameState("data/saveGame.json")); });
+        menu.addChild(resumeGameButton);
+        var customGameButton = PIXI.Sprite.fromImage("data/assets/ui/button_custom-game.png");
+        customGameButton.x = 200;
+        customGameButton.y = 400;
+        customGameButton.interactive = true;
+        customGameButton.buttonMode = true;
+        customGameButton.on('pointerdown', function () { GameManager.showCustomGameWindow(); });
+        menu.addChild(customGameButton);
+        var storyBuilderButton = PIXI.Sprite.fromImage("data/assets/ui/button_story-builder.png");
+        storyBuilderButton.x = 510;
+        storyBuilderButton.y = 400;
+        storyBuilderButton.interactive = true;
+        storyBuilderButton.buttonMode = true;
+        storyBuilderButton.on('pointerdown', function () { window.location.href = "story_editor/"; });
+        menu.addChild(storyBuilderButton);
+        GameManager.pixiApp.stage.addChild(menu);
+    };
+    GameManager.showCustomGameWindow = function () {
+        throw new Error("Method not implemented.");
     };
     GameManager.triggerMapStep = function (delta) {
         if (GameManager.map) {
@@ -81,6 +122,7 @@ var GameManager = /** @class */ (function () {
             GameManager.map = map;
             GameManager.pixiApp.ticker.start();
             GameManager.pixiApp.stage.addChild(map.pixiContainer);
+            GameManager.pixiApp.stage.removeChild(GameManager.menu);
         });
     };
     GameManager.getGameState = function (path) {

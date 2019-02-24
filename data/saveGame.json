@@ -1,0 +1,7 @@
+{
+    "currentMap": "map1",
+    "currentStory": "chapter1",
+    "accessableTiles": [
+        "bigSquare"
+    ]
+}

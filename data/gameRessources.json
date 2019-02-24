@@ -1,5 +1,5 @@
 {
-    "startState": {
+    "gameState": {
         "currentMap": "map1",
         "currentStory" : "intro",
         "accessableTiles": ["bigSquare"]
