@@ -1,14 +1,52 @@
 {
-    "maps":{
-        "map1" : "/data/maps/map1.json",
-        "castle" : "/data/maps/castle.json"
+    "startState": {
+        "currentMap": "map1",
+        "currentStory" : "intro",
+        "accessableTiles": ["bigSquare"]
     },
-    "stories":{
-        "intro" : "/data/storyData/intro.json",
-        "testStory" : "/data/storyData/testStory.json"
+    "tetrisTiles": {
+        "bigSquare": {
+            "tiles": [
+                [
+                    1,
+                    1
+                ],
+                [
+                    1,
+                    1
+                ]
+            ],
+            "color": "#abcdef",
+            "borderColor": "#123456",
+            "hitsToDestroy": 1
+        }
     },
-    "startState":{
-        "currentMap": "intro",
-        "accessableTiles" : []
+    "opponents": {
+        "easyMike": {
+            "width": 8,
+            "height": 3,
+            "tetrisTiles": [
+                {
+                    "name": "bigSquare",
+                    "x": 0,
+                    "y": 0
+                },
+                {
+                    "name": "bigSquare",
+                    "x": 2,
+                    "y": 0
+                },
+                {
+                    "name": "bigSquare",
+                    "x": 4,
+                    "y": 0
+                },
+                {
+                    "name": "bigSquare",
+                    "x": 6,
+                    "y": 0
+                }
+            ]
+        }
     }
 }
