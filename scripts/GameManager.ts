@@ -33,68 +33,59 @@ class GameManager {
         //Add the canvas that Pixi automatically created for you to the HTML document
         document.body.appendChild(GameManager.pixiApp.view);
 
+        //Register keyEvents for map
+        $(document).keydown(function (event) {
+            if (GameManager.map) {
+                GameManager.map.keyDown(event);
+            }
+        });
 
-        /* $(document).keydown(function (event) {
-             if (myMap) {
-                 myMap.keyDown(event);
-             }
-             if (myBattle) {
-                 myBattle.keyDown(event);
-             }
-         });
-     
-         $(document).keyup(function (event) {
-             if (myMap) {
-                 myMap.keyUp(event);
-             }
-             if (myBattle) {
-                 myBattle.keyUp(event);
-             }
-         });
-     
-         function gameLoop(delta) {
-             if (myMap) {
-                 myMap.doStep(delta);
-             }
-     
-             if (myBattle) {
-                 myBattle.doStep(delta);
-             }
-         }
-     
-         app.ticker.add(delta => gameLoop(delta));
-     
-         
-     
-         let tt = new TetrisTile([[1, 0], [1, 1]], 0xaabbcc, 0);
-         let tc = new TetrisContainer(10, 3);
-         tc.addTetrisTileAt(tt, 0, 0);
-     
-         let tt2 = new TetrisTile([[1, 0, 1], [1, 1, 1], [1, 0, 1]], 0xaabbcc, 1);
-         let tc2 = new TetrisContainer(10, 3);
-         tc2.addTetrisTileAt(tt2, 0, 0);
-     
-         let tt3 = new TetrisTile([[1, 1], [1, 1]], 0xaabbcc, 0);
-         tc2.addTetrisTileAt(tt3, 5, 0);
-         let tt4 = new TetrisTile([[1, 0], [1, 1]], 0xaabbcc, 0);
-         tc2.addTetrisTileAt(tt4, 8, 0);
-     
-         */
+        $(document).keyup(function (event) {
+            if (GameManager.map) {
+                GameManager.map.keyUp(event);
+            }
+        });
 
-
-
+        //add map.doStep to ticker
+        GameManager.pixiApp.ticker.add(GameManager.triggerMapStep);
+       
         //Load ressources
         $.ajax({
-            url: "/data/gameRessources.json",
+            url: "data/gameRessources.json",
             async: false,
             dataType: "json",
-            error: function (xhr, status, error) { throw "Can't find /data/gameRessources.json " + error },
+            error: function (xhr, status, error) { throw "Can't find data/gameRessources.json " + error },
             success: function (ressources) {
                 GameManager.ressources = ressources;
             }
         });
 
         //TODO Show Menu
+    }
+
+    static triggerMapStep(delta) {
+        if (GameManager.map) {
+            GameManager.map.doStep(delta);
+        }
+    }
+
+    static triggerBattleStep(delta) {
+        if (GameManager.battle) {
+            GameManager.battle.doStep(delta);
+        }
+    }
+
+    static battleKeyDown(event) {
+        if (GameManager.battle) {
+            GameManager.battle.keyDown(event);
+        }
+        console.log("Battle Key Down");
+    }
+
+    static battleKeyUp(event) {
+        if (GameManager.battle) {
+            GameManager.battle.keyUp(event);
+        }
     }
 
 
@@ -175,9 +166,24 @@ class GameManager {
         myBattle = new Battle(600,600,tcn,tc);
         app.stage.addChild(myBattle.pixiContainer);
         app.stage.removeChild(myContainerBuilder);
+        
         */
-      
+
+         //Register keyEvents for map
+         $(document).on("keydown.battle",GameManager.battleKeyDown);
+         $(document).on("keyup.battle",GameManager.battleKeyUp);
+        GameManager.pixiApp.ticker.add(GameManager.triggerBattleStep);
+
     }
+
+    static stopBattle() {
+        GameManager.pixiApp.ticker.remove(GameManager.triggerMapStep);
+        $(document).off("keyup.battle");
+        $(document).off("keydown.battle");
+    }
+
+
+
 }
 
 

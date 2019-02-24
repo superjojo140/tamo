@@ -15,63 +15,51 @@ var GameManager = /** @class */ (function () {
         });
         //Add the canvas that Pixi automatically created for you to the HTML document
         document.body.appendChild(GameManager.pixiApp.view);
-        /* $(document).keydown(function (event) {
-             if (myMap) {
-                 myMap.keyDown(event);
-             }
-             if (myBattle) {
-                 myBattle.keyDown(event);
-             }
-         });
-     
-         $(document).keyup(function (event) {
-             if (myMap) {
-                 myMap.keyUp(event);
-             }
-             if (myBattle) {
-                 myBattle.keyUp(event);
-             }
-         });
-     
-         function gameLoop(delta) {
-             if (myMap) {
-                 myMap.doStep(delta);
-             }
-     
-             if (myBattle) {
-                 myBattle.doStep(delta);
-             }
-         }
-     
-         app.ticker.add(delta => gameLoop(delta));
-     
-         
-     
-         let tt = new TetrisTile([[1, 0], [1, 1]], 0xaabbcc, 0);
-         let tc = new TetrisContainer(10, 3);
-         tc.addTetrisTileAt(tt, 0, 0);
-     
-         let tt2 = new TetrisTile([[1, 0, 1], [1, 1, 1], [1, 0, 1]], 0xaabbcc, 1);
-         let tc2 = new TetrisContainer(10, 3);
-         tc2.addTetrisTileAt(tt2, 0, 0);
-     
-         let tt3 = new TetrisTile([[1, 1], [1, 1]], 0xaabbcc, 0);
-         tc2.addTetrisTileAt(tt3, 5, 0);
-         let tt4 = new TetrisTile([[1, 0], [1, 1]], 0xaabbcc, 0);
-         tc2.addTetrisTileAt(tt4, 8, 0);
-     
-         */
+        //Register keyEvents for map
+        $(document).keydown(function (event) {
+            if (GameManager.map) {
+                GameManager.map.keyDown(event);
+            }
+        });
+        $(document).keyup(function (event) {
+            if (GameManager.map) {
+                GameManager.map.keyUp(event);
+            }
+        });
+        //add map.doStep to ticker
+        GameManager.pixiApp.ticker.add(GameManager.triggerMapStep);
         //Load ressources
         $.ajax({
-            url: "/data/gameRessources.json",
+            url: "data/gameRessources.json",
             async: false,
             dataType: "json",
-            error: function (xhr, status, error) { throw "Can't find /data/gameRessources.json " + error; },
+            error: function (xhr, status, error) { throw "Can't find data/gameRessources.json " + error; },
             success: function (ressources) {
                 GameManager.ressources = ressources;
             }
         });
         //TODO Show Menu
+    };
+    GameManager.triggerMapStep = function (delta) {
+        if (GameManager.map) {
+            GameManager.map.doStep(delta);
+        }
+    };
+    GameManager.triggerBattleStep = function (delta) {
+        if (GameManager.battle) {
+            GameManager.battle.doStep(delta);
+        }
+    };
+    GameManager.battleKeyDown = function (event) {
+        if (GameManager.battle) {
+            GameManager.battle.keyDown(event);
+        }
+        console.log("Battle Key Down");
+    };
+    GameManager.battleKeyUp = function (event) {
+        if (GameManager.battle) {
+            GameManager.battle.keyUp(event);
+        }
     };
     GameManager.loadGame = function (gameState) {
         if (!gameState) {
@@ -133,7 +121,17 @@ var GameManager = /** @class */ (function () {
         myBattle = new Battle(600,600,tcn,tc);
         app.stage.addChild(myBattle.pixiContainer);
         app.stage.removeChild(myContainerBuilder);
+        
         */
+        //Register keyEvents for map
+        $(document).on("keydown.battle", GameManager.battleKeyDown);
+        $(document).on("keyup.battle", GameManager.battleKeyUp);
+        GameManager.pixiApp.ticker.add(GameManager.triggerBattleStep);
+    };
+    GameManager.stopBattle = function () {
+        GameManager.pixiApp.ticker.remove(GameManager.triggerMapStep);
+        $(document).off("keyup.battle");
+        $(document).off("keydown.battle");
     };
     GameManager.myCanvas = $("#pixiCanvas")[0];
     return GameManager;

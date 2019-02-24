@@ -21,30 +21,14 @@
 
 <body style="background-color: #3a3d44">
 
-	<div id="debugPanel" >
-		<h3>Debug</h3>
-		
-		<input id="mapNameInput" value="map1">
-		
-		<button onclick="loadMapFromFile()">Map laden</button>
-		
-		<input id="storyNameInput" value="intro">
-		
-		<button onclick="loadStory()">Story laden</button>
+	<canvas id="pixiCanvas"></canvas>
+	<div id="messageContainer" style="display: none">
 	</div>
 
-		<canvas id="pixiCanvas"></canvas>
-		<svg class="healthMonitor">
-			<circle class="circleBackground"></circle>
-			<circle class="healthBar"></circle>
-		</svg>
-		<div id="messageContainer" style="display: none">
-		</div>
 
 
 
 
-	<script src="deliver/GameManager.js"></script>
 	<script src="deliver/TiledMapParser.js"></script>
 	<script src="deliver/TiledSpritesheet.js"></script>
 	<script src="deliver/Map.js"></script>
@@ -55,6 +39,7 @@
 	<script src="deliver/TetrisTile.js"></script>
 	<script src="deliver/ContainerBuilder.js"></script>
 	<script src="deliver/Battle.js"></script>
+	<script src="deliver/GameManager.js"></script>
 	<script src="deliver/tamo.js"></script>
 </body>
 
