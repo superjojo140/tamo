@@ -61,7 +61,7 @@ class GameManager {
             }
         });
 
-        //TODO Show Menu
+        //Show Menu
         GameManager.menu = new PIXI.Container();
         let menu = GameManager.menu;
 
@@ -94,7 +94,7 @@ class GameManager {
         customGameButton.y = 400;
         customGameButton.interactive = true;
         customGameButton.buttonMode = true;
-        customGameButton.on('pointerdown', () => { GameManager.showCustomGameWindow() });
+        customGameButton.on('pointerdown', () => { GameManager.showCustomGameWindow(true) });
         menu.addChild(customGameButton);
 
         let storyBuilderButton = PIXI.Sprite.fromImage("data/assets/ui/button_story-builder.png");
@@ -109,11 +109,34 @@ class GameManager {
 
         GameManager.pixiApp.stage.addChild(menu);
 
+
+        //Register custom game gui buttons
+        $("#customGameLoadSaveGameButton").click(function () {
+            let sgPath = $("#customGameSaveGame").val();
+            let gs = GameManager.getGameState("data/" + sgPath + ".json");
+            $("#customGameStory").val(gs.currentStory);
+            $("#customGameMap").val(gs.currentMap);
+        });
+
+        $("#customGameStartButton").click(function () {
+            let sgPath = $("#customGameSaveGame").val();
+            sgPath = "data/" + sgPath + ".json";
+            let storyPath = $("#customGameStory").val();
+            let mapPath = $("#customGameMap").val();
+            GameManager.loadGameWithCustomOptions(mapPath, storyPath, sgPath);
+            GameManager.showCustomGameWindow(false);
+        });
+
     }
 
 
-    static showCustomGameWindow(): any {
-        throw new Error("Method not implemented.");
+    static showCustomGameWindow(show: boolean) {
+        if (show) {
+            $("#customGameGui").fadeIn();
+        }
+        else {
+            $("#customGameGui").fadeOut();
+        }
     }
 
     static triggerMapStep(delta) {
@@ -178,7 +201,7 @@ class GameManager {
 
 
 
-    static getGameState(path: string): GameState {
+    static getGameState(path): GameState {
         //Check if a saved gameState can be found
         let returnGameState;
 
@@ -199,7 +222,7 @@ class GameManager {
         return returnGameState;
     }
 
-    static loadGameWithCustomOptions(map: string, story: string, gameStatePath?: string) {
+    static loadGameWithCustomOptions(map, story, gameStatePath?) {
         let gameState: GameState;
         if (!gameStatePath) {
             gameState = GameManager.ressources.gameState;

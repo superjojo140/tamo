@@ -55,7 +55,7 @@ var Story = /** @class */ (function () {
             case "dialog":
                 this.messageBox.html(this.currentAction.message);
                 this.iconBox.attr("src", "data/assets/" + this.currentAction.icon + ".png");
-                this.buttonsBox.html("<button class='nextButton'>Weiter</button>");
+                this.buttonsBox.html("<button class='nextButton rpgButton'>Weiter</button>");
                 var myStory_1 = this;
                 $(".nextButton").click(function () { return myStory_1.nextAction(); });
                 break;
@@ -64,7 +64,7 @@ var Story = /** @class */ (function () {
                 this.messageBox.html(this.currentAction.message);
                 this.iconBox.attr("src", "data/assets/" + this.currentAction.icon + ".png");
                 for (var i = 0; i < this.currentAction.options.length; i++) {
-                    var currentButton = $("<button class='decisionButton' data-decision-id='" + i + "'>" + this.currentAction.options[i].message + "</button>");
+                    var currentButton = $("<button class='decisionButton rpgButton' data-decision-id='" + i + "'>" + this.currentAction.options[i].message + "</button>");
                     this.buttonsBox.append(currentButton);
                 }
                 this.registerButtonEvents();

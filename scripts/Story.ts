@@ -23,7 +23,7 @@ class Story {
 				thisStory.actions = storyData.actions;
 				thisStory.health = storyData.information.health;
 				thisStory.parentContainer = $("#" + htmlContainerId);
-				thisStory.parentContainer.hide();
+				thisStory.parentContainer.hide(); 
 
 
 				
@@ -86,7 +86,7 @@ class Story {
 			case "dialog":
 				this.messageBox.html(this.currentAction.message);
 				this.iconBox.attr("src", "data/assets/" + this.currentAction.icon + ".png");
-				this.buttonsBox.html("<button class='nextButton'>Weiter</button>");
+				this.buttonsBox.html("<button class='nextButton rpgButton'>Weiter</button>");
 				let myStory = this;
 				$(".nextButton").click(() => myStory.nextAction());
 				break;
@@ -95,7 +95,7 @@ class Story {
 				this.messageBox.html(this.currentAction.message);
 				this.iconBox.attr("src", "data/assets/" + this.currentAction.icon + ".png");
 				for (let i = 0; i < this.currentAction.options.length; i++) {
-					let currentButton = $(`<button class='decisionButton' data-decision-id='${i}'>${this.currentAction.options[i].message}</button>`);
+					let currentButton = $(`<button class='decisionButton rpgButton' data-decision-id='${i}'>${this.currentAction.options[i].message}</button>`);
 					this.buttonsBox.append(currentButton);
 				}
 				this.registerButtonEvents();

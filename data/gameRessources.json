@@ -1,7 +1,7 @@
 {
     "gameState": {
         "currentMap": "map1",
-        "currentStory" : "intro",
+        "currentStory" : "testStory",
         "accessableTiles": ["bigSquare"]
     },
     "tetrisTiles": {

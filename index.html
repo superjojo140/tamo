@@ -25,6 +25,42 @@
 	<div id="messageContainer" style="display: none">
 	</div>
 
+	<div id="customGameGui" style="display:none">
+		<h2 class="text-center">Load your custom Game</h2>
+		<br>
+
+		<div class="form-group">
+			<label>Save Game</label>
+			<div class="input-group mb-3">
+
+				<input type="text" class="form-control" placeholder="Save Game" aria-label="Save Game"
+					aria-describedby="basic-addon2" id="customGameSaveGame">
+				<div class="input-group-append">
+					<button class="btn btn-info" type="button" id="customGameLoadSaveGameButton">Load Map and Story</button>
+				</div>
+
+			</div>
+			<small class="form-text text-muted">loaded from data/saveName.json</small>
+		</div>
+
+		<div class="form-group">
+			<label>Map</label>
+			<input type="text" class="form-control" id="customGameMap" placeholder="Mapname">
+			<small class="form-text text-muted">loaded from data/maps/mapName.json</small>
+		</div>
+		<div class="form-group">
+			<label>Story</label>
+			<input type="text" class="form-control" id="customGameStory" placeholder="Storyname">
+			<small class="form-text text-muted">loaded from data/storyData/storyName.json</small>
+		</div>
+
+		<div class="form-group text-right">
+			<button class="btn btn-success pull-right" id="customGameStartButton">Start Game</button>
+		</div>
+
+
+	</div>
+
 
 
 

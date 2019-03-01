@@ -38,7 +38,7 @@ var GameManager = /** @class */ (function () {
                 GameManager.ressources = ressources;
             }
         });
-        //TODO Show Menu
+        //Show Menu
         GameManager.menu = new PIXI.Container();
         var menu = GameManager.menu;
         //Generate Backgroundshape
@@ -67,7 +67,7 @@ var GameManager = /** @class */ (function () {
         customGameButton.y = 400;
         customGameButton.interactive = true;
         customGameButton.buttonMode = true;
-        customGameButton.on('pointerdown', function () { GameManager.showCustomGameWindow(); });
+        customGameButton.on('pointerdown', function () { GameManager.showCustomGameWindow(true); });
         menu.addChild(customGameButton);
         var storyBuilderButton = PIXI.Sprite.fromImage("data/assets/ui/button_story-builder.png");
         storyBuilderButton.x = 510;
@@ -77,9 +77,29 @@ var GameManager = /** @class */ (function () {
         storyBuilderButton.on('pointerdown', function () { window.location.href = "story_editor/"; });
         menu.addChild(storyBuilderButton);
         GameManager.pixiApp.stage.addChild(menu);
+        //Register custom game gui buttons
+        $("#customGameLoadSaveGameButton").click(function () {
+            var sgPath = $("#customGameSaveGame").val();
+            var gs = GameManager.getGameState("data/" + sgPath + ".json");
+            $("#customGameStory").val(gs.currentStory);
+            $("#customGameMap").val(gs.currentMap);
+        });
+        $("#customGameStartButton").click(function () {
+            var sgPath = $("#customGameSaveGame").val();
+            sgPath = "data/" + sgPath + ".json";
+            var storyPath = $("#customGameStory").val();
+            var mapPath = $("#customGameMap").val();
+            GameManager.loadGameWithCustomOptions(mapPath, storyPath, sgPath);
+            GameManager.showCustomGameWindow(false);
+        });
     };
-    GameManager.showCustomGameWindow = function () {
-        throw new Error("Method not implemented.");
+    GameManager.showCustomGameWindow = function (show) {
+        if (show) {
+            $("#customGameGui").fadeIn();
+        }
+        else {
+            $("#customGameGui").fadeOut();
+        }
     };
     GameManager.triggerMapStep = function (delta) {
         if (GameManager.map) {

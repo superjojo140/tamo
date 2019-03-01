@@ -81,7 +81,7 @@ var TiledMapParser = /** @class */ (function () {
                                 }
                             }
                         }
-                        else {
+                        else { //Not the collision layer
                             //}if(true){  //Draw the CollisionLayer - only for Debug
                             //Create new PIXI Container for this layer
                             var container = new PIXI.Container();
@@ -106,7 +106,7 @@ var TiledMapParser = /** @class */ (function () {
                             }
                         }
                     }
-                    else
+                    else //Layer is not of type "tilelayer"
                         console.warn("Ignoring Layer \"" + tl.name + "\". Layers of type \"" + tl.type + "\" are not supported yet.");
                 }
             }
