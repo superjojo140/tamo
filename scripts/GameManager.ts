@@ -172,6 +172,7 @@ class GameManager {
         if (!gameState) {
             gameState = GameManager.ressources.gameState;
         }
+        GameManager.gameState = gameState;
 
         //Load Story
         let storyPath = `data/storyData/${gameState.currentStory}.json`;
@@ -268,4 +269,5 @@ interface GameState {
     currentMap: string;
     currentStory: string;
     accessableTiles: string[];
+    flags:{[flagName: string]: boolean;};
 }

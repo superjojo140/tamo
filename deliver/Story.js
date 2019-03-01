@@ -51,6 +51,7 @@ var Story = /** @class */ (function () {
         this.showStoryElements();
         this.buttonsBox.html("");
         this.messageBox.html("");
+        var gameState = GameManager.gameState;
         switch (this.currentAction.type) {
             case "dialog":
                 this.messageBox.html(this.currentAction.message);
@@ -78,6 +79,24 @@ var Story = /** @class */ (function () {
                 }
                 else {
                     this.parsingError("Invalid Health change. Operation was " + this.currentAction.change);
+                }
+                this.nextAction();
+                break;
+            case "setFlag":
+                gameState.flags[this.currentAction.name] = this.currentAction.value;
+                this.nextAction();
+                break;
+            case "readFlag":
+                if (gameState.flags[this.currentAction.name] === undefined) {
+                    this.parsingError("Flag \"" + this.currentAction.name + "\" was not yet set. Story will fire onFalse event");
+                }
+                if (gameState.flags[this.currentAction.name] == true) {
+                    //onTrue
+                    this.currentAction.nextEvent = this.currentAction.onTrue;
+                }
+                else {
+                    //onFalse
+                    this.currentAction.nextEvent = this.currentAction.onFalse;
                 }
                 this.nextAction();
                 break;

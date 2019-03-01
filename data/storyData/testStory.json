@@ -31,78 +31,34 @@
 		},
 		"4": {
 			"type": "dialog",
-			"nextEvent": "end",
+			"nextEvent": 5,
 			"message": "Ein knisterndes Lagerfeuer. Hier muss vor kurzem noch jemand gewesen sein...",
 			"icon": "hero"
 		},
 		"5": {
-			"type": "dialog",
-			"nextEvent": 6,
-			"message": "Die Tamos sind kleine Wesen. Es gibt sie in allen nur vorstellbaren Formen und Farben. Wir lebten jahrhundertelang in Frieden mit Ihnen. Doch seit einiger Zeit hört man immer öfter von wilden Horden von Tamos, die unsere Dörfer überfallen und alles klauen, was ihnen in die Hände fällt.",
-			"icon": "woman"
-		},
-		"6": {
-			"type": "dialog",
-			"nextEvent": 7,
-			"message": "Wo soll ich mit meiner Suche nach dem Geheimnis beginnen?",
-			"icon": "hero"
+			"type": "setFlag",
+			"nextEvent": "end",
+			"name": "wasOnFire",
+			"value": true
 		},
 		"7": {
-			"type": "dialog",
-			"nextEvent": 8,
-			"message": "Geh nach Uttelfeld. In diesem kleinen Dorf lebt der alte Krador. Er ist einer der ältesten Forscher unseres Landes. Er kann dir noch einiges mehr über die Tamos berichten",
-			"icon": "woman"
+			"type": "readFlag",
+			"nextEvent": "end",
+			"name": "wasOnFire",
+			"onTrue": 8,
+			"onFalse" : 9
 		},
 		"8": {
-			"type": "decision",
-			"message": "Was möchtest du tun?",
-			"icon": "woman",
-			"options": [{
-					"message": "Gehe nach Uttelfeld",
-					"nextEvent": 100
-				},
-				{
-					"message": "Stärke dich zunächst",
-					"nextEvent": 101
-				}
-			]
-		},
-		"100": {
-			"type": "health",
-			"change": "relative",
-			"value": -10,
-			"nextEvent": 10
-		},
-		"101": {
-			"type": "health",
-			"change": "relative",
-			"value": 10,
-			"nextEvent": 9
+			"type": "dialog",
+			"nextEvent": "end",
+			"message": "Du hast das wärmende Feuer schon gefunden",
+			"icon": "old_man"
 		},
 		"9": {
 			"type": "dialog",
-			"nextEvent": 0,
-			"message": "Du stärkst dich im Gasthaus",
-			"icon": "hero"
-
-		},
-		"10": {
-			"type": "dialog",
-			"nextEvent": 0,
-			"message": "Du gehst direkt nach Uttelfeld, dies schwächt dich",
-			"icon": "hero"
-		},
-		"11": {
-			"type": "dialog",
-			"nextEvent": 1,
-			"message": "Di bist fertig ;-)",
-			"icon": "hero"
-		},
-		"12": {
-			"type": "dialog",
 			"nextEvent": "end",
-			"message": "Du wärmst dich am knsiternden Feuer!",
-			"icon": "hero"
+			"message": "Kannst du villeicht irgendwo etwas wärmendes finden?",
+			"icon": "old_man"
 		}
 	}
 }

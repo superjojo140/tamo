@@ -3,5 +3,6 @@
     "currentStory": "chapter1",
     "accessableTiles": [
         "bigSquare"
-    ]
+    ],
+    "flags":[]
 }

@@ -8,7 +8,7 @@ class Story {
 	iconBox: JQuery<HTMLElement>;
 	buttonsBox: JQuery<HTMLElement>;
 	parentContainer: JQuery<HTMLElement>;
-	callOnFinish: Function; 
+	callOnFinish: Function;
 	static END: string = "end";
 
 
@@ -23,13 +23,13 @@ class Story {
 				thisStory.actions = storyData.actions;
 				thisStory.health = storyData.information.health;
 				thisStory.parentContainer = $("#" + htmlContainerId);
-				thisStory.parentContainer.hide(); 
+				thisStory.parentContainer.hide();
 
 
-				
+
 				thisStory.parentContainer.html("");
 
-				
+
 				thisStory.parentContainer.append("<div class='col-md-2'> <img id='iconBox' width='100%'></div>");
 				thisStory.iconBox = $("#iconBox");
 
@@ -82,6 +82,8 @@ class Story {
 		this.buttonsBox.html("");
 		this.messageBox.html("");
 
+		let gameState = GameManager.gameState;
+
 		switch (this.currentAction.type) {
 			case "dialog":
 				this.messageBox.html(this.currentAction.message);
@@ -108,6 +110,26 @@ class Story {
 				} else {
 					this.parsingError(`Invalid Health change. Operation was ${this.currentAction.change}`);
 				}
+				this.nextAction();
+				break;
+
+			case "setFlag":
+				gameState.flags[this.currentAction.name] = this.currentAction.value;
+				this.nextAction();
+				break;
+
+			case "readFlag":
+				if (gameState.flags[this.currentAction.name] === undefined) {
+					this.parsingError(`Flag "${this.currentAction.name}" was not yet set. Story will fire onFalse event`);
+				}
+				if (gameState.flags[this.currentAction.name] == true){
+					//onTrue
+					this.currentAction.nextEvent = this.currentAction.onTrue;
+				}
+				else{
+					//onFalse
+					this.currentAction.nextEvent = this.currentAction.onFalse;
+				} 
 				this.nextAction();
 				break;
 			default:
@@ -150,7 +172,7 @@ class Story {
 		console.log(`%c[Story Parsing] ${message}   %cEvent id: ${eventId}`, 'color: #bf1d00', "color: #0056ba");
 	}
 
-	destroy(){
+	destroy() {
 		this.parentContainer.html("");
 		this.parentContainer.hide();
 	}

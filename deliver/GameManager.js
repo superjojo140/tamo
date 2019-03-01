@@ -126,6 +126,7 @@ var GameManager = /** @class */ (function () {
         if (!gameState) {
             gameState = GameManager.ressources.gameState;
         }
+        GameManager.gameState = gameState;
         //Load Story
         var storyPath = "data/storyData/" + gameState.currentStory + ".json";
         if (GameManager.story) {

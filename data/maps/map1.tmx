@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="8" height="8" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="13">
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="8" height="8" tilewidth="16" tileheight="16" infinite="0" nextobjectid="14">
  <tileset firstgid="1" source="Kenney RPG Tiles.tsx"/>
- <layer id="2" name="Background" width="8" height="8">
+ <layer name="Background" width="8" height="8">
   <data encoding="csv">
 6,6,6,6,6,6,6,6,
 6,6,6,6,6,6,6,6,
@@ -13,7 +13,7 @@
 6,6,6,6,6,6,6,6
 </data>
  </layer>
- <layer id="3" name="Foreground" width="8" height="8">
+ <layer name="Foreground" width="8" height="8">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,
 0,0,0,676,677,0,0,0,
@@ -25,18 +25,23 @@
 61,61,61,62,0,0,0,0
 </data>
  </layer>
- <objectgroup id="4" name="Trigger">
+ <objectgroup name="Trigger">
   <object id="6" type="Trigger" gid="472" x="64.1364" y="48.0909" width="16" height="16">
    <properties>
     <property name="event" type="int" value="4"/>
    </properties>
   </object>
   <object id="11" gid="403" x="28" y="68" width="16" height="16"/>
+  <object id="13" type="Trigger" gid="130" x="94.7273" y="126.909" width="16" height="16">
+   <properties>
+    <property name="event" type="int" value="7"/>
+   </properties>
+  </object>
  </objectgroup>
- <objectgroup id="5" name="Character">
+ <objectgroup name="Character">
   <object id="9" type="character" gid="1765" x="16.5455" y="80.5455" width="16" height="16"/>
  </objectgroup>
- <layer id="6" name="Overlay" width="8" height="8">
+ <layer name="Overlay" width="8" height="8">
   <data encoding="csv">
 1035,0,543,619,620,0,0,537,
 0,588,0,0,0,0,588,0,
@@ -48,7 +53,7 @@
 0,0,653,0,0,646,0,646
 </data>
  </layer>
- <layer id="7" name="Collision" width="8" height="8" opacity="0.66">
+ <layer name="Collision" width="8" height="8" opacity="0.66">
   <data encoding="csv">
 0,0,0,1258,1258,0,0,0,
 0,0,0,1258,1258,0,0,0,
