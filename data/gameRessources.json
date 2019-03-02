@@ -1,9 +1,11 @@
 {
     "gameState": {
         "currentMap": "map1",
-        "currentStory" : "testStory",
-        "accessableTiles": ["bigSquare"],
-        "flags":[]
+        "currentStory": "testStory",
+        "accessableTiles": [
+            "bigSquare"
+        ],
+        "flags": []
     },
     "tetrisTiles": {
         "bigSquare": {
@@ -13,6 +15,23 @@
                     1
                 ],
                 [
+                    1,
+                    1
+                ]
+            ],
+            "color": "#abcdef",
+            "borderColor": "#123456",
+            "hitsToDestroy": 1
+        },
+        "fireBrick": {
+            "tiles": [
+                [
+                    0,
+                    1,
+                    0
+                ],
+                [
+                    1,
                     1,
                     1
                 ]

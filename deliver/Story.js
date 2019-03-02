@@ -22,23 +22,39 @@ var Story = /** @class */ (function () {
                 if (storyData.information.startEvent) {
                     thisStory.currentEventId = storyData.information.startEvent;
                     thisStory.currentAction = thisStory.actions[thisStory.currentEventId];
-                    thisStory.showAction();
+                    thisStory.executeCurrentAction();
                 }
             }
         });
     }
     Story.prototype.nextAction = function () {
-        if (this.currentAction.nextEvent != Story.END && this.currentAction.nextEvent) {
-            this.currentEventId = this.currentAction.nextEvent;
-            this.currentAction = this.actions[this.currentEventId];
-            this.showAction();
+        if (this.currentAction.nextEvent) {
+            this.showEvent(this.currentAction.nextEvent);
         }
         else {
+            this.parsingError("Can't find nextEvent at this Storyitem");
+        }
+    };
+    //Shows event with the given eventId. If eventId is "end" nothing happens except firing optional callback function
+    Story.prototype.showEvent = function (eventId, callOnFinish) {
+        if (callOnFinish) {
+            this.callOnFinish = callOnFinish;
+        }
+        if (typeof eventId == "number") {
+            //Numeric event id -> Load event
+            this.currentEventId = eventId;
+            this.currentAction = this.actions[this.currentEventId];
+            this.executeCurrentAction();
+        }
+        else if (eventId == "end") {
             this.hideStoryElements();
             //Call Callback function
             if (this.callOnFinish) {
                 this.callOnFinish();
             }
+        }
+        else {
+            this.parsingError("Can't show action because the id is not a number." + eventId, eventId);
         }
     };
     Story.prototype.hideStoryElements = function () {
@@ -47,18 +63,18 @@ var Story = /** @class */ (function () {
     Story.prototype.showStoryElements = function () {
         this.parentContainer.fadeIn();
     };
-    Story.prototype.showAction = function () {
+    Story.prototype.executeCurrentAction = function () {
         this.showStoryElements();
         this.buttonsBox.html("");
         this.messageBox.html("");
         var gameState = GameManager.gameState;
+        var myStory = this;
         switch (this.currentAction.type) {
             case "dialog":
                 this.messageBox.html(this.currentAction.message);
                 this.iconBox.attr("src", "data/assets/" + this.currentAction.icon + ".png");
                 this.buttonsBox.html("<button class='nextButton rpgButton'>Weiter</button>");
-                var myStory_1 = this;
-                $(".nextButton").click(function () { return myStory_1.nextAction(); });
+                $(".nextButton").click(function () { return myStory.nextAction(); });
                 break;
             case "decision":
                 this.buttonsBox.html("");
@@ -92,13 +108,24 @@ var Story = /** @class */ (function () {
                 }
                 if (gameState.flags[this.currentAction.name] == true) {
                     //onTrue
-                    this.currentAction.nextEvent = this.currentAction.onTrue;
+                    this.showEvent(this.currentAction.onTrue);
                 }
                 else {
                     //onFalse
-                    this.currentAction.nextEvent = this.currentAction.onFalse;
+                    this.showEvent(this.currentAction.onFalse);
                 }
+                break;
+            case "addTile":
+                gameState.accessableTiles.push(this.currentAction.name);
                 this.nextAction();
+                break;
+            case "startBattle":
+                var opponent = this.currentAction.opponent;
+                var onWinEvent_1 = this.currentAction.onWin;
+                var onLooseEvent_1 = this.currentAction.onLoose;
+                var onWin = function () { myStory.showEvent(onWinEvent_1); };
+                var onLoose = function () { myStory.showEvent(onLooseEvent_1); };
+                GameManager.prepareBattle(opponent, onWin, onLoose);
                 break;
             default:
                 this.parsingError("Not known Event: " + this.currentAction.type);
@@ -110,7 +137,7 @@ var Story = /** @class */ (function () {
             var decisionId = $(this).attr("data-decision-id");
             var nextEvent = myStory.currentAction.options[decisionId].nextEvent;
             myStory.currentAction = myStory.actions[nextEvent];
-            myStory.showAction();
+            myStory.executeCurrentAction();
         });
     };
     Story.prototype.setHealth = function (health) {
@@ -120,12 +147,6 @@ var Story = /** @class */ (function () {
     };
     Story.prototype.setHealthRelative = function (health) {
         return this.setHealth(this.health + health);
-    };
-    Story.prototype.showEvent = function (eventId, callOnFinish) {
-        this.currentEventId = eventId;
-        this.currentAction = this.actions[this.currentEventId];
-        this.callOnFinish = callOnFinish;
-        this.showAction();
     };
     Story.prototype.parsingError = function (message, eventId) {
         if (!eventId) {

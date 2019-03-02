@@ -7,7 +7,7 @@
 	"actions": {
 		"0": {
 			"type": "dialog",
-			"nextEvent": "1",
+			"nextEvent": 1,
 			"message": "Hallo mein Freund. Herzlich willkommen in RPG-City.",
 			"icon": "old_man"
 		},
@@ -32,7 +32,7 @@
 		"4": {
 			"type": "dialog",
 			"nextEvent": 5,
-			"message": "Ein knisterndes Lagerfeuer. Hier muss vor kurzem noch jemand gewesen sein...",
+			"message": "Ein knisterndes Lagerfeuer. Das kann dich in der Nacht wärmen...",
 			"icon": "hero"
 		},
 		"5": {
@@ -50,14 +50,37 @@
 		},
 		"8": {
 			"type": "dialog",
-			"nextEvent": "end",
-			"message": "Du hast das wärmende Feuer schon gefunden",
+			"nextEvent": 10,
+			"message": "Sehr gut. Du hast das wärmende Feuer gefunden. Als Belohnung erhälst du ein neues Tetris Tile",
 			"icon": "old_man"
 		},
 		"9": {
 			"type": "dialog",
 			"nextEvent": "end",
-			"message": "Kannst du villeicht irgendwo etwas wärmendes finden?",
+			"message": "Schlafen, das klingt gut. Aber es ist kalt in den Nächten hier. Kannst du villeicht irgendwo etwas Wärmendes finden?",
+			"icon": "old_man"
+		},
+		"10": {
+			"type": "addTile",
+			"nextEvent": "end",
+			"name": "fireBrick"
+		},
+		"11": {
+			"type": "startBattle",
+			"opponent": "easyMike",
+			"onWin": 12,
+			"onLoose": 13
+		},
+		"12": {
+			"type": "dialog",
+			"nextEvent": "end",
+			"message": "Du hast gewonnen",
+			"icon": "old_man"
+		},
+		"13": {
+			"type": "dialog",
+			"nextEvent": "end",
+			"message": "Du hast verloren",
 			"icon": "old_man"
 		}
 	}

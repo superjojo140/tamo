@@ -176,6 +176,11 @@ var GameManager = /** @class */ (function () {
         gameState.currentStory = story;
         GameManager.loadGame(gameState);
     };
+    GameManager.prepareBattle = function (opponent, onWin, onLoose) {
+        //start Containerbuilder with gameState.accesableTiles
+        //startBattle with win and loose events
+        onWin();
+    };
     GameManager.startBattle = function () {
         /*
         let tcn = myContainerBuilder.tetrisContainer;

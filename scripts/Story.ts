@@ -43,7 +43,7 @@ class Story {
 				if (storyData.information.startEvent) {
 					thisStory.currentEventId = storyData.information.startEvent;
 					thisStory.currentAction = thisStory.actions[thisStory.currentEventId];
-					thisStory.showAction();
+					thisStory.executeCurrentAction();
 				}
 			}
 		});
@@ -54,12 +54,27 @@ class Story {
 	}
 
 	nextAction() {
-		if (this.currentAction.nextEvent != Story.END && this.currentAction.nextEvent) {
-			this.currentEventId = this.currentAction.nextEvent;
-			this.currentAction = this.actions[this.currentEventId];
-			this.showAction();
+		if (this.currentAction.nextEvent) {
+			this.showEvent(this.currentAction.nextEvent);
 		}
 		else {
+			this.parsingError("Can't find nextEvent at this Storyitem");
+		}
+	}
+
+	//Shows event with the given eventId. If eventId is "end" nothing happens except firing optional callback function
+	showEvent(eventId: string | number, callOnFinish?: Function) {
+		if (callOnFinish){
+			this.callOnFinish = callOnFinish;
+		}
+
+		if (typeof eventId == "number") {
+			//Numeric event id -> Load event
+			this.currentEventId = eventId;
+			this.currentAction = this.actions[this.currentEventId];
+			this.executeCurrentAction();
+		}
+		else if (eventId == "end") {
 			this.hideStoryElements();
 			//Call Callback function
 			if (this.callOnFinish) {
@@ -67,6 +82,10 @@ class Story {
 				this.callOnFinish();
 			}
 		}
+		else {
+			this.parsingError("Can't show action because the id is not a number." + eventId,eventId);
+		}
+
 	}
 
 	hideStoryElements() {
@@ -77,19 +96,19 @@ class Story {
 		this.parentContainer.fadeIn();
 	}
 
-	showAction() {
+	executeCurrentAction() {
 		this.showStoryElements();
 		this.buttonsBox.html("");
 		this.messageBox.html("");
 
 		let gameState = GameManager.gameState;
+		let myStory = this;
 
 		switch (this.currentAction.type) {
 			case "dialog":
 				this.messageBox.html(this.currentAction.message);
 				this.iconBox.attr("src", "data/assets/" + this.currentAction.icon + ".png");
 				this.buttonsBox.html("<button class='nextButton rpgButton'>Weiter</button>");
-				let myStory = this;
 				$(".nextButton").click(() => myStory.nextAction());
 				break;
 			case "decision":
@@ -122,16 +141,33 @@ class Story {
 				if (gameState.flags[this.currentAction.name] === undefined) {
 					this.parsingError(`Flag "${this.currentAction.name}" was not yet set. Story will fire onFalse event`);
 				}
-				if (gameState.flags[this.currentAction.name] == true){
+				if (gameState.flags[this.currentAction.name] == true) {
 					//onTrue
-					this.currentAction.nextEvent = this.currentAction.onTrue;
+					this.showEvent(this.currentAction.onTrue);
 				}
-				else{
+				else {
 					//onFalse
-					this.currentAction.nextEvent = this.currentAction.onFalse;
-				} 
+					this.showEvent(this.currentAction.onFalse);
+				}
+				break;
+
+			case "addTile":
+				gameState.accessableTiles.push(this.currentAction.name);
 				this.nextAction();
 				break;
+
+			case "startBattle":
+				let opponent = this.currentAction.opponent;
+				let onWinEvent = this.currentAction.onWin;
+				let onLooseEvent = this.currentAction.onLoose;
+				let onWin = function () { myStory.showEvent(onWinEvent) };
+				let onLoose = function () { myStory.showEvent(onLooseEvent) };
+
+				GameManager.prepareBattle(opponent, onWin, onLoose);
+				break;
+
+
+
 			default:
 				this.parsingError("Not known Event: " + this.currentAction.type);
 		}
@@ -144,7 +180,7 @@ class Story {
 			let decisionId = $(this).attr("data-decision-id");
 			let nextEvent = myStory.currentAction.options[decisionId].nextEvent;
 			myStory.currentAction = myStory.actions[nextEvent];
-			myStory.showAction();
+			myStory.executeCurrentAction();
 		});
 	}
 
@@ -158,14 +194,9 @@ class Story {
 		return this.setHealth(this.health + health);
 	}
 
-	showEvent(eventId: number, callOnFinish?: Function) {
-		this.currentEventId = eventId;
-		this.currentAction = this.actions[this.currentEventId];
-		this.callOnFinish = callOnFinish;
-		this.showAction();
-	}
 
-	parsingError(message: string, eventId?: number) {
+
+	parsingError(message: string, eventId?) {
 		if (!eventId) {
 			eventId = this.currentEventId;
 		}

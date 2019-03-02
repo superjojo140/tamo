@@ -5,6 +5,7 @@ const APP_WIDTH = 1000;
 const APP_HEIGHT = 700;
 
 class GameManager {
+	
 
 
     static map: Map;
@@ -235,6 +236,12 @@ class GameManager {
         gameState.currentStory = story;
         GameManager.loadGame(gameState);
     }
+
+    static prepareBattle(opponent: any, onWin: () => void, onLoose: () => void) {
+        //start Containerbuilder with gameState.accesableTiles
+        //startBattle with win and loose events
+        onWin();
+	}
 
     static startBattle() {
         /*
