@@ -59,6 +59,24 @@
                  "width":16,
                  "x":28,
                  "y":68
+                }, 
+                {
+                 "gid":73,
+                 "height":16,
+                 "id":13,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"event",
+                         "type":"int",
+                         "value":7
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":95.75,
+                 "y":127
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -114,10 +132,10 @@
          "y":0
         }],
  "nextlayerid":8,
- "nextobjectid":13,
+ "nextobjectid":14,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.2.1",
+ "tiledversion":"1.2.2",
  "tileheight":16,
  "tilesets":[
         {
