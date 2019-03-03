@@ -20,6 +20,7 @@ class Player {
     map: Map;
     triggerInfoActive: boolean;
     triggerInfoSprite: PIXI.Sprite;
+    lastKey: string;
 
     constructor(x: number, y: number, map: Map) {
         this.triggerInfoActive = false;
@@ -43,6 +44,7 @@ class Player {
         this.sprite.scale = Player.SPRITE_SCALE;
         this.sprite.animationSpeed = 0.13;
         this.sprite.loop = true;
+        this.lastKey = "";
 
         //Load attention sign
         this.triggerInfoSprite = PIXI.Sprite.fromImage("data/assets/attention.png");
@@ -59,29 +61,33 @@ class Player {
     }
 
     keyDown(event) {
-        switch (event.key) {
-            case "ArrowUp":
-                this.vy = -1 * Player.PLAYER_SPEED;
-                this.changeDirection(Player.UP);
-                break;
-            case "ArrowDown":
-                this.vy = 1 * Player.PLAYER_SPEED;
-                this.changeDirection(Player.DOWN);
-                break;
-            case "ArrowLeft":
-                this.vx = -1 * Player.PLAYER_SPEED;
-                this.changeDirection(Player.LEFT);
-                break;
-            case "ArrowRight":
-                this.vx = 1 * Player.PLAYER_SPEED;
-                this.changeDirection(Player.RIGHT);
-                break;
-            case "x": this.checkTrigger();
-                break;
+        if (event.key != this.lastKey) {
+            this.lastKey = event.key;
+            switch (event.key) {
+                case "ArrowUp":
+                    this.vy = -1 * Player.PLAYER_SPEED;
+                    this.changeDirection(Player.UP);
+                    break;
+                case "ArrowDown":
+                    this.vy = 1 * Player.PLAYER_SPEED;
+                    this.changeDirection(Player.DOWN);
+                    break;
+                case "ArrowLeft":
+                    this.vx = -1 * Player.PLAYER_SPEED;
+                    this.changeDirection(Player.LEFT);
+                    break;
+                case "ArrowRight":
+                    this.vx = 1 * Player.PLAYER_SPEED;
+                    this.changeDirection(Player.RIGHT);
+                    break;
+                case "x": this.checkTrigger();
+                    break;
+            }
         }
     }
 
     keyUp(event) {
+        this.lastKey = "";
         switch (event.key) {
             case "ArrowUp":
                 this.vy = 0;

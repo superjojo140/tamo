@@ -20,6 +20,7 @@ var Player = /** @class */ (function () {
         this.sprite.scale = Player.SPRITE_SCALE;
         this.sprite.animationSpeed = 0.13;
         this.sprite.loop = true;
+        this.lastKey = "";
         //Load attention sign
         this.triggerInfoSprite = PIXI.Sprite.fromImage("data/assets/attention.png");
     }
@@ -33,29 +34,33 @@ var Player = /** @class */ (function () {
         }
     };
     Player.prototype.keyDown = function (event) {
-        switch (event.key) {
-            case "ArrowUp":
-                this.vy = -1 * Player.PLAYER_SPEED;
-                this.changeDirection(Player.UP);
-                break;
-            case "ArrowDown":
-                this.vy = 1 * Player.PLAYER_SPEED;
-                this.changeDirection(Player.DOWN);
-                break;
-            case "ArrowLeft":
-                this.vx = -1 * Player.PLAYER_SPEED;
-                this.changeDirection(Player.LEFT);
-                break;
-            case "ArrowRight":
-                this.vx = 1 * Player.PLAYER_SPEED;
-                this.changeDirection(Player.RIGHT);
-                break;
-            case "x":
-                this.checkTrigger();
-                break;
+        if (event.key != this.lastKey) {
+            this.lastKey = event.key;
+            switch (event.key) {
+                case "ArrowUp":
+                    this.vy = -1 * Player.PLAYER_SPEED;
+                    this.changeDirection(Player.UP);
+                    break;
+                case "ArrowDown":
+                    this.vy = 1 * Player.PLAYER_SPEED;
+                    this.changeDirection(Player.DOWN);
+                    break;
+                case "ArrowLeft":
+                    this.vx = -1 * Player.PLAYER_SPEED;
+                    this.changeDirection(Player.LEFT);
+                    break;
+                case "ArrowRight":
+                    this.vx = 1 * Player.PLAYER_SPEED;
+                    this.changeDirection(Player.RIGHT);
+                    break;
+                case "x":
+                    this.checkTrigger();
+                    break;
+            }
         }
     };
     Player.prototype.keyUp = function (event) {
+        this.lastKey = "";
         switch (event.key) {
             case "ArrowUp":
                 this.vy = 0;
