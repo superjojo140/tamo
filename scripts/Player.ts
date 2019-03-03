@@ -144,15 +144,15 @@ class Player {
         let yTiles = originalY / this.map.finalTileHeight;
         yTiles = Math.round(yTiles);
 
-
-        if (!this.triggerInfoActive && this.map.eventTriggerMap[yTiles][xTiles]) {
+        let eventObject = this.map.eventTriggerMap[yTiles][xTiles];
+        if (eventObject && !this.triggerInfoActive && eventObject.event && eventObject.visible) {
             console.log("Heres a trigger");
             this.triggerInfoSprite.x = xTiles * this.map.finalTileWidth + 10;
             this.triggerInfoSprite.y = yTiles * this.map.finalTileHeight + 10 - this.triggerInfoSprite.height;
             this.map.pixiContainer.addChild(this.triggerInfoSprite);
             this.triggerInfoActive = true;
         }
-        else if (this.triggerInfoActive && !this.map.eventTriggerMap[yTiles][xTiles]) {
+        else if (this.triggerInfoActive && (!eventObject || !eventObject.event || !eventObject.visible)) {
             console.log("You leaved the trigger");
             this.map.pixiContainer.removeChild(this.triggerInfoSprite);
             this.triggerInfoActive = false;
@@ -169,11 +169,11 @@ class Player {
         let yTiles = originalY / this.map.finalTileHeight;
         yTiles = Math.round(yTiles);
 
-        let eventId = this.map.eventTriggerMap[yTiles][xTiles];
-        if (eventId) {
+        let eventObject = this.map.eventTriggerMap[yTiles][xTiles];
+        if (eventObject.event && eventObject.visible) {
             this.map.pause();
             let map = this.map;
-            GameManager.story.showEvent(eventId, () => map.isPaused = false);
+            GameManager.story.showEvent(eventObject.event, () => map.isPaused = false);
         }
     }
 

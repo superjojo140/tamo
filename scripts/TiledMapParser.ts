@@ -63,14 +63,22 @@ class TiledMapParser {
               sprite.x = xTiles * map.finalTileWidth;
               sprite.y = yTiles * map.finalTileHeight;
 
+              //Set sprites visibility
+              sprite.visible = co.visible;
+
+              //generate object for eventTriggerMap
+              let eventObject = { sprite: sprite, visible: co.visible, event:undefined };
+
               //set event id in maps eventMap
               if (co.properties) {
                 for (let i in co.properties) {
                   if (co.properties[i].name == "event") {
-                    map.eventTriggerMap[yTiles][xTiles] = co.properties[i].value;
+                     eventObject.event = co.properties[i].value;
                   }
                 }
               }
+
+              map.eventTriggerMap[yTiles][xTiles] = eventObject;
 
               container.addChild(sprite);
             }

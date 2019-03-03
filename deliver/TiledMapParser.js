@@ -49,14 +49,19 @@ var TiledMapParser = /** @class */ (function () {
                             //Set sprites coordinates
                             sprite.x = xTiles * map.finalTileWidth;
                             sprite.y = yTiles * map.finalTileHeight;
+                            //Set sprites visibility
+                            sprite.visible = co.visible;
+                            //generate object for eventTriggerMap
+                            var eventObject = { sprite: sprite, visible: co.visible, event: undefined };
                             //set event id in maps eventMap
                             if (co.properties) {
                                 for (var i_1 in co.properties) {
                                     if (co.properties[i_1].name == "event") {
-                                        map.eventTriggerMap[yTiles][xTiles] = co.properties[i_1].value;
+                                        eventObject.event = co.properties[i_1].value;
                                     }
                                 }
                             }
+                            map.eventTriggerMap[yTiles][xTiles] = eventObject;
                             container.addChild(sprite);
                         }
                     }

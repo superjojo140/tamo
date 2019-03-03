@@ -105,14 +105,15 @@ var Player = /** @class */ (function () {
         var originalY = this.sprite.y;
         var yTiles = originalY / this.map.finalTileHeight;
         yTiles = Math.round(yTiles);
-        if (!this.triggerInfoActive && this.map.eventTriggerMap[yTiles][xTiles]) {
+        var eventObject = this.map.eventTriggerMap[yTiles][xTiles];
+        if (eventObject && !this.triggerInfoActive && eventObject.event && eventObject.visible) {
             console.log("Heres a trigger");
             this.triggerInfoSprite.x = xTiles * this.map.finalTileWidth + 10;
             this.triggerInfoSprite.y = yTiles * this.map.finalTileHeight + 10 - this.triggerInfoSprite.height;
             this.map.pixiContainer.addChild(this.triggerInfoSprite);
             this.triggerInfoActive = true;
         }
-        else if (this.triggerInfoActive && !this.map.eventTriggerMap[yTiles][xTiles]) {
+        else if (this.triggerInfoActive && (!eventObject || !eventObject.event || !eventObject.visible)) {
             console.log("You leaved the trigger");
             this.map.pixiContainer.removeChild(this.triggerInfoSprite);
             this.triggerInfoActive = false;
@@ -126,11 +127,11 @@ var Player = /** @class */ (function () {
         var originalY = this.sprite.y;
         var yTiles = originalY / this.map.finalTileHeight;
         yTiles = Math.round(yTiles);
-        var eventId = this.map.eventTriggerMap[yTiles][xTiles];
-        if (eventId) {
+        var eventObject = this.map.eventTriggerMap[yTiles][xTiles];
+        if (eventObject.event && eventObject.visible) {
             this.map.pause();
             var map_1 = this.map;
-            GameManager.story.showEvent(eventId, function () { return map_1.isPaused = false; });
+            GameManager.story.showEvent(eventObject.event, function () { return map_1.isPaused = false; });
         }
     };
     Player.UP = 0;
