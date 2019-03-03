@@ -8,7 +8,7 @@ var TiledMapParser = /** @class */ (function () {
         var map = new Map();
         map.pixiContainer = new PIXI.Container();
         //Load Spritesheet
-        var SPRITE_SCALE = new PIXI.Point(3, 3);
+        var SPRITE_SCALE = new PIXI.Point(4, 4);
         map.finalTileWidth = spritesheet.tileWidth * SPRITE_SCALE.x;
         map.finalTileHeight = spritesheet.tileHeight * SPRITE_SCALE.y;
         map.spritesheet = spritesheet;

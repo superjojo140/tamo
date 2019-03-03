@@ -9,7 +9,7 @@ class TiledMapParser {
     let map: Map = new Map();
     map.pixiContainer = new PIXI.Container();
     //Load Spritesheet
-    let SPRITE_SCALE: PIXI.Point = new PIXI.Point(3, 3);
+    let SPRITE_SCALE: PIXI.Point = new PIXI.Point(4, 4);
     map.finalTileWidth = spritesheet.tileWidth * SPRITE_SCALE.x;
     map.finalTileHeight = spritesheet.tileHeight * SPRITE_SCALE.y;
     map.spritesheet = spritesheet;

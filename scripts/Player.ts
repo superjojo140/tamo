@@ -9,7 +9,7 @@ class Player {
 
     static SPRITE_WIDTH: number = 96 / 3;
     static SPRITE_HEIGHT: number = 144 / 4;
-    static SPRITE_SCALE: PIXI.Point = new PIXI.Point(1.2, 1.2);
+    static SPRITE_SCALE: PIXI.Point = new PIXI.Point(1.5, 1.5);
     static PLAYER_SPEED = 3;
 
 
@@ -170,7 +170,7 @@ class Player {
         yTiles = Math.round(yTiles);
 
         let eventObject = this.map.eventTriggerMap[yTiles][xTiles];
-        if (eventObject.event && eventObject.visible) {
+        if (eventObject && eventObject.event && eventObject.visible) {
             this.map.pause();
             let map = this.map;
             GameManager.story.showEvent(eventObject.event, () => map.isPaused = false);

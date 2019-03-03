@@ -128,7 +128,7 @@ var Player = /** @class */ (function () {
         var yTiles = originalY / this.map.finalTileHeight;
         yTiles = Math.round(yTiles);
         var eventObject = this.map.eventTriggerMap[yTiles][xTiles];
-        if (eventObject.event && eventObject.visible) {
+        if (eventObject && eventObject.event && eventObject.visible) {
             this.map.pause();
             var map_1 = this.map;
             GameManager.story.showEvent(eventObject.event, function () { return map_1.isPaused = false; });
@@ -141,7 +141,7 @@ var Player = /** @class */ (function () {
     Player.STOP = 4;
     Player.SPRITE_WIDTH = 96 / 3;
     Player.SPRITE_HEIGHT = 144 / 4;
-    Player.SPRITE_SCALE = new PIXI.Point(1.2, 1.2);
+    Player.SPRITE_SCALE = new PIXI.Point(1.5, 1.5);
     Player.PLAYER_SPEED = 3;
     return Player;
 }());
