@@ -64,7 +64,6 @@ var Story = /** @class */ (function () {
         this.parentContainer.fadeIn();
     };
     Story.prototype.executeCurrentAction = function () {
-        this.showStoryElements();
         this.buttonsBox.html("");
         this.messageBox.html("");
         var gameState = GameManager.gameState;
@@ -75,6 +74,13 @@ var Story = /** @class */ (function () {
                 this.iconBox.attr("src", "data/assets/" + this.currentAction.icon + ".png");
                 this.buttonsBox.html("<button class='nextButton rpgButton'>Weiter</button>");
                 $(".nextButton").click(function () { return myStory.nextAction(); });
+                $(document).on("keydown.nextStoryAction", function (event) {
+                    if (event.key == "Enter") {
+                        $(document).off("keydown.nextStoryAction");
+                        myStory.nextAction();
+                    }
+                });
+                this.showStoryElements();
                 break;
             case "decision":
                 this.buttonsBox.html("");
@@ -85,6 +91,7 @@ var Story = /** @class */ (function () {
                     this.buttonsBox.append(currentButton);
                 }
                 this.registerButtonEvents();
+                this.showStoryElements();
                 break;
             case "health":
                 if (this.currentAction.change == "absolute") {
@@ -126,6 +133,21 @@ var Story = /** @class */ (function () {
                 var onWin = function () { myStory.showEvent(onWinEvent_1); };
                 var onLoose = function () { myStory.showEvent(onLooseEvent_1); };
                 GameManager.prepareBattle(opponent, onWin, onLoose);
+                break;
+            case "objectState":
+                var visible = this.currentAction.visible;
+                var objectName = this.currentAction.name;
+                var eventMap = GameManager.map.eventTriggerMap;
+                for (var row in eventMap) {
+                    for (var column in eventMap[row]) {
+                        var eventObject = eventMap[row][column];
+                        if (eventObject && eventObject.name == objectName) {
+                            eventObject.visible = visible;
+                            eventObject.sprite.visible = visible;
+                        }
+                    }
+                }
+                this.nextAction();
                 break;
             default:
                 this.parsingError("Not known Event: " + this.currentAction.type);

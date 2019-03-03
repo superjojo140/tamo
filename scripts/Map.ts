@@ -8,7 +8,7 @@ class Map {
     collisionBitMap: boolean[][];
     finalTileWidth: number;
     finalTileHeight: number;
-    eventTriggerMap: {visible:boolean,event:number,sprite:PIXI.Sprite}[][];
+    eventTriggerMap: {visible:boolean,event:number,sprite:PIXI.Sprite, name:string}[][];
     isPaused: boolean;
 
     destroy() {

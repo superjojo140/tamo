@@ -82,6 +82,16 @@
 			"nextEvent": "end",
 			"message": "Du hast verloren",
 			"icon": "old_man"
+		},"14": {
+			"type": "objectState",
+			"visible": false,
+			"nextEvent": "end",
+			"name": "fruits"
+		},"15": {
+			"type": "objectState",
+			"visible": true,
+			"nextEvent": "end",
+			"name": "fruits"
 		}
 	}
 }

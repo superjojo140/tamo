@@ -52,7 +52,7 @@ var TiledMapParser = /** @class */ (function () {
                             //Set sprites visibility
                             sprite.visible = co.visible;
                             //generate object for eventTriggerMap
-                            var eventObject = { sprite: sprite, visible: co.visible, event: undefined };
+                            var eventObject = { sprite: sprite, visible: co.visible, event: undefined, name: co.name };
                             //set event id in maps eventMap
                             if (co.properties) {
                                 for (var i_1 in co.properties) {

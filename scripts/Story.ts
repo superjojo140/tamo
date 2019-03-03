@@ -64,7 +64,7 @@ class Story {
 
 	//Shows event with the given eventId. If eventId is "end" nothing happens except firing optional callback function
 	showEvent(eventId: string | number, callOnFinish?: Function) {
-		if (callOnFinish){
+		if (callOnFinish) {
 			this.callOnFinish = callOnFinish;
 		}
 
@@ -83,7 +83,7 @@ class Story {
 			}
 		}
 		else {
-			this.parsingError("Can't show action because the id is not a number." + eventId,eventId);
+			this.parsingError("Can't show action because the id is not a number." + eventId, eventId);
 		}
 
 	}
@@ -97,7 +97,7 @@ class Story {
 	}
 
 	executeCurrentAction() {
-		this.showStoryElements();
+
 		this.buttonsBox.html("");
 		this.messageBox.html("");
 
@@ -110,6 +110,13 @@ class Story {
 				this.iconBox.attr("src", "data/assets/" + this.currentAction.icon + ".png");
 				this.buttonsBox.html("<button class='nextButton rpgButton'>Weiter</button>");
 				$(".nextButton").click(() => myStory.nextAction());
+				$(document).on("keydown.nextStoryAction", (event) => {
+					if (event.key == "Enter") {
+						$(document).off("keydown.nextStoryAction");
+						myStory.nextAction();
+					}
+				});
+				this.showStoryElements();
 				break;
 			case "decision":
 				this.buttonsBox.html("");
@@ -120,6 +127,7 @@ class Story {
 					this.buttonsBox.append(currentButton);
 				}
 				this.registerButtonEvents();
+				this.showStoryElements();
 				break;
 			case "health":
 				if (this.currentAction.change == "absolute") {
@@ -165,6 +173,25 @@ class Story {
 
 				GameManager.prepareBattle(opponent, onWin, onLoose);
 				break;
+
+			case "objectState":
+				let visible = this.currentAction.visible;
+				let objectName = this.currentAction.name;
+
+				let eventMap = GameManager.map.eventTriggerMap;
+				for (let row in eventMap) {
+					for (let column in eventMap[row]) {
+						let eventObject = eventMap[row][column];
+						if (eventObject && eventObject.name == objectName) {
+							eventObject.visible = visible;
+							eventObject.sprite.visible = visible;
+						}
+					}
+				}
+				this.nextAction();
+
+				break;
+
 
 
 
