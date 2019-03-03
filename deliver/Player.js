@@ -107,14 +107,14 @@ var Player = /** @class */ (function () {
         yTiles = Math.round(yTiles);
         var eventObject = this.map.eventTriggerMap[yTiles][xTiles];
         if (eventObject && !this.triggerInfoActive && eventObject.event && eventObject.visible) {
-            console.log("Heres a trigger");
+            //console.log("Heres a trigger");
             this.triggerInfoSprite.x = xTiles * this.map.finalTileWidth + 10;
             this.triggerInfoSprite.y = yTiles * this.map.finalTileHeight + 10 - this.triggerInfoSprite.height;
             this.map.pixiContainer.addChild(this.triggerInfoSprite);
             this.triggerInfoActive = true;
         }
         else if (this.triggerInfoActive && (!eventObject || !eventObject.event || !eventObject.visible)) {
-            console.log("You leaved the trigger");
+            //console.log("You leaved the trigger");
             this.map.pixiContainer.removeChild(this.triggerInfoSprite);
             this.triggerInfoActive = false;
         }

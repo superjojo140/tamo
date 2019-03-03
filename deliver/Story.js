@@ -136,6 +136,7 @@ var Story = /** @class */ (function () {
                 break;
             case "objectState":
                 var visible = this.currentAction.visible;
+                var solid = this.currentAction.solid;
                 var objectName = this.currentAction.name;
                 var eventMap = GameManager.map.eventTriggerMap;
                 for (var row in eventMap) {
@@ -144,6 +145,7 @@ var Story = /** @class */ (function () {
                         if (eventObject && eventObject.name == objectName) {
                             eventObject.visible = visible;
                             eventObject.sprite.visible = visible;
+                            GameManager.map.collisionBitMap[row][column] = solid;
                         }
                     }
                 }

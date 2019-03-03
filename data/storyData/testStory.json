@@ -86,12 +86,14 @@
 			"type": "objectState",
 			"visible": false,
 			"nextEvent": "end",
-			"name": "fruits"
+			"name": "fruits",
+			"solid" : false
 		},"15": {
 			"type": "objectState",
 			"visible": true,
 			"nextEvent": "end",
-			"name": "fruits"
+			"name": "fruits",
+			"solid" : true
 		}
 	}
 }

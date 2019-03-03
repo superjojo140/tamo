@@ -176,6 +176,7 @@ class Story {
 
 			case "objectState":
 				let visible = this.currentAction.visible;
+				let solid = this.currentAction.solid;
 				let objectName = this.currentAction.name;
 
 				let eventMap = GameManager.map.eventTriggerMap;
@@ -185,12 +186,15 @@ class Story {
 						if (eventObject && eventObject.name == objectName) {
 							eventObject.visible = visible;
 							eventObject.sprite.visible = visible;
+							GameManager.map.collisionBitMap[row][column] = solid;
 						}
 					}
 				}
 				this.nextAction();
 
 				break;
+
+				
 
 
 
