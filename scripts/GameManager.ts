@@ -5,7 +5,7 @@ const APP_WIDTH = 1000;
 const APP_HEIGHT = 700;
 
 class GameManager {
-	
+
 
 
     static map: Map;
@@ -16,6 +16,8 @@ class GameManager {
 
     static ressources: any;
     static gameState: GameState;
+
+    static parallaxLayer:PIXI.Sprite[];
 
 
 
@@ -72,6 +74,37 @@ class GameManager {
         bg.drawRect(0, 0, APP_WIDTH, APP_HEIGHT);
         bg.endFill();
         menu.addChild(bg);
+
+        //generate Parallax background
+        let parallaxScale = new PIXI.Point(4.9, 4.9);
+        GameManager.parallaxLayer = [];
+
+        let back0 = PIXI.Sprite.fromImage("data/assets/parallax/layer0.png", true, PIXI.SCALE_MODES.NEAREST);
+        back0.scale = parallaxScale;
+        menu.addChild(back0);
+        GameManager.parallaxLayer.push(back0);
+
+        let back1 = PIXI.Sprite.fromImage("data/assets/parallax/layer1.png", true, PIXI.SCALE_MODES.NEAREST);
+        back1.scale = parallaxScale;
+        menu.addChild(back1);
+        GameManager.parallaxLayer.push(back1);
+
+        let back2 = PIXI.Sprite.fromImage("data/assets/parallax/layer2.png", true, PIXI.SCALE_MODES.NEAREST);
+        back2.scale = parallaxScale;
+        menu.addChild(back2);
+        GameManager.parallaxLayer.push(back2);
+
+        let back3 = PIXI.Sprite.fromImage("data/assets/parallax/layer4.png", true, PIXI.SCALE_MODES.NEAREST);
+        back3.scale = parallaxScale;
+        menu.addChild(back3);
+        GameManager.parallaxLayer.push(back3);
+
+        $("#pixiCanvas").mousemove(GameManager.moveParallax);
+
+
+
+
+
 
         //Generate Buttons
         let newGameButton = PIXI.Sprite.fromImage("data/assets/ui/button_new-game.png");
@@ -190,7 +223,7 @@ class GameManager {
 
         TiledMapParser.loadMap(mapPath, SPRITESHEET, storyPath, {}, function (map) { //TODO Remove story and GameState from Map
             //TODO Add Ticker and keyListener
-
+            $("#pixiCanvas").off("mousemove");
             GameManager.map = map;
             GameManager.pixiApp.ticker.start();
             GameManager.pixiApp.stage.addChild(map.pixiContainer);
@@ -241,7 +274,7 @@ class GameManager {
         //start Containerbuilder with gameState.accesableTiles
         //startBattle with win and loose events
         onWin();
-	}
+    }
 
     static startBattle() {
         /*
@@ -268,6 +301,19 @@ class GameManager {
     }
 
 
+    static moveParallax(event){
+        let x = event.offsetX;
+        let percent = - x / APP_WIDTH;
+        
+
+        for(let i in GameManager.parallaxLayer){
+            let newPos = percent * (GameManager.parallaxLayer[i].width - APP_WIDTH);
+            GameManager.parallaxLayer[i].x =  Number(i) / 3 * newPos;
+        }
+
+    }
+
+
 
 }
 
@@ -276,5 +322,5 @@ interface GameState {
     currentMap: string;
     currentStory: string;
     accessableTiles: string[];
-    flags:{[flagName: string]: boolean;};
+    flags: { [flagName: string]: boolean; };
 }

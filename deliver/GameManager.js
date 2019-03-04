@@ -47,6 +47,26 @@ var GameManager = /** @class */ (function () {
         bg.drawRect(0, 0, APP_WIDTH, APP_HEIGHT);
         bg.endFill();
         menu.addChild(bg);
+        //generate Parallax background
+        var parallaxScale = new PIXI.Point(4.9, 4.9);
+        GameManager.parallaxLayer = [];
+        var back0 = PIXI.Sprite.fromImage("data/assets/parallax/layer0.png", true, PIXI.SCALE_MODES.NEAREST);
+        back0.scale = parallaxScale;
+        menu.addChild(back0);
+        GameManager.parallaxLayer.push(back0);
+        var back1 = PIXI.Sprite.fromImage("data/assets/parallax/layer1.png", true, PIXI.SCALE_MODES.NEAREST);
+        back1.scale = parallaxScale;
+        menu.addChild(back1);
+        GameManager.parallaxLayer.push(back1);
+        var back2 = PIXI.Sprite.fromImage("data/assets/parallax/layer2.png", true, PIXI.SCALE_MODES.NEAREST);
+        back2.scale = parallaxScale;
+        menu.addChild(back2);
+        GameManager.parallaxLayer.push(back2);
+        var back3 = PIXI.Sprite.fromImage("data/assets/parallax/layer4.png", true, PIXI.SCALE_MODES.NEAREST);
+        back3.scale = parallaxScale;
+        menu.addChild(back3);
+        GameManager.parallaxLayer.push(back3);
+        $("#pixiCanvas").mousemove(GameManager.moveParallax);
         //Generate Buttons
         var newGameButton = PIXI.Sprite.fromImage("data/assets/ui/button_new-game.png");
         newGameButton.x = 200;
@@ -140,6 +160,7 @@ var GameManager = /** @class */ (function () {
         var mapPath = "data/maps/" + gameState.currentMap + ".json";
         TiledMapParser.loadMap(mapPath, SPRITESHEET, storyPath, {}, function (map) {
             //TODO Add Ticker and keyListener
+            $("#pixiCanvas").off("mousemove");
             GameManager.map = map;
             GameManager.pixiApp.ticker.start();
             GameManager.pixiApp.stage.addChild(map.pixiContainer);
@@ -200,6 +221,14 @@ var GameManager = /** @class */ (function () {
         GameManager.pixiApp.ticker.remove(GameManager.triggerMapStep);
         $(document).off("keyup.battle");
         $(document).off("keydown.battle");
+    };
+    GameManager.moveParallax = function (event) {
+        var x = event.offsetX;
+        var percent = -x / APP_WIDTH;
+        for (var i in GameManager.parallaxLayer) {
+            var newPos = percent * (GameManager.parallaxLayer[i].width - APP_WIDTH);
+            GameManager.parallaxLayer[i].x = Number(i) / 3 * newPos;
+        }
     };
     GameManager.myCanvas = $("#pixiCanvas")[0];
     return GameManager;
