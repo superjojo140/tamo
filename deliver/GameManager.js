@@ -200,31 +200,36 @@ var GameManager = /** @class */ (function () {
     GameManager.prepareBattle = function (opponent, onWin, onLoose) {
         //start Containerbuilder with gameState.accesableTiles
         var opponentTetrisContainer = TetrisContainer.loadContainerByName(opponent);
-        var containerBuilder = new ContainerBuilder(GameManager.gameState.accessableTiles, function (ownTetrisContainer) {
+        GameManager.containerBuilder = new ContainerBuilder(GameManager.gameState.accessableTiles, function (ownTetrisContainer) {
+            GameManager.pixiApp.stage.removeChild(GameManager.containerBuilder);
+            GameManager.containerBuilder.destroy();
             GameManager.startBattle(ownTetrisContainer, opponentTetrisContainer, onWin, onLoose);
         });
-        GameManager.pixiApp.stage.addChild(containerBuilder);
+        GameManager.pixiApp.stage.addChild(GameManager.containerBuilder);
         GameManager.pixiApp.ticker.remove(GameManager.triggerMapStep);
     };
     GameManager.startBattle = function (ownContainer, opponentContainer, onWin, onLoose) {
-        /*
-        let tcn = myContainerBuilder.tetrisContainer;
-        tcn.scale = new PIXI.Point(1,1);
-        myContainerBuilder.removeChild(tcn);
-        myBattle = new Battle(600,600,tcn,tc);
-        app.stage.addChild(myBattle.pixiContainer);
-        app.stage.removeChild(myContainerBuilder);
-        
-        */
+        GameManager.battle = new Battle(APP_WIDTH, APP_HEIGHT, ownContainer, opponentContainer, function (winState) {
+            GameManager.stopBattle();
+            if (winState) {
+                onWin();
+            }
+            else {
+                onLoose();
+            }
+        });
+        GameManager.pixiApp.stage.addChild(GameManager.battle.pixiContainer);
         //Register keyEvents for map
         $(document).on("keydown.battle", GameManager.battleKeyDown);
         $(document).on("keyup.battle", GameManager.battleKeyUp);
         GameManager.pixiApp.ticker.add(GameManager.triggerBattleStep);
     };
     GameManager.stopBattle = function () {
-        GameManager.pixiApp.ticker.remove(GameManager.triggerMapStep);
+        GameManager.pixiApp.ticker.remove(GameManager.triggerBattleStep);
         $(document).off("keyup.battle");
         $(document).off("keydown.battle");
+        GameManager.pixiApp.stage.removeChild(GameManager.battle.pixiContainer);
+        GameManager.battle = undefined;
         GameManager.pixiApp.ticker.add(GameManager.triggerMapStep);
     };
     GameManager.moveParallax = function (event) {

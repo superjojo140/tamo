@@ -273,23 +273,28 @@ class GameManager {
     static prepareBattle(opponent: string, onWin: () => void, onLoose: () => void) {
         //start Containerbuilder with gameState.accesableTiles
         let opponentTetrisContainer = TetrisContainer.loadContainerByName(opponent);
-        let containerBuilder = new ContainerBuilder(GameManager.gameState.accessableTiles,(ownTetrisContainer:TetrisContainer)=>{
+        GameManager.containerBuilder = new ContainerBuilder(GameManager.gameState.accessableTiles,(ownTetrisContainer:TetrisContainer)=>{
+            GameManager.pixiApp.stage.removeChild(GameManager.containerBuilder);
+            GameManager.containerBuilder.destroy();
             GameManager.startBattle(ownTetrisContainer,opponentTetrisContainer,onWin,onLoose);
         });
-        GameManager.pixiApp.stage.addChild(containerBuilder);
+        GameManager.pixiApp.stage.addChild(GameManager.containerBuilder);
         GameManager.pixiApp.ticker.remove(GameManager.triggerMapStep);
     }
 
     static startBattle(ownContainer,opponentContainer,onWin,onLoose) {
-        /*
-        let tcn = myContainerBuilder.tetrisContainer;
-        tcn.scale = new PIXI.Point(1,1);
-        myContainerBuilder.removeChild(tcn);
-        myBattle = new Battle(600,600,tcn,tc);
-        app.stage.addChild(myBattle.pixiContainer);
-        app.stage.removeChild(myContainerBuilder);
+       
+        GameManager.battle = new Battle(APP_WIDTH,APP_HEIGHT,ownContainer,opponentContainer,(winState)=>{
+            GameManager.stopBattle();
+            if(winState){
+                onWin();
+            }
+            else{
+                onLoose();
+            }
+        });
+        GameManager.pixiApp.stage.addChild(GameManager.battle.pixiContainer);  
         
-        */
 
         //Register keyEvents for map
         $(document).on("keydown.battle", GameManager.battleKeyDown);
@@ -299,9 +304,11 @@ class GameManager {
     }
 
     static stopBattle() {
-        GameManager.pixiApp.ticker.remove(GameManager.triggerMapStep);
+        GameManager.pixiApp.ticker.remove(GameManager.triggerBattleStep);
         $(document).off("keyup.battle");
         $(document).off("keydown.battle");
+        GameManager.pixiApp.stage.removeChild(GameManager.battle.pixiContainer);
+        GameManager.battle = undefined;
         GameManager.pixiApp.ticker.add(GameManager.triggerMapStep);
     }
 

@@ -2,12 +2,17 @@ var BALL_SPEED = 6;
 var OWN_PADDLE_SPEED = 6;
 var OTHER_PADDLE_SPEED = 4;
 var Battle = /** @class */ (function () {
-    function Battle(width, height, ownTetrisContainer, otherTetrisContainer) {
+    function Battle(width, height, ownTetrisContainer, otherTetrisContainer, callback) {
         this.isPaused = false;
         this.width = width;
         this.height = height;
         this.ownTetrisContainer = ownTetrisContainer;
+        this.ownTetrisContainer.scale = Battle.CONTAINER_ZOOM;
+        this.ownTetrisContainer.showGrid();
         this.otherTetrisContainer = otherTetrisContainer;
+        this.otherTetrisContainer.scale = Battle.CONTAINER_ZOOM;
+        this.otherTetrisContainer.showGrid();
+        this.callback = callback;
         this.soundOn = false;
         this.musicOn = true;
         //Create Pixi Container for displaying the Battle and its components
@@ -118,6 +123,13 @@ var Battle = /** @class */ (function () {
             if (this.ball.vx > 2) {
                 this.ball.vx -= 0.01 * delta;
             }
+            //check if someone wins
+            if (this.ownTetrisContainer.isEmpty()) {
+                this.callback(false);
+            }
+            else if (this.otherTetrisContainer.isEmpty()) {
+                this.callback(true);
+            }
         }
     };
     Battle.prototype.playSound = function (soundName) {
@@ -178,5 +190,6 @@ var Battle = /** @class */ (function () {
     Battle.PADDLE_ANGLE_FACTOR = 10;
     Battle.TETRIS_CONTAINER_MARGIN = 32;
     Battle.PADDLE_MARGIN = 15;
+    Battle.CONTAINER_ZOOM = new PIXI.Point(1, 1);
     return Battle;
 }());

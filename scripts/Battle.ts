@@ -8,6 +8,7 @@ class Battle {
     static PADDLE_ANGLE_FACTOR: number = 10;
     static TETRIS_CONTAINER_MARGIN: number = 32;
     static PADDLE_MARGIN: number = 15;
+    static CONTAINER_ZOOM: PIXI.Point = new PIXI.Point(1,1);
 
 
     width: number;
@@ -25,16 +26,23 @@ class Battle {
     sounds: PIXI.sound.Sound[];
     soundOn: boolean;
     musicOn: boolean;
+    callback: Function;
+   
 
 
 
 
-    constructor(width, height, ownTetrisContainer, otherTetrisContainer) {
+    constructor(width, height, ownTetrisContainer, otherTetrisContainer,callback) {
 
         this.width = width;
         this.height = height;
         this.ownTetrisContainer = ownTetrisContainer;
+        this.ownTetrisContainer.scale = Battle.CONTAINER_ZOOM;
+        this.ownTetrisContainer.showGrid();
         this.otherTetrisContainer = otherTetrisContainer;
+        this.otherTetrisContainer.scale = Battle.CONTAINER_ZOOM;
+        this.otherTetrisContainer.showGrid();
+        this.callback = callback;
         this.soundOn = false;
         this.musicOn = true;
 
@@ -164,6 +172,14 @@ class Battle {
             //Let ball loose vx
             if (this.ball.vx > 2) {
                 this.ball.vx -= 0.01 * delta;
+            }
+
+            //check if someone wins
+            if(this.ownTetrisContainer.isEmpty()){
+                this.callback(false);
+            }
+            else if(this.otherTetrisContainer.isEmpty()){
+                this.callback(true);
             }
 
         }

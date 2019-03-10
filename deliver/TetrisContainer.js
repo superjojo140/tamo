@@ -105,6 +105,15 @@ var TetrisContainer = /** @class */ (function (_super) {
         }
         return container;
     };
+    TetrisContainer.prototype.isEmpty = function () {
+        for (var row in this.tilesArray) {
+            for (var column in this.tilesArray[row])
+                if (this.tilesArray[row][column]) {
+                    return false;
+                }
+        }
+        return true;
+    };
     TetrisContainer.TILE_WIDTH = 32;
     TetrisContainer.TILE_HEIGHT = 32;
     TetrisContainer.TILES_V = 3;

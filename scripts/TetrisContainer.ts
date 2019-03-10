@@ -1,4 +1,5 @@
 class TetrisContainer extends PIXI.Container {
+ 
     
 
 
@@ -122,6 +123,16 @@ class TetrisContainer extends PIXI.Container {
             container.addTetrisTileAt(tile,tileData.x,tileData.y);
         }
         return container;
+    }
+
+    isEmpty(): boolean {
+        for(let row in this.tilesArray){
+            for(let column in this.tilesArray[row])
+            if(this.tilesArray[row][column]){
+                return false;
+            }
+        }
+        return true;
     }
 
 }
