@@ -1,4 +1,5 @@
 class TetrisContainer extends PIXI.Container {
+    
 
 
     static TILE_WIDTH: any = 32;
@@ -108,6 +109,19 @@ class TetrisContainer extends PIXI.Container {
         }
         //If it was never returned false, return true
         return true;
+    }
+
+    static loadContainerByName(name: string): TetrisContainer {
+        let containerData = GameManager.ressources.opponents[name];
+        let tilesList = containerData.tetrisTiles;
+        let container = new TetrisContainer(containerData.width,containerData.height);
+        for(let i in tilesList){
+            let tileData = tilesList[i];
+            let tileName = tileData.name;
+            let tile = TetrisTile.loadTileByName(tileName);
+            container.addTetrisTileAt(tile,tileData.x,tileData.y);
+        }
+        return container;
     }
 
 }

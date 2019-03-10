@@ -125,5 +125,9 @@ var TetrisTile = /** @class */ (function (_super) {
         newTile.onDragStart(event);
         newTile.onDragMove();
     };
+    TetrisTile.loadTileByName = function (tileName) {
+        var tile = GameManager.ressources.tetrisTiles[tileName];
+        return new TetrisTile(tile.dimensions, tile.tileColor, tile.borderColor);
+    };
     return TetrisTile;
 }(PIXI.Graphics));

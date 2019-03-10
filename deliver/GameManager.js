@@ -199,10 +199,14 @@ var GameManager = /** @class */ (function () {
     };
     GameManager.prepareBattle = function (opponent, onWin, onLoose) {
         //start Containerbuilder with gameState.accesableTiles
-        //startBattle with win and loose events
-        onWin();
+        var opponentTetrisContainer = TetrisContainer.loadContainerByName(opponent);
+        var containerBuilder = new ContainerBuilder(GameManager.gameState.accessableTiles, function (ownTetrisContainer) {
+            GameManager.startBattle(ownTetrisContainer, opponentTetrisContainer, onWin, onLoose);
+        });
+        GameManager.pixiApp.stage.addChild(containerBuilder);
+        GameManager.pixiApp.ticker.remove(GameManager.triggerMapStep);
     };
-    GameManager.startBattle = function () {
+    GameManager.startBattle = function (ownContainer, opponentContainer, onWin, onLoose) {
         /*
         let tcn = myContainerBuilder.tetrisContainer;
         tcn.scale = new PIXI.Point(1,1);
@@ -221,6 +225,7 @@ var GameManager = /** @class */ (function () {
         GameManager.pixiApp.ticker.remove(GameManager.triggerMapStep);
         $(document).off("keyup.battle");
         $(document).off("keydown.battle");
+        GameManager.pixiApp.ticker.add(GameManager.triggerMapStep);
     };
     GameManager.moveParallax = function (event) {
         var x = event.offsetX;

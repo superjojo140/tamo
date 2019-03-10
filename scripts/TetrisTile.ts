@@ -1,4 +1,5 @@
 class TetrisTile extends PIXI.Graphics {
+   
 
 
     tileColor: number;
@@ -152,6 +153,11 @@ class TetrisTile extends PIXI.Graphics {
         this.containerBuilder.addChild(newTile);
         newTile.onDragStart(event);
         newTile.onDragMove();
+    }
+
+    static loadTileByName(tileName: string): TetrisTile {
+        let tile = GameManager.ressources.tetrisTiles[tileName];
+        return new TetrisTile(tile.dimensions, tile.tileColor, tile.borderColor);
     }
 
 

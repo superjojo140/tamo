@@ -9,7 +9,7 @@
     },
     "tetrisTiles": {
         "bigSquare": {
-            "tiles": [
+            "dimensions": [
                 [
                     1,
                     1
@@ -19,12 +19,12 @@
                     1
                 ]
             ],
-            "color": "#abcdef",
-            "borderColor": "#123456",
+            "tileColor": 13385994,
+            "borderColor": 6299140,
             "hitsToDestroy": 1
         },
         "fireBrick": {
-            "tiles": [
+            "dimensions": [
                 [
                     0,
                     1,
@@ -36,8 +36,8 @@
                     1
                 ]
             ],
-            "color": "#abcdef",
-            "borderColor": "#123456",
+            "tileColor": "cc8802",
+            "borderColor": "cc4f01",
             "hitsToDestroy": 1
         }
     },

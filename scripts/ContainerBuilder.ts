@@ -1,5 +1,5 @@
 class ContainerBuilder extends PIXI.Container {
-   
+
 
     tetrisTiles: TetrisTile[];
     tetrisContainer: TetrisContainer;
@@ -8,9 +8,11 @@ class ContainerBuilder extends PIXI.Container {
     static SHELF_WIDTH: number = 800;
     static SHELF_HEIGHT: number = 200;
     static SHELF_MARGIN: number = 10;
+    callback: Function;
 
-    constructor(tetrisTiles: TetrisTile[]) {
+    constructor(tetrisTilesNames: string[], callback: Function) {
         super();
+        this.callback = callback;
 
         //Generate Backgroundshape
         let bg = new PIXI.Graphics;
@@ -19,7 +21,11 @@ class ContainerBuilder extends PIXI.Container {
         bg.endFill();
         this.addChild(bg);
 
-        this.tetrisTiles = tetrisTiles;
+        this.tetrisTiles = [];
+        for (let i in tetrisTilesNames) {
+            let tileName = tetrisTilesNames[i];
+            this.tetrisTiles.push(TetrisTile.loadTileByName(tileName));
+        }
 
         this.scaleFactor = new PIXI.Point(2, 2);
 
@@ -57,7 +63,7 @@ class ContainerBuilder extends PIXI.Container {
         let startButton = PIXI.Sprite.fromImage("data/assets/startButton.png");
         startButton.interactive = true;
         startButton.buttonMode = true;
-        startButton.on('pointerdown', GameManager.startBattle);
+        startButton.on('pointerdown', () => { this.callback(this.tetrisContainer) });
         startButton.x = 700;
         startButton.y = 630;
         startButton.scale.x = 0.7;

@@ -10,15 +10,20 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var ContainerBuilder = /** @class */ (function (_super) {
     __extends(ContainerBuilder, _super);
-    function ContainerBuilder(tetrisTiles) {
+    function ContainerBuilder(tetrisTilesNames, callback) {
         var _this = _super.call(this) || this;
+        _this.callback = callback;
         //Generate Backgroundshape
         var bg = new PIXI.Graphics;
         bg.beginFill(0x604020);
         bg.drawRect(0, 0, APP_WIDTH, APP_HEIGHT);
         bg.endFill();
         _this.addChild(bg);
-        _this.tetrisTiles = tetrisTiles;
+        _this.tetrisTiles = [];
+        for (var i in tetrisTilesNames) {
+            var tileName = tetrisTilesNames[i];
+            _this.tetrisTiles.push(TetrisTile.loadTileByName(tileName));
+        }
         _this.scaleFactor = new PIXI.Point(2, 2);
         //prepare Tetris Container
         _this.tetrisContainer = new TetrisContainer(TetrisContainer.TILES_H, TetrisContainer.TILES_V);
@@ -49,7 +54,7 @@ var ContainerBuilder = /** @class */ (function (_super) {
         var startButton = PIXI.Sprite.fromImage("data/assets/startButton.png");
         startButton.interactive = true;
         startButton.buttonMode = true;
-        startButton.on('pointerdown', GameManager.startBattle);
+        startButton.on('pointerdown', function () { _this.callback(_this.tetrisContainer); });
         startButton.x = 700;
         startButton.y = 630;
         startButton.scale.x = 0.7;

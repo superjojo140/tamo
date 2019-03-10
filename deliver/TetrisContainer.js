@@ -93,6 +93,18 @@ var TetrisContainer = /** @class */ (function (_super) {
         //If it was never returned false, return true
         return true;
     };
+    TetrisContainer.loadContainerByName = function (name) {
+        var containerData = GameManager.ressources.opponents[name];
+        var tilesList = containerData.tetrisTiles;
+        var container = new TetrisContainer(containerData.width, containerData.height);
+        for (var i in tilesList) {
+            var tileData = tilesList[i];
+            var tileName = tileData.name;
+            var tile = TetrisTile.loadTileByName(tileName);
+            container.addTetrisTileAt(tile, tileData.x, tileData.y);
+        }
+        return container;
+    };
     TetrisContainer.TILE_WIDTH = 32;
     TetrisContainer.TILE_HEIGHT = 32;
     TetrisContainer.TILES_V = 3;

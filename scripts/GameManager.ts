@@ -270,13 +270,17 @@ class GameManager {
         GameManager.loadGame(gameState);
     }
 
-    static prepareBattle(opponent: any, onWin: () => void, onLoose: () => void) {
+    static prepareBattle(opponent: string, onWin: () => void, onLoose: () => void) {
         //start Containerbuilder with gameState.accesableTiles
-        //startBattle with win and loose events
-        onWin();
+        let opponentTetrisContainer = TetrisContainer.loadContainerByName(opponent);
+        let containerBuilder = new ContainerBuilder(GameManager.gameState.accessableTiles,(ownTetrisContainer:TetrisContainer)=>{
+            GameManager.startBattle(ownTetrisContainer,opponentTetrisContainer,onWin,onLoose);
+        });
+        GameManager.pixiApp.stage.addChild(containerBuilder);
+        GameManager.pixiApp.ticker.remove(GameManager.triggerMapStep);
     }
 
-    static startBattle() {
+    static startBattle(ownContainer,opponentContainer,onWin,onLoose) {
         /*
         let tcn = myContainerBuilder.tetrisContainer;
         tcn.scale = new PIXI.Point(1,1);
@@ -298,6 +302,7 @@ class GameManager {
         GameManager.pixiApp.ticker.remove(GameManager.triggerMapStep);
         $(document).off("keyup.battle");
         $(document).off("keydown.battle");
+        GameManager.pixiApp.ticker.add(GameManager.triggerMapStep);
     }
 
 
