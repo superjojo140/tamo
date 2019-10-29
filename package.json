@@ -24,7 +24,7 @@
     "@types/jquery": "^3.3.25",
     "@types/pixi.js": "^4.8.4",
     "bootstrap": ">=4.3.1",
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.0",
     "pixi-sound": "^2.0.4",
     "pixi.js": "^4.8.3"
   }
